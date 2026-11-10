@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 import { HudFrame } from "@/components/ui/HudFrame";
-import { FRAME_COUNT, HERO_TEXT_FADE_END, framePath } from "@/lib/hero";
+import { FRAME_COUNT, HERO_TEXT_FADE_END, MOBILE_FOCUS_X, framePath } from "@/lib/hero";
 import { site } from "@/content/site";
 
 const { hero } = site;
@@ -82,12 +82,10 @@ export function Hero() {
       drawW = ch * imgRatio;
     }
 
-    if (window.innerWidth <= 768) {
-      drawW *= 1.3;
-      drawH *= 1.3;
-    }
-
-    const drawX = (cw - drawW) / 2;
+    // Em tela estreita o corte horizontal segue o assunto em vez do centro do frame, sem
+    // deixar faixa vazia nas bordas.
+    const focusX = window.innerWidth <= 768 ? MOBILE_FOCUS_X : 0.5;
+    const drawX = Math.min(0, Math.max(cw - drawW, cw / 2 - drawW * focusX));
     const drawY = (ch - drawH) / 2;
 
     ctx.clearRect(0, 0, cw, ch);
@@ -229,14 +227,14 @@ export function Hero() {
 
         <div
           ref={bigLeftTextRef}
-          className="pointer-events-none absolute bottom-24 left-6 z-10 hidden max-w-[58%] flex-col gap-5 md:flex md:bottom-28 md:left-12"
+          className="pointer-events-none absolute bottom-24 left-6 z-10 hidden max-w-[30%] flex-col gap-4 md:flex md:bottom-28 md:left-12"
           style={{ opacity: 0, transition: "opacity 80ms linear" }}
         >
           <span className="inline-flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.3em] text-accent">
             <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_var(--accent-glow)]" />
             {hero.statement.kicker}
           </span>
-          <h2 className="font-sans font-semibold leading-[0.88] tracking-tighter text-foreground text-[clamp(4rem,9.5vw,9rem)]">
+          <h2 className="font-sans font-semibold leading-[0.88] tracking-tighter text-foreground text-[clamp(2.5rem,4.6vw,5.5rem)]">
             {hero.statement.line1}
             <br />
             {hero.statement.line2Prefix} <span className="text-accent">{hero.statement.highlight}</span>
@@ -252,6 +250,10 @@ export function Hero() {
             {hero.statusLabel}
           </span>
         </div>
+
+        <p className="pointer-events-none absolute left-16 top-[6.25rem] z-10 font-mono text-[10px] uppercase tracking-[0.32em] text-zinc-400 md:left-auto md:right-10 md:top-24">
+          {hero.photoCredit}
+        </p>
 
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10">
           <div className="mx-6 mb-3 h-px bg-white/10 md:mx-10">

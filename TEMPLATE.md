@@ -51,6 +51,7 @@ texto aparece (0 = topo, 1 = fim).
 | `statement.line1 / line2Prefix / highlight` | Frase gigante em 2 linhas, a última palavra destacada | 1 + 1 + 1 palavra | Build / with / Devini |
 | `statement.caption` | Linha embaixo da frase gigante | ≤ 60 caracteres | Interfaces & products, engineered like the Mark LXXXV. |
 | `bottomBar.center` / `scrollHint` | Rodapé do vídeo | 2 blocos `//` / 1 palavra | J.A.R.V.I.S. // DIAGNOSTIC / Scroll |
+| `photoCredit` | Canto superior direito, fixo | crédito de quem fez a imagem do vídeo, ≤ 30 caracteres | Foto: @luigimoraess |
 | `cards[0..2].quote` | Cards de vidro à direita (0,10–0,30 · 0,35–0,55 · 0,60–0,80) | ≤ 60 caracteres | Sometimes you gotta run before you can walk. |
 | `cards[].speaker` / `source` | Autor / origem e ano | ≤ 20 / ≤ 24 caracteres | Tony Stark / IRON MAN — 2008 |
 | `loader.eyebrow` / `text` | Tela de carregamento dos frames | 2 blocos `//` / ≤ 24 caracteres | SUIT UP PROTOCOL // BOOTING / Loading Mark LXXXV |
