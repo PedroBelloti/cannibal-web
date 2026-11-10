@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 import { HudFrame } from "@/components/ui/HudFrame";
-import { CINE_FRAME_COUNT, cineFramePath } from "@/lib/cinematic";
+import { CINE_FRAME_COUNT, CINE_MOBILE_FOCUS_X, cineFramePath } from "@/lib/cinematic";
 import { site } from "@/content/site";
 
 const { cinematic } = site;
@@ -84,12 +84,10 @@ export function CinematicReveal() {
       drawW = ch * imgRatio;
     }
 
-    if (window.innerWidth <= 768) {
-      drawW *= 1.3;
-      drawH *= 1.3;
-    }
-
-    const drawX = (cw - drawW) / 2;
+    // Em tela estreita o corte horizontal segue o atleta em vez do centro do frame, sem deixar
+    // faixa vazia nas bordas (mesma regra do Hero).
+    const focusX = window.innerWidth <= 768 ? CINE_MOBILE_FOCUS_X : 0.5;
+    const drawX = Math.min(0, Math.max(cw - drawW, cw / 2 - drawW * focusX));
     const drawY = (ch - drawH) / 2;
 
     ctx.clearRect(0, 0, cw, ch);
@@ -225,7 +223,7 @@ export function CinematicReveal() {
           <HudFrame corner="br" size={26} />
         </div>
 
-        <div className="pointer-events-none absolute right-6 top-28 z-10 flex max-w-[46ch] flex-col items-end gap-5 text-right md:right-12 md:top-32">
+        <div className="pointer-events-none absolute left-6 top-28 z-10 flex max-w-[46ch] flex-col items-start gap-3 text-left md:left-12 md:top-32 md:gap-5">
           <EyebrowBadge>{cinematic.eyebrow}</EyebrowBadge>
           <div className="relative self-stretch">
             <h2
@@ -247,7 +245,7 @@ export function CinematicReveal() {
               <span className="text-accent">{cinematic.titleAfter.highlight}</span>
             </h2>
           </div>
-          <p className="max-w-[42ch] font-sans text-sm leading-relaxed text-zinc-400 md:text-base">
+          <p className="hidden max-w-[42ch] font-sans text-base leading-relaxed text-zinc-400 md:block">
             {cinematic.lead}
           </p>
         </div>
@@ -287,18 +285,12 @@ export function CinematicReveal() {
           </div>
         </div>
 
-        {cinematic.cards.map((b, i) => {
+        {cinematic.cards.map((b) => {
           const visible = visibleBeats.has(b.id);
-          const position =
-            i === 0
-              ? "top-[24%] left-6 md:left-12"
-              : i === 1
-              ? "top-1/2 -translate-y-1/2 left-6 md:left-12"
-              : "bottom-24 left-6 md:bottom-28 md:left-12";
           return (
             <div
               key={b.id}
-              className={`pointer-events-none absolute ${position} z-20 hidden w-[420px] max-w-[90vw] md:block`}
+              className="pointer-events-none absolute bottom-28 left-12 z-20 hidden w-[420px] max-w-[90vw] md:block"
             >
               <figure
                 className={`card-surface pointer-events-auto p-6 transition-all duration-400 ease-out ${
@@ -322,13 +314,13 @@ export function CinematicReveal() {
           );
         })}
 
-        <div className="pointer-events-none absolute inset-x-0 top-[36%] z-20 flex flex-col gap-3 px-6 md:hidden">
+        <div className="pointer-events-none absolute inset-x-6 bottom-20 z-20 md:hidden">
           {cinematic.cards.map((b) => {
             const visible = visibleBeats.has(b.id);
             return (
               <figure
                 key={b.id}
-                className={`card-surface pointer-events-auto p-5 transition-all duration-400 ease-out ${
+                className={`card-surface pointer-events-auto absolute inset-x-0 bottom-0 p-5 transition-all duration-400 ease-out ${
                   visible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
                 }`}
               >

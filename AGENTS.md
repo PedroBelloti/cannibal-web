@@ -17,9 +17,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **Vídeos**: `public/frames*/` + `src/lib/hero.ts` / `src/lib/cinematic.ts`. Os `show`/`hide`
   dos cards estão sincronizados com esses frames; trocou o vídeo, reposicione-os. Para gerar um
   vídeo novo, use a skill `scroll-video-hero`.
-- **Enquadramento no celular (Hero)**: até 768 px o canvas mostra só uma faixa vertical do
-  frame, centrada em `MOBILE_FOCUS_X` (`src/lib/hero.ts`). Trocou o vídeo, reposicione. O
-  `CinematicReveal.tsx` ainda usa o corte central com zoom de 1,3.
+- **Enquadramento no celular**: até 768 px o canvas mostra só uma faixa vertical do frame,
+  centrada em `MOBILE_FOCUS_X` (`src/lib/hero.ts`) no Hero e em `CINE_MOBILE_FOCUS_X`
+  (`src/lib/cinematic.ts`) no Cinematic. Trocou o vídeo, reposicione.
 - **Dívida conhecida**: `Hero.tsx` e `CinematicReveal.tsx` duplicam a lógica de canvas, preload e
   scroll (~370 linhas cada). Uma correção sistêmica deve extrair essa lógica para um componente
   só (há um modelo em `~/.claude/skills/scroll-video-hero/assets/ScrollSequence.tsx`).

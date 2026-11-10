@@ -14,26 +14,9 @@ from rembg import new_session, remove
 
 from render import CROP_BOX, WORK_SIZE
 
+from layered import keep_main_body  # noqa: E402  (render já pôs media/ no caminho)
+
 MODEL = "bria-rmbg"
-
-
-def keep_main_body(mask: np.ndarray) -> np.ndarray:
-    """Mantém só o maior componente da máscara e fecha os furos internos."""
-    binary = (mask > 127).astype(np.uint8)
-    count, labels, stats, _ = cv2.connectedComponentsWithStats(binary)
-    if count < 2:
-        raise ValueError("a segmentação não encontrou nenhum objeto")
-    main = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
-    body = (labels == main).astype(np.uint8)
-
-    # Furo interno = fundo que não alcança a borda da imagem.
-    padded = cv2.copyMakeBorder(1 - body, 1, 1, 1, 1, cv2.BORDER_CONSTANT, value=1)
-    _, outside, _, _ = cv2.floodFill(padded.copy(), None, (0, 0), 2)
-    solid = (outside[1:-1, 1:-1] != 2).astype(np.uint8)
-
-    near = cv2.dilate(solid, np.ones((9, 9), np.uint8))
-    core = cv2.erode(solid, np.ones((9, 9), np.uint8))
-    return np.where(core == 1, 255, np.where(near == 1, mask, 0)).astype(np.uint8)
 
 
 def main() -> None:

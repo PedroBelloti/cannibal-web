@@ -1,6 +1,6 @@
 # PLAN: Sequência A (Hero) por camadas locais
 
-**Status:** aprovado em 2026-11-10, implementado e validado localmente, sem commit · **Criado em:** 2026-11-10 · **Issue:** #1
+**Status:** aprovado em 2026-11-10, implementado e validado localmente, commit `f8f8c66`, PR #2 aberto · **Criado em:** 2026-11-10 · **Issue:** #1
 
 Origem: decisão registrada em `HANDOFF.md` (recado de 10/11/2026). Substitui a Sequência A descrita
 em `roteiro-grade-midias.md` (foto 4, 2.5D por profundidade), que foi reprovada.

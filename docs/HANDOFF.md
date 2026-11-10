@@ -9,8 +9,8 @@ Sequência B). Escreva no topo, com data, quem escreveu e o que precisa.
 |---|---|---|
 | Perfil de comunicação | Claude | Feito |
 | Roteiro, grade de mídias e JSON de textos | Claude | Feito (falta a categoria do Arthur) |
-| Sequência A (Hero): foto 1 (sangue, fumaça vermelha), animada por camadas locais, 7 s, 169 frames | Agente do template | **Feito no branch `feat/seq-a-camadas`, sem commit** (issue #1; ver `plan-sequencia-a.md`) |
-| Sequência B (Cinematic): foto 3 (treino, cabeça baixa), animada por camadas locais, 7 s, 169 frames | Agente do template | **Pendente: refazer** (decidido, não iniciado) |
+| Sequência A (Hero): foto 1 (sangue, fumaça vermelha), animada por camadas locais, 7 s, 169 frames | Agente do template | **Feito, commit `f8f8c66` no branch `feat/seq-a-camadas`, PR #2 aberto, sem merge** (issue #1; ver `plan-sequencia-a.md`) |
+| Sequência B (Cinematic): foto 3 (treino, cabeça baixa), animada por camadas locais, 7 s, 169 frames | Agente do template | **Feito: segunda versão aprovada pelo Pedro e validada no navegador; commit no branch `feat/seq-b-camadas`, sem push nem PR** (issue #3; ver `plan-sequencia-b.md`) |
 | Remover o `readout` do Hero (desligado pelo cliente) | Agente do template | Feito |
 | Aplicar o JSON de textos e a paleta (`#0a0a0b`, accent `#D72631`) | Agente do template | Feito |
 | Trocar "A definir" pela categoria do Arthur | Agente do template | Feito: Peso Galo, 61 kg |
@@ -24,7 +24,97 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
-- **10/11/2026, agente do template — Sequência A refeita (issue #1), aguardando commit**:
+- **10/11/2026 (madrugada), agente do template — SEQUÊNCIA B CONCLUÍDA NO BRANCH**:
+  - RELATO (Pedro): o movimento "atende perfeitamente"; o emblema "D" da luva fica sem desfoque;
+    a foto 3 é de autoria do Arthur e não leva crédito.
+  - No navegador o título cobria ombro e cabeça do atleta: título e texto foram para o alto à
+    esquerda, os cards para baixo à esquerda; no celular o texto de apoio some e os cards ficam
+    na base. Detalhes em `plan-sequencia-b.md`, "Navegador".
+  - **Falta (depende do Pedro)**: push do branch e PR com `Closes #3`.
+  - Os dois recados abaixo ficam como histórico; as pendências deles estão resolvidas.
+
+- **10/11/2026 (fim da noite), agente do template — SEQUÊNCIA B, SEGUNDA VERSÃO (ler primeiro)**:
+  - **O que mudou**: a câmera agora faz um arco enquanto se aproxima (a parede gira em
+    perspectiva e desliza para a esquerda atrás do atleta) e o fundo ganhou feixe de luz com
+    raios, névoa, três planos de poeira, sombra do atleta e foco que muda. O atleta continua só
+    escalado e deslocado. Decisões e números em `plan-sequencia-b.md`, seção "Resultado".
+  - **Feito**: `media/seq-b/seq-b.mp4` e `poster.jpg` novos; `public/frames2/` com os 169 WebP
+    novos (6,8 MB); lint, tipos e build sem erro; vídeo antigo e stills das fotos 2, 4 e 5
+    removidos; `media/README.md`, `roteiro-grade-midias.md` e `AGENTS.md` atualizados.
+    `render.py` perdeu a opção `--grade` e ganhou `--step=N` para prévia.
+  - **Falta**: o Pedro ver a prévia e aprovar; rolar a seção no navegador (tela larga e 390 px)
+    e reposicionar título e cards se cobrirem o atleta; autorização de commit. Nada foi
+    commitado.
+  - **Em aberto com o Pedro**: emblema dourado "D" da luva direita sem desfoque; nome do
+    fotógrafo da foto 3 (a seção segue sem crédito).
+  - O recado abaixo fica como histórico do pedido; o "estado do código" dele está superado.
+
+- **10/11/2026 (noite), agente do template — PONTO DE RETOMADA DA SEQUÊNCIA B (ler primeiro)**:
+  - **Pedido do Pedro, nas palavras dele**: *"Não gostei do resultado, esperava uma animação
+    mais detalhada, vamos tentar adicionar mais detalhes e uma transição nesse zoom mexendo no
+    ângulo da câmera"*. A primeira versão (só zoom do atleta 1,00 a 1,50, fundo 1,00 a 1,16,
+    poeira, luz fria virando quente) foi reprovada. As duas prévias que ele viu eram a de luz só
+    no fundo e a de luz no quadro inteiro; ele não escolheu entre elas.
+  - **O que fazer**: propor ao Pedro, em poucas linhas e antes de renderizar tudo, como entra a
+    mudança de ângulo (por exemplo: giro/arco da câmera com as camadas deslocando em sentidos
+    diferentes, leve inclinação de perspectiva no fundo, mais planos de profundidade: parede,
+    saco, atleta, poeira na frente) e quais detalhes novos entram (feixe de luz com poeira,
+    névoa, sombra do atleta acompanhando a luz, foco que muda). Mandar um MP4 curto de teste
+    pelo celular (`SendUserFile`) e só então fechar. É mudança das decisões do PLAN: registrar
+    em `plan-sequencia-b.md`.
+  - **Restrição que continua**: nenhum pixel do atleta muda de conteúdo (só escala e posição);
+    sem IA generativa em pessoa. Girar o atleta em perspectiva deforma a pessoa: tratar como
+    decisão do Pedro, não fazer por conta. Deslocamento lateral revela fundo atrás do atleta,
+    que encosta no saco: a área revelada precisa de preenchimento conferido a olho.
+  - **Estado do código (tudo sem commit, branch `feat/seq-b-camadas`)**: `media/layered.py`
+    (motor comum, extraído da A; MEDIDO: a A continua com 0 pixel diferente),
+    `media/seq-b/make_mask.py`, `media/seq-b/mask-atleta.png`, `media/seq-b/render.py`
+    (`--grade=background|full`, `--verify`). MEDIDO na versão reprovada: 0 pixel do atleta
+    diferente da foto nos quadros 1, 43, 85, 127 e 169, fora das caixas dos logos; 5.045 px de
+    fundo preenchido visíveis no último quadro. Nada foi gravado em `public/frames2/`, que
+    segue com os frames antigos; `media/seq-b/` ainda não tem MP4 nem pôster.
+  - **Site**: `CINE_MOBILE_FOCUS_X = 0.68` em `src/lib/cinematic.ts` e o corte do celular sem
+    zoom de 1,3 em `CinematicReveal.tsx` já estão aplicados, **sem lint, build nem navegador
+    rodados**. O valor 0,68 é INFERIDO da posição do atleta na versão reprovada: reposicionar.
+    `.gitignore` ganhou `__pycache__/`.
+  - **Pendente do PLAN**: etapas 6 a 9 (aprovação do movimento, extração dos WebP, remoção de
+    `media/video/seq-b-trajetoria.mp4` e dos stills das fotos 2, 4 e 5, validação do site,
+    documentos e `AGENTS.md`). O cabeçalho do PLAN precisa do status real.
+  - **Em aberto com o Pedro**: o emblema dourado "D" da luva direita não foi desfocado (as
+    caixas cobrem só os textos); nome do fotógrafo da foto 3.
+  - **Ambiente**: o Python com numpy, OpenCV e rembg está em
+    `/tmp/claude-1000/-home-belloti-Projects-iron-man/4adf3f5a-d5df-46b1-878b-aaf37b95a648/scratchpad/venv`
+    (usar `venv/bin/python -I`); se a pasta sumir, remontar com `uv`. Comando do render:
+    `python -I media/seq-b/render.py ~/Downloads/IMG_4843.PNG media/stills/foto3-16x9-estendida.jpg <saida> --verify`.
+    Os demais cuidados (uso do `gh` com `-R`, fotos autorizadas, commit só com autorização)
+    estão no recado seguinte e continuam valendo.
+
+- **10/11/2026, agente do template — PONTO DE RETOMADA (ler primeiro numa sessão nova)**:
+  - **Sequência A**: commit `f8f8c66` enviado, PR #2 aberto contra `main`
+    (https://github.com/PedroBelloti/iron-man-scroll-template/pull/2, `Closes #1`). Merge e
+    fechamento da issue dependem de pedido do Pedro.
+  - **Sequência B**: `docs/plan-sequencia-b.md` foi enviado ao Pedro e **ainda não foi
+    aprovado**. Ele recebeu também um esboço do enquadramento. Não implementar antes do sim.
+    Depois da aprovação: criar a issue no GitHub, registrar o `#N` no PLAN e aqui, e seguir as
+    etapas até o primeiro ponto de parada (máscara e base).
+  - **Decisões da B em aberto com o Pedro** (detalhe no PLAN): enquadramento aberto com zoom do
+    atleta até 1,5; parede esquerda suavizada ou quadro começando em x 1124; luz só no fundo ou
+    no quadro inteiro (duas prévias); extração do motor comum de `media/seq-a/render.py`;
+    remoção do vídeo antigo e dos stills das fotos 2, 4 e 5; nome do fotógrafo da foto 3.
+  - **Estado do repositório**: branch `feat/seq-a-camadas`; sem commit ficam
+    `docs/plan-sequencia-b.md` e as edições de hoje neste arquivo e em `plan-sequencia-a.md`.
+  - **Cuidados de ferramenta**: o `gh` neste repositório resolve para o template original
+    (`KingOfSites/iron-man`); usar sempre `-R PedroBelloti/iron-man-scroll-template`. O ambiente
+    Python (numpy, OpenCV, rembg) e os scripts de medição da B ficavam na pasta temporária da
+    sessão anterior e não estão no repositório: remontar com `uv` como na etapa 2 do
+    `plan-sequencia-a.md`. As medidas necessárias (posição da foto dentro do still, caixas dos
+    logos) estão no PLAN da B.
+  - **Leitura de fotos autorizada pelo Pedro**: só `~/Downloads/IMG_4230.PNG` (foto 1) e
+    `~/Downloads/IMG_4843.PNG` (foto 3), para este trabalho.
+  - **O Pedro pode estar no celular**: mandar PLAN, máscaras e prévias como arquivo, não só o
+    caminho.
+
+- **10/11/2026, agente do template — Sequência A refeita (issue #1)**:
   foto 1 por camadas locais, zoom do atleta até 1,38 e do fundo até 1,12, fumaça, partículas e
   luz procedurais só no fundo, e revelação pela luz no primeiro terço (a cena começa quase na
   cor do site). MEDIDO: atleta e regiões protegidas com 0 pixel diferente da foto antes da

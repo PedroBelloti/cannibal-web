@@ -91,55 +91,33 @@ declarados (nenhuma regra foi quebrada em silêncio).
 `checagem_mobile`: o rosto fica entre 50% e 56% da largura do início ao fim, dentro ou na borda da
 faixa central de 40% a 60%, então aparece no celular em todos os beats.
 
-### Sequência B (Cinematic), gerada no Higgsfield
+### Sequência B (Cinematic), foto real por camadas locais
+
+Substitui a versão "gerada no Higgsfield" deste roteiro. Decisões e medidas em
+`plan-sequencia-b.md`; o render é `media/seq-b/render.py`, sem IA generativa.
 
 - `duracao_s`: 7 (169 frames a 24 fps)
-- **Movimento:** dolly-in lento e contínuo em direção ao lutador, do plano aberto ao plano médio,
-  enquanto o campo vermelho se transforma em luz dourada.
-- **Geração:** keyframe inicial primeiro; o keyframe final deve ser feito **usando o inicial como
-  imagem de referência** (mesma figura, mesmo cenário), não por um segundo prompt solto. Vídeo por
-  image to video com quadro inicial e, se o modelo aceitar, quadro final.
-- `keyframe_inicial`:
-  > Cinematic wide shot, 16:9. A vast dark empty field filled with thick blood-red smoke and haze. A
-  > lone lean athletic male fighter stands far away in the exact horizontal center of the frame,
-  > seen from the front as a dark silhouette, head slightly bowed, arms relaxed at his sides, bare
-  > torso, short dark buzzed hair, plain black open-finger MMA gloves with no logos, plain black
-  > shorts, a small rosary with a crucifix on his chest catching a faint glint. Strong red backlight
-  > behind him draws a thin rim light; his face is completely in shadow and unrecognizable. The upper
-  > right third and the lower right corner are calm and dark. Camera at chest height, 35mm lens, deep
-  > blacks, film grain, photoreal, no text, no logo, no other people.
-- `keyframe_final`:
-  > Same fighter in the same field, same gloves, shorts and rosary, now in a medium shot from the
-  > waist up, still in the exact horizontal center. His head is raised looking up toward the light
-  > and his right fist is raised high above his head on the left side of the frame, left glove near
-  > his chest. The red smoke has turned into soft pale grey haze and warm golden light, a bright warm
-  > white backlight behind him, tiny golden embers drifting upward around him. Face still backlit and
-  > unrecognizable. Lower right corner calm and empty, upper right calm. 35mm lens, film grain,
-  > photoreal, no text, no logo, no other people.
-- `prompt_video`:
-  > The camera slowly dollies in toward a lone fighter silhouette standing in a field of thick
-  > blood-red smoke, head bowed; as the camera gets closer the smoke drifts and his chest rises with
-  > slow breathing; around the middle of the shot the red smoke gradually dissolves into pale grey
-  > haze and warm golden light while the backlight turns warm white; the fighter slowly lifts his head
-  > toward the light and raises his right fist above his head as tiny golden embers rise around him,
-  > and the pose holds calmly to the end. The face stays in shadow the whole time. single continuous
-  > shot, no cuts, no scene changes, slow steady camera, no handheld shake, no text, consistent subject
-  > identity, cinematic lighting, 16:9
-- `negativos`: rosto visível ou reconhecível, logos em luvas ou short, texto, outras pessoas,
-  plateia, ringue ou cage com marcas, cortes, movimento rápido, câmera na mão, sangue, explosão,
-  corpo se desfazendo, mãos deformadas, dedos extras, troca de roupa.
+- **Fonte:** foto 3 (`IMG_4843`, 1023x1537), o atleta de cabeça baixa no treino. O atleta sai da
+  foto original; o fundo é o still estendido `media/stills/foto3-16x9-estendida.jpg`.
+- **Movimento:** aproximação contínua com arco de câmera. A câmera anda para a esquerda e desce
+  enquanto se aproxima: a parede gira em perspectiva e desliza atrás do atleta, que só cresce e se
+  desloca (nenhum pixel dele muda). O arco se concentra no meio do scroll, junto com a virada da
+  luz.
+- **Detalhes, todos só no fundo:** feixe de luz com raios, névoa em duas camadas, três planos de
+  poeira em profundidades diferentes, sombra suave do atleta na parede, fundo que perde foco
+  conforme a câmera chega, vinheta.
 
 | progresso | segundos | o que se vê no quadro | onde está o assunto |
 |---|---|---|---|
-| 0,00–0,08 | 0,0–0,6 | Pôster: campo de fumaça vermelha, silhueta pequena ao longe, cabeça baixa; alto à direita escuro | centro |
-| 0,10–0,30 | 0,7–2,1 | Beat 1, abertura: dolly-in começa, fumaça vermelha se movendo, tensão | centro |
-| 0,35–0,55 | 2,5–3,9 | Beat 2, aproximação: câmera mais perto, silhueta ocupa metade da altura, respiração, brilho do terço | centro |
-| 0,48–0,58 | 3,4–4,1 | Virada: o vermelho se dissolve em cinza claro e dourado, contraluz fica branco quente | centro |
-| 0,60–0,80 | 4,2–5,6 | Beat 3, desfecho: ele ergue a cabeça para a luz e levanta o punho direito; brasas douradas sobem | centro (punho no lado esquerdo do quadro) |
-| 0,86–1,00 | 6,0–7,0 | Pose mantida, brasas flutuando, câmera assentada; canto inferior direito livre | centro |
+| 0,00–0,22 | 0,0–1,5 | Plano aberto e frio: academia inteira, saco de pancadas à direita, poeira fina | direita (centro do corpo em 69% da largura) |
+| 0,22–0,48 | 1,5–3,4 | A câmera começa o arco: a parede desliza para a esquerda e inclina, o atleta cresce | direita |
+| 0,48–0,58 | 3,4–4,1 | Virada: a luz passa de fria para quente, o feixe acende, o fundo perde foco por um instante | direita |
+| 0,58–0,80 | 4,1–5,6 | Fim do arco: feixe quente com raios cruzando a parede, névoa e poeira iluminadas | direita |
+| 0,80–1,00 | 5,6–7,0 | Plano da cintura para cima, câmera assentando, fundo quente e desfocado | direita (centro do corpo em 73%) |
 
-`checagem_mobile`: a silhueta fica no centro horizontal do primeiro ao último frame, então todos os
-beats aparecem na faixa central do celular.
+`checagem_mobile`: o atleta fica fora da faixa central; o corte do celular segue o ponto
+`CINE_MOBILE_FOCUS_X` (`src/lib/cinematic.ts`), que mantém a cabeça (58% a 71% da largura) na
+tela do início ao fim.
 
 ---
 

@@ -14,6 +14,21 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from layered import (  # noqa: E402
+    Particles,
+    Rig,
+    feathered_weight,
+    fill_holes,
+    fractal_noise,
+    make_particles,
+    particle_layer,
+    scrolled,
+    smoothstep,
+    to_uint8,
+    write_frame,
+)
+
 HERE = Path(__file__).parent
 
 FRAME_COUNT = 169
@@ -22,7 +37,6 @@ OUT_SIZE = (1920, 1080)
 CROP_BOX = (0, 0, 5056, 2844)
 # Área de trabalho 1,5x a saída: no zoom máximo a camada ainda é reduzida, nunca ampliada.
 WORK_SIZE = (2880, 1620)
-WORK_SCALE = WORK_SIZE[0] / OUT_SIZE[0]
 
 # O atleta cresce mais que o fundo a partir de um ponto na base do pescoço (pixels da saída);
 # assim ele só cobre mais fundo. Mais alto que isso, o ombro descobre uma faixa junto ao homem
@@ -30,6 +44,8 @@ WORK_SCALE = WORK_SIZE[0] / OUT_SIZE[0]
 ANCHOR = (900.0, 760.0)
 FG_ZOOM_END = 1.38
 BG_ZOOM_END = 1.12
+RIG = Rig(FRAME_COUNT, OUT_SIZE, WORK_SIZE, ANCHOR, FG_ZOOM_END, BG_ZOOM_END)
+warp = RIG.warp
 
 # Regiões que não recebem efeito, em pixels do recorte original: o homem desfocado ao fundo e as
 # formas desfocadas do canto inferior esquerdo, que não dá para afirmar que não são pessoas.
@@ -69,23 +85,6 @@ class Layers:
     signature: np.ndarray
 
 
-def smoothstep(edge0: float, edge1: float, x):
-    t = np.clip((x - edge0) / (edge1 - edge0), 0.0, 1.0)
-    return t * t * (3.0 - 2.0 * t)
-
-
-def warp(image: np.ndarray, zoom: float) -> np.ndarray:
-    """Leva uma camada da área de trabalho para a saída, com zoom em torno de ANCHOR."""
-    k = zoom / WORK_SCALE
-    matrix = np.float32([[k, 0, ANCHOR[0] * (1 - zoom)], [0, k, ANCHOR[1] * (1 - zoom)]])
-    return cv2.warpAffine(image, matrix, OUT_SIZE, flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
-
-
-def zooms(t: float) -> tuple[float, float]:
-    """Zoom do atleta e do fundo no instante t (0 a 1); exponencial dá velocidade aparente constante."""
-    return FG_ZOOM_END**t, BG_ZOOM_END**t
-
-
 def load_photo(path: str) -> np.ndarray:
     image = cv2.imread(path, cv2.IMREAD_COLOR)
     if image is None:
@@ -107,30 +106,6 @@ def protected_mask() -> np.ndarray:
     return mask
 
 
-def fx_weight_from(protected: np.ndarray) -> np.ndarray:
-    """Peso dos efeitos: 0 exato dentro das regiões protegidas, subindo suave para 1 fora."""
-    kernel = np.ones((PROTECTED_FEATHER, PROTECTED_FEATHER), np.uint8)
-    grown = cv2.dilate(protected, kernel).astype(np.float32) / 255
-    soft = cv2.GaussianBlur(grown, (PROTECTED_FEATHER, PROTECTED_FEATHER), 0)
-    return np.where(protected > 0, 0.0, 1.0 - soft).astype(np.float32)
-
-
-def fill_holes(image: np.ndarray, hole: np.ndarray) -> np.ndarray:
-    """Preenche a área `hole` com a cor desfocada da vizinhança (convolução normalizada)."""
-    result = image.astype(np.float32)
-    valid = (hole == 0).astype(np.float32)
-    sigma = 6.0
-    while valid.min() < 1.0 and sigma < 4000:
-        weight = cv2.GaussianBlur(valid, (0, 0), sigma)
-        blurred = cv2.GaussianBlur(result * valid[..., None], (0, 0), sigma)
-        fillable = (valid == 0) & (weight > 0.05)
-        result[fillable] = blurred[fillable] / weight[fillable][..., None]
-        valid = np.where(fillable, 1.0, valid).astype(np.float32)
-        sigma *= 2
-    soft = cv2.GaussianBlur(result, (0, 0), 10)
-    return np.where(hole[..., None] > 0, soft, result).astype(np.float32)
-
-
 def signature_alpha(photo: np.ndarray) -> np.ndarray:
     """Alfa do crédito do fotógrafo: texto branco sobre fundo escuro, dentro de SIGNATURE_BOX."""
     x0, y0, x1, y1 = to_work(SIGNATURE_BOX)
@@ -149,36 +124,15 @@ def build_layers(photo_path: str) -> Layers:
     signature = signature_alpha(photo)
     # Sem folga além do atleta: cada pixel a mais aqui é um pixel do fundo trocado por borrão.
     hole = (alpha > 0).astype(np.uint8)
-    hole = np.maximum(hole,cv2.dilate((signature > 0).astype(np.uint8), np.ones((9, 9), np.uint8)))
+    hole = np.maximum(hole, cv2.dilate((signature > 0).astype(np.uint8), np.ones((9, 9), np.uint8)))
     return Layers(
         photo=photo,
         plate=fill_holes(photo, hole),
         alpha=alpha,
         fill=hole * 255,
-        fx_weight=fx_weight_from(protected_mask()),
+        fx_weight=feathered_weight(protected_mask(), PROTECTED_FEATHER),
         signature=signature,
     )
-
-
-def fractal_noise(rng: np.random.Generator, size: tuple[int, int], falloff: float) -> np.ndarray:
-    """Ruído suave e periódico (0 a 1), gerado no domínio da frequência para rolar sem emenda."""
-    w, h = size
-    fy = np.fft.fftfreq(h)[:, None]
-    fx = np.fft.rfftfreq(w)[None, :]
-    radius = np.sqrt(fx * fx + fy * fy)
-    radius[0, 0] = 1.0
-    spectrum = rng.normal(size=radius.shape) + 1j * rng.normal(size=radius.shape)
-    spectrum = spectrum / radius**falloff
-    spectrum[0, 0] = 0
-    noise = np.fft.irfft2(spectrum, s=(h, w))
-    lo, hi = np.percentile(noise, (1, 99))
-    return np.clip((noise - lo) / (hi - lo), 0, 1).astype(np.float32)
-
-
-def scrolled(noise: np.ndarray, dx: float, dy: float) -> np.ndarray:
-    matrix = np.float32([[1, 0, dx], [0, 1, dy]])
-    moved = cv2.warpAffine(noise, matrix, noise.shape[::-1], flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_WRAP)
-    return cv2.resize(moved, OUT_SIZE, interpolation=cv2.INTER_LINEAR)
 
 
 @dataclass(frozen=True)
@@ -188,10 +142,7 @@ class Ambience:
     noises: tuple[np.ndarray, ...]
     glow: np.ndarray
     light_distance: np.ndarray
-    particle_pos: np.ndarray
-    particle_vel: np.ndarray
-    particle_size: np.ndarray
-    particle_gain: np.ndarray
+    particles: Particles
 
 
 def build_ambience() -> Ambience:
@@ -204,20 +155,8 @@ def build_ambience() -> Ambience:
         noises=tuple(fractal_noise(rng, half, f) for f in (2.2, 2.2, 1.9, 1.9)),
         glow=np.clip(1 - dist / 0.55, 0, 1) ** 2,
         light_distance=dist / dist.max(),
-        particle_pos=rng.uniform((0, 0), (w, h), (PARTICLE_COUNT, 2)),
-        particle_vel=rng.normal((70, -110), (60, 50), (PARTICLE_COUNT, 2)),
-        particle_size=rng.uniform(0.7, 2.4, PARTICLE_COUNT),
-        particle_gain=rng.uniform(0.25, 0.75, PARTICLE_COUNT),
+        particles=make_particles(rng, PARTICLE_COUNT, OUT_SIZE, (70, -110), (60, 50), (0.7, 2.4), (0.25, 0.75)),
     )
-
-
-def particle_layer(amb: Ambience, t: float) -> np.ndarray:
-    canvas = np.zeros(OUT_SIZE[::-1], np.float32)
-    positions = (amb.particle_pos + amb.particle_vel * t) % np.array(OUT_SIZE)
-    for (x, y), size, gain in zip(positions, amb.particle_size, amb.particle_gain):
-        center = (int(round(x * 16)), int(round(y * 16)))
-        cv2.circle(canvas, center, int(round(size * 16)), float(gain), -1, cv2.LINE_AA, shift=4)
-    return cv2.GaussianBlur(canvas, (0, 0), 1.1)
 
 
 def apply_ambience(bg: np.ndarray, weight: np.ndarray, amb: Ambience, t: float) -> np.ndarray:
@@ -229,11 +168,11 @@ def apply_ambience(bg: np.ndarray, weight: np.ndarray, amb: Ambience, t: float) 
 
     # A fumaça que já existe na foto é deslocada por um campo de fluxo que rola com o tempo.
     push = FLOW_AMPLITUDE * ramp * weight
-    map_x = xx + push * (scrolled(n3, 260 * t, -90 * t) - 0.5) * 2
-    map_y = yy + push * (scrolled(n4, -150 * t, -200 * t) - 0.5) * 2
+    map_x = xx + push * (scrolled(n3, 260 * t, -90 * t, OUT_SIZE) - 0.5) * 2
+    map_y = yy + push * (scrolled(n4, -150 * t, -200 * t, OUT_SIZE) - 0.5) * 2
     moved = cv2.remap(bg, map_x, map_y, cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
 
-    density = smoothstep(0.42, 0.85, 0.5 * (scrolled(n1, 340 * t, -120 * t) + scrolled(n2, -180 * t, -260 * t)))
+    density = smoothstep(0.42, 0.85, 0.5 * (scrolled(n1, 340 * t, -120 * t, OUT_SIZE) + scrolled(n2, -180 * t, -260 * t, OUT_SIZE)))
     tint = cv2.GaussianBlur(moved, (0, 0), 40) * 1.6 + 18
     haze = (SMOKE_STRENGTH * ramp * weight * density)[..., None]
     lit = moved + (tint - moved) * haze
@@ -241,14 +180,14 @@ def apply_ambience(bg: np.ndarray, weight: np.ndarray, amb: Ambience, t: float) 
     glow = (GLOW_STRENGTH * t * weight * amb.glow)[..., None]
     lit = lit * (1 + glow * np.float32([0.25, 0.3, 1.0]))
 
-    specks = (particle_layer(amb, t) * ramp * weight)[..., None]
+    specks = (particle_layer(amb.particles, t, OUT_SIZE) * ramp * weight)[..., None]
     return lit + specks * np.float32([200, 205, 255])
 
 
 def render_frame(layers: Layers, amb: Ambience, index: int) -> np.ndarray:
     """Quadro `index` (1 a FRAME_COUNT) antes da revelação. O quadro 1 é a foto recortada."""
-    t = (index - 1) / (FRAME_COUNT - 1)
-    fg_zoom, bg_zoom = zooms(t)
+    t = RIG.time(index)
+    fg_zoom, bg_zoom = RIG.zooms(t)
 
     # O fundo preenchido só entra onde o atleta estava; fora dali o fundo é a foto, pixel a pixel.
     # No começo ele ainda é misturado com a foto, para o quadro 1 ser exato.
@@ -265,7 +204,7 @@ def render_frame(layers: Layers, amb: Ambience, index: int) -> np.ndarray:
 
     sign = warp(layers.signature, 1.0)[..., None]
     frame = frame * (1 - sign) + warp(layers.photo, 1.0).astype(np.float32) * sign
-    return np.clip(np.rint(frame), 0, 255).astype(np.uint8)
+    return to_uint8(frame)
 
 
 def apply_reveal(frame: np.ndarray, amb: Ambience, t: float) -> np.ndarray:
@@ -276,13 +215,13 @@ def apply_reveal(frame: np.ndarray, amb: Ambience, t: float) -> np.ndarray:
     lit = smoothstep(0.0, 1.0, (reach - amb.light_distance) / REVEAL_SPREAD)
     gain = (REVEAL_FLOOR + (1 - REVEAL_FLOOR) * lit)[..., None]
     base = np.float32(SITE_BACKGROUND)
-    return np.clip(np.rint(base + (frame.astype(np.float32) - base) * gain), 0, 255).astype(np.uint8)
+    return to_uint8(base + (frame.astype(np.float32) - base) * gain)
 
 
 def verify_frame(layers: Layers, frame: np.ndarray, index: int) -> dict[str, int]:
     """Conta pixels diferentes da foto escalada no atleta e nas regiões protegidas."""
-    t = (index - 1) / (FRAME_COUNT - 1)
-    fg_zoom, bg_zoom = zooms(t)
+    t = RIG.time(index)
+    fg_zoom, bg_zoom = RIG.zooms(t)
     alpha = warp(layers.alpha, fg_zoom)
     sign = warp(layers.signature, 1.0) > 0
     athlete = (cv2.erode(alpha, np.ones((5, 5), np.uint8)) == 255) & ~sign
@@ -301,7 +240,7 @@ def verify_frame(layers: Layers, frame: np.ndarray, index: int) -> dict[str, int
 
 def revealed_pixels(layers: Layers) -> tuple[int, int]:
     """Pixels de fundo preenchido visíveis no último quadro: total e dentro das regiões protegidas."""
-    fg_zoom, bg_zoom = zooms(1.0)
+    fg_zoom, bg_zoom = RIG.zooms(1.0)
     shown = (warp(layers.fill, bg_zoom) > 0) & (warp(layers.alpha, fg_zoom) < 255)
     shown &= warp(layers.signature, 1.0) < 1
     return int(shown.sum()), int((shown & (warp(protected_mask(), bg_zoom) > 0)).sum())
@@ -321,9 +260,7 @@ def main() -> None:
         frame = render_frame(layers, amb, index)
         if "--verify" in sys.argv and index in VERIFY_FRAMES:
             print(index, verify_frame(layers, frame, index))
-        shown = apply_reveal(frame, amb, (index - 1) / (FRAME_COUNT - 1))
-        if not cv2.imwrite(str(out / f"frame_{index:04d}.png"), shown):
-            raise OSError(f"falha ao gravar o quadro {index} em {out}")
+        write_frame(out, index, apply_reveal(frame, amb, RIG.time(index)))
     if "--verify" in sys.argv and not cv2.imwrite(str(out / "ref_0001.png"), warp(layers.photo, 1.0)):
         raise OSError("falha ao gravar a referência do quadro 1")
 
