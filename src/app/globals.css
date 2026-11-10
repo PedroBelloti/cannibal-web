@@ -4,8 +4,9 @@
   --background: #0a0a0b;
   --foreground: #e4e4e7;
   --muted: #71717a;
-  --accent: #d4a22f;
-  --accent-soft: rgba(212, 162, 47, 0.14);
+  --accent: #d72631;
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
+  --accent-glow: color-mix(in srgb, var(--accent) 85%, transparent);
   --card-bg: rgba(24, 24, 27, 0.55);
   --card-border: rgba(255, 255, 255, 0.08);
   --hud-line: rgba(255, 255, 255, 0.1);

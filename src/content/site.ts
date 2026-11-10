@@ -1,6 +1,6 @@
 /**
- * Todo o texto do site. Cada valor entre colchetes é um indicador do que deve ser escrito ali;
- * o guia completo, com limites e o exemplo original, está em TEMPLATE.md.
+ * Todo o texto do site. Fonte: docs/roteiro-grade-midias.md (Parte 3); limites por campo em
+ * TEMPLATE.md. Fatos sobre o atleta só entram com fonte em docs/perfil-comunicacao.md.
  * Os campos `show`/`hide` estão sincronizados com os frames atuais — só mude se trocar o vídeo.
  */
 
@@ -25,7 +25,6 @@ export type SiteContent = {
   nav: { links: Link[]; cta: Link };
   hero: {
     statusLabel: string;
-    readout: { label: string; base: number; amplitude: number; decimals: number; unit: string };
     eyebrow: string;
     title: Headline;
     lead: string;
@@ -63,158 +62,159 @@ export type SiteContent = {
 export const site: SiteContent = {
   meta: {
     lang: "pt-BR",
-    title: "[Marca] — [Produto ou slogan curto]",
-    description: "[Descrição para buscadores: 1 frase de 120–160 caracteres dizendo o que é e convidando a rolar]",
+    title: "Arthur The Cannibal | Lutador de MMA de Brasília",
+    description:
+      "Site oficial de Arthur The Cannibal, lutador de MMA de Brasília com base no Muay Thai. Trajetória, lutas e contato para patrocínio.",
     siteUrl: "http://localhost:3000",
   },
 
   brand: {
-    name: "[Marca / Submarca]",
+    name: "Arthur The Cannibal",
   },
 
   nav: {
     links: [
-      { label: "[Link 1: 1 palavra]", href: "#systems" },
-      { label: "[Link 2: 1 palavra]", href: "#footer" },
+      { label: "Trajetória", href: "#systems" },
+      { label: "Patrocínio", href: "#footer" },
     ],
-    cta: { label: "[Ação: 1 verbo]", href: "#systems" },
+    cta: { label: "Patrocine", href: "#footer" },
   },
 
   hero: {
-    statusLabel: "[Status ao vivo: 2–3 palavras]",
-    readout: { label: "[Medidor: 1–2 palavras]", base: 87.3, amplitude: 6.7, decimals: 1, unit: "%" },
-    eyebrow: "[CÓDIGO // MARCA // ESTADO]",
+    statusLabel: "Fome de vencer",
+    eyebrow: "MMA // MUAY THAI // BRASÍLIA DF",
     title: {
-      line1: "[Frase de impacto]",
-      highlight: "[Destaque.]",
+      line1: "Arthur",
+      highlight: "The Cannibal",
     },
-    lead: "[Subtítulo: 1–2 frases, até 140 caracteres, apresenta o produto e pede para rolar]",
+    lead: "Lutador de MMA de Brasília, com base no Muay Thai desde os 16 anos. Disciplina de quartel, fé na família e fome de vencer.",
     statement: {
-      kicker: "[Rótulo: 2–3 palavras]",
-      line1: "[Chamada]",
-      line2Prefix: "[conector]",
-      highlight: "[Marca]",
-      caption: "[Proposta de valor em 1 linha, até 60 caracteres]",
+      kicker: "Forjado no quartel",
+      line1: "Disciplina",
+      line2Prefix: "e",
+      highlight: "instinto",
+      caption: "Disciplina de quartel com instinto agressivo de luta.",
     },
     bottomBar: {
-      center: "[SISTEMA // MODO]",
-      scrollHint: "[Role]",
+      center: "VAMOS // VENCER",
+      scrollHint: "Role",
     },
     cards: [
       {
         id: "hero-1",
         show: 0.1,
         hide: 0.3,
-        quote: "[Citação 1 (início do vídeo): até 60 caracteres]",
-        speaker: "[Autor]",
-        source: "[ORIGEM — ANO]",
+        quote: "CANNIBAL é gíria militar para um cara aloprado e sanguíneo.",
+        speaker: "Arthur Henrique",
+        source: "Sobre o apelido",
       },
       {
         id: "hero-2",
         show: 0.35,
         hide: 0.55,
-        quote: "[Citação 2 (meio do vídeo): até 60 caracteres]",
-        speaker: "[Autor]",
-        source: "[ORIGEM — ANO]",
+        quote: "Fome de vencer: algo que não se ensina.",
+        speaker: "Arthur Henrique",
+        source: "Instagram",
       },
       {
         id: "hero-3",
         show: 0.6,
         hide: 0.8,
-        quote: "[Citação 3 (fim do vídeo): até 60 caracteres]",
-        speaker: "[Autor]",
-        source: "[ORIGEM — ANO]",
+        quote: "Agora somos três.",
+        speaker: "Arthur Henrique",
+        source: "Instagram",
       },
     ],
     loader: {
-      eyebrow: "[MENSAGEM DE CARGA // ESTADO]",
-      text: "[Carregando o quê]",
+      eyebrow: "ARTHUR // CANNIBAL",
+      text: "Aquecendo o treino",
     },
   },
 
   cinematic: {
-    statusLabel: "[Rótulo da seção: 2–3 palavras]",
-    eyebrow: "[CENA // MOMENTO]",
+    statusLabel: "A trajetória",
+    eyebrow: "CAPÍTULO 02 // TRAJETÓRIA",
     titleBefore: {
-      line1: "[Frase de abertura]",
-      highlight: "[Destaque antes.]",
+      line1: "Forjado no",
+      highlight: "ringue",
     },
     titleAfter: {
-      line1: "[Frase de virada]",
-      highlight: "[Destaque depois.]",
+      line1: "Movido pela",
+      highlight: "família",
     },
-    lead: "[Contexto da cena: 1–2 frases, até 120 caracteres]",
+    lead: "Muay Thai aos 16 anos, o apelido no quartel, a Equipe Kairós: uma trajetória de disciplina e gratidão.",
     bottomBar: {
-      left: "[CÓDIGO // ARQUIVO]",
-      center: "[SISTEMA // MODO]",
-      scrollHint: "[Role]",
+      left: "MUAY THAI // QUARTEL",
+      center: "DISCIPLINA // FAMÍLIA",
+      scrollHint: "Continue",
     },
     cards: [
       {
         id: "cine-1",
         show: 0.1,
         hide: 0.3,
-        label: "01 — [Beat 1: 1 palavra]",
-        quote: "[Fala do beat 1 (cena inicial): até 60 caracteres]",
-        speaker: "[Autor]",
-        source: "[ORIGEM — ANO]",
+        label: "01 — Disciplina",
+        quote: "Treine duro, construa sua imagem e faça seu nome ser conhecido.",
+        speaker: "Arthur Henrique",
+        source: "Instagram",
       },
       {
         id: "cine-2",
         show: 0.35,
         hide: 0.55,
-        label: "02 — [Beat 2: 1 palavra]",
-        quote: "[Fala do beat 2 (aproximação): até 60 caracteres]",
-        speaker: "[Autor]",
-        source: "[ORIGEM — ANO]",
+        label: "02 — Coragem",
+        quote: "Quem prefere a zona de conforto jamais mudará sua realidade.",
+        speaker: "Arthur Henrique",
+        source: "Instagram",
       },
       {
         id: "cine-3",
         show: 0.6,
         hide: 0.8,
-        label: "03 — [Beat 3: 1 palavra]",
-        quote: "[Fala do beat 3 (desfecho): até 80 caracteres]",
-        speaker: "[Autor]",
-        source: "[ORIGEM — ANO]",
+        label: "03 — Vencer",
+        quote: "VAMOS VENCER.",
+        speaker: "Arthur Henrique",
+        source: "Instagram",
       },
     ],
     outro: {
-      kicker: "[Próximo passo: 2 palavras]",
-      cta: { label: "[Botão: 2 palavras]", href: "#systems" },
+      kicker: "Próximo round",
+      cta: { label: "Ver números", href: "#systems" },
     },
     loader: {
-      eyebrow: "[MENSAGEM DE CARGA // ESTADO]",
-      text: "[Carregando o quê]",
+      eyebrow: "CAPÍTULO // 02",
+      text: "Contando a trajetória",
     },
   },
 
   systems: {
-    eyebrow: "[MARCA // TÍTULO DA SEÇÃO]",
+    eyebrow: "CARTEL // NÚMEROS",
     title: {
-      lead: "[Frase principal]",
-      highlight: "[Destaque.]",
+      lead: "Por trás do",
+      highlight: "lutador",
     },
-    body: "[Texto da seção: 2–3 frases, 200–280 caracteres, explica a história ou o produto e apresenta os números ao lado]",
-    cta: { label: "[Botão: 2–3 palavras]", href: "#footer" },
+    body: "Arthur Henrique treina Muay Thai há 7 anos. Hoje luta pela Equipe Kairós, com Railson Rodrigues no MMA e striking, e pela Brasília Luta Livre, com Washington Sena no grappling. O apelido nasceu no Exército, na Força Tática do QGEx.",
+    cta: { label: "Seja patrocinador", href: "#footer" },
     stats: [
-      { label: "[Métrica 1]", value: "[00,0%]", note: "[Explicação curta da métrica 1]" },
-      { label: "[Métrica 2]", value: "[0,0 un]", note: "[Explicação curta da métrica 2]" },
-      { label: "[Métrica 3]", value: "[00 un]", note: "[Explicação curta da métrica 3]" },
-      { label: "[Métrica 4]", value: "[0,00 s]", note: "[Explicação curta da métrica 4]" },
+      { label: "Cartel", value: "8-1", note: "3 KO, 3 decisões, 2 finalizações" },
+      { label: "Muay Thai", value: "7 anos", note: "Treinando desde os 16 anos" },
+      { label: "Equipe", value: "Kairós", note: "Com Railson Rodrigues" },
+      { label: "Categoria", value: "61 kg", note: "Peso Galo" },
     ],
   },
 
   footer: {
-    legal: "[© Empresa — endereço ou cidade. Linha legal / marca registrada]",
+    legal: "© 2026 Arthur The Cannibal. Fotos: @m2l.cs, @luigimoraess, Foguinho Clicks. Todos os direitos reservados.",
     links: [
-      { name: "[Item 1]", note: "[Detalhe 1]", href: "#" },
-      { name: "[Item 2]", note: "[Detalhe 2]", href: "#" },
-      { name: "[Item 3]", note: "[Detalhe 3]", href: "#" },
-      { name: "[Item 4]", note: "[Detalhe 4]", href: "#" },
-      { name: "[Item 5]", note: "[Detalhe 5]", href: "#" },
-      { name: "[Item 6]", note: "[Detalhe 6]", href: "#" },
+      // PENDENTE: URL do Instagram oficial e destinos dos demais links (docs/roteiro-grade-midias.md).
+      { name: "Instagram", note: "Perfil oficial", href: "#" },
+      { name: "Patrocínio", note: "Seja parceiro", href: "#" },
+      { name: "Contato", note: "Imprensa e eventos", href: "#" },
+      { name: "Move Nutrição", note: "Cupom CANNIBAL", href: "#" },
+      { name: "No Talk", note: "Cupom CANNIBAL", href: "#" },
+      { name: "Tarumã", note: "Gama e Sudoeste", href: "#" },
     ],
-    buildLine: "[Versão · Produto · Status]",
-    disclaimer: "[Aviso legal ou de uso: 1 linha]",
+    buildLine: "Brasília DF // Vamos vencer",
+    disclaimer: "Cupons sujeitos às regras de cada parceiro.",
   },
 };

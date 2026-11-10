@@ -110,7 +110,6 @@ exatamente como estão. Os textos devem combinar com o que o vídeo mostra em ca
   "nav": { "links": ["1 palavra", "1 palavra"], "cta": "1 verbo" },
   "hero": {
     "statusLabel": "2–3 palavras",
-    "readout": { "label": "1–2 palavras", "base": 87.3, "amplitude": 6.7, "decimals": 1, "unit": "%" },
     "eyebrow": "BLOCO // BLOCO // BLOCO",
     "title": { "line1": "1–3 palavras", "highlight": "1–2 palavras" },
     "lead": "≤140",
@@ -162,7 +161,7 @@ exatamente como estão. Os textos devem combinar com o que o vídeo mostra em ca
 }
 ```
 
-Os números (`stats`, `readout`) precisam ser plausíveis para o tema. Se forem dados do cliente,
+Os números (`stats`) precisam ser plausíveis para o tema. Se forem dados do cliente,
 indique a fonte. Não invente estatística apresentando-a como fato real.
 
 ### Parte 4 — Autochecagem

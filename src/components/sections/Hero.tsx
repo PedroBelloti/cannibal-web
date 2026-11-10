@@ -14,7 +14,6 @@ export function Hero() {
   const heroTextRef = useRef<HTMLDivElement | null>(null);
   const bigLeftTextRef = useRef<HTMLDivElement | null>(null);
   const progressFillRef = useRef<HTMLDivElement | null>(null);
-  const powerReadoutRef = useRef<HTMLSpanElement | null>(null);
 
   const framesRef = useRef<HTMLImageElement[]>([]);
   const tickingRef = useRef(false);
@@ -162,12 +161,6 @@ export function Hero() {
           progressFillRef.current.style.transform = `scaleX(${progress})`;
         }
 
-        if (powerReadoutRef.current) {
-          const { base, amplitude, decimals, unit } = hero.readout;
-          const value = base + Math.sin(progress * Math.PI * 2) * amplitude;
-          powerReadoutRef.current.textContent = value.toFixed(decimals) + unit;
-        }
-
         const newVisible = new Set<string>();
         for (const d of hero.cards) {
           if (progress >= d.show && progress <= d.hide) newVisible.add(d.id);
@@ -240,7 +233,7 @@ export function Hero() {
           style={{ opacity: 0, transition: "opacity 80ms linear" }}
         >
           <span className="inline-flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.3em] text-accent">
-            <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(212,162,47,0.85)]" />
+            <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_var(--accent-glow)]" />
             {hero.statement.kicker}
           </span>
           <h2 className="font-sans font-semibold leading-[0.88] tracking-tighter text-foreground text-[clamp(4rem,9.5vw,9rem)]">
@@ -258,19 +251,6 @@ export function Hero() {
           <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-zinc-400">
             {hero.statusLabel}
           </span>
-        </div>
-
-        <div className="pointer-events-none absolute right-6 top-20 z-10 flex items-center gap-3 md:right-10 md:top-24">
-          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-zinc-400">
-            {hero.readout.label}
-          </span>
-          <span
-            ref={powerReadoutRef}
-            className="font-mono text-[10px] uppercase tracking-[0.22em] text-accent"
-          >
-            {hero.readout.base.toFixed(hero.readout.decimals) + hero.readout.unit}
-          </span>
-          <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(212,162,47,0.85)]" />
         </div>
 
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10">
