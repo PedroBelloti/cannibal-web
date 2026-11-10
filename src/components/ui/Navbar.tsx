@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowUpRight } from "@phosphor-icons/react";
+import { site } from "@/content/site";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -31,29 +32,26 @@ export function Navbar() {
             aria-hidden
             className="inline-block h-2 w-2 rounded-full bg-accent shadow-[0_0_12px_rgba(212,162,47,0.9)]"
           />
-          Stark / Industries
+          {site.brand.name}
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
-          <a
-            href="#systems"
-            className="font-mono text-[11px] uppercase tracking-[0.24em] text-zinc-400 transition-colors hover:text-foreground"
-          >
-            Systems
-          </a>
-          <a
-            href="#footer"
-            className="font-mono text-[11px] uppercase tracking-[0.24em] text-zinc-400 transition-colors hover:text-foreground"
-          >
-            Archive
-          </a>
+          {site.nav.links.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              className="font-mono text-[11px] uppercase tracking-[0.24em] text-zinc-400 transition-colors hover:text-foreground"
+            >
+              {link.label}
+            </a>
+          ))}
         </nav>
 
         <a
-          href="#systems"
+          href={site.nav.cta.href}
           className="group inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.05] px-4 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-foreground backdrop-blur-md transition-all duration-200 hover:bg-white/[0.1] active:translate-y-[1px]"
         >
-          Engage
+          {site.nav.cta.label}
           <ArrowUpRight
             size={14}
             weight="bold"

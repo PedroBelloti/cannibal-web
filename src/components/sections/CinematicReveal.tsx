@@ -3,13 +3,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 import { HudFrame } from "@/components/ui/HudFrame";
-import { BEATS, CINE_FRAME_COUNT, cineFramePath } from "@/lib/cinematic";
+import { CINE_FRAME_COUNT, cineFramePath } from "@/lib/cinematic";
+import { site } from "@/content/site";
+
+const { cinematic } = site;
 
 export function CinematicReveal() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const h2InevitableRef = useRef<HTMLHeadingElement | null>(null);
-  const h2IronManRef = useRef<HTMLHeadingElement | null>(null);
+  const titleBeforeRef = useRef<HTMLHeadingElement | null>(null);
+  const titleAfterRef = useRef<HTMLHeadingElement | null>(null);
   const outroRef = useRef<HTMLDivElement | null>(null);
   const progressFillRef = useRef<HTMLDivElement | null>(null);
   const seqReadoutRef = useRef<HTMLSpanElement | null>(null);
@@ -142,14 +145,14 @@ export function CinematicReveal() {
           drawFrame(frameIndex);
         }
 
-        if (h2InevitableRef.current) {
+        if (titleBeforeRef.current) {
           const op = Math.min(1, Math.max(0, (0.52 - progress) / 0.1));
-          h2InevitableRef.current.style.opacity = String(op);
+          titleBeforeRef.current.style.opacity = String(op);
         }
 
-        if (h2IronManRef.current) {
+        if (titleAfterRef.current) {
           const op = Math.min(1, Math.max(0, (progress - 0.48) / 0.1));
-          h2IronManRef.current.style.opacity = String(op);
+          titleAfterRef.current.style.opacity = String(op);
         }
 
         if (outroRef.current) {
@@ -169,7 +172,7 @@ export function CinematicReveal() {
         }
 
         const newVisible = new Set<string>();
-        for (const b of BEATS) {
+        for (const b of cinematic.cards) {
           if (progress >= b.show && progress <= b.hide) newVisible.add(b.id);
         }
         const newIds = [...newVisible].sort().join(",");
@@ -223,36 +226,36 @@ export function CinematicReveal() {
         </div>
 
         <div className="pointer-events-none absolute right-6 top-28 z-10 flex max-w-[46ch] flex-col items-end gap-5 text-right md:right-12 md:top-32">
-          <EyebrowBadge>TITAN II // FINAL FRAME</EyebrowBadge>
+          <EyebrowBadge>{cinematic.eyebrow}</EyebrowBadge>
           <div className="relative self-stretch">
             <h2
-              ref={h2InevitableRef}
+              ref={titleBeforeRef}
               className="font-sans text-4xl font-semibold leading-[0.98] tracking-tighter text-foreground md:text-6xl lg:text-7xl"
               style={{ transition: "opacity 240ms ease-out" }}
             >
-              I am
+              {cinematic.titleBefore.line1}
               <br />
-              <span className="text-accent">Inevitable.</span>
+              <span className="text-accent">{cinematic.titleBefore.highlight}</span>
             </h2>
             <h2
-              ref={h2IronManRef}
+              ref={titleAfterRef}
               className="absolute inset-0 font-sans text-4xl font-semibold leading-[0.98] tracking-tighter text-foreground md:text-6xl lg:text-7xl"
               style={{ opacity: 0, transition: "opacity 240ms ease-out" }}
             >
-              And I am
+              {cinematic.titleAfter.line1}
               <br />
-              <span className="text-accent">Iron Man.</span>
+              <span className="text-accent">{cinematic.titleAfter.highlight}</span>
             </h2>
           </div>
           <p className="max-w-[42ch] font-sans text-sm leading-relaxed text-zinc-400 md:text-base">
-            Endgame &mdash; the snap heard across the universe. J.A.R.V.I.S. held the last frame so we could rebuild from it.
+            {cinematic.lead}
           </p>
         </div>
 
         <div className="pointer-events-none absolute left-6 top-20 z-10 flex items-center gap-2 md:left-10 md:top-24">
           <div className="h-px w-8 bg-accent/60" />
           <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-zinc-400">
-            Flight Log &mdash; Archived
+            {cinematic.statusLabel}
           </span>
         </div>
 
@@ -278,13 +281,13 @@ export function CinematicReveal() {
             />
           </div>
           <div className="mx-6 flex items-center justify-between pb-4 font-mono text-[10px] uppercase tracking-[0.28em] text-zinc-500 md:mx-10">
-            <span>MARK III // ARCHIVE</span>
-            <span>J.A.R.V.I.S. // PLAYBACK</span>
-            <span>Scroll &darr;</span>
+            <span>{cinematic.bottomBar.left}</span>
+            <span>{cinematic.bottomBar.center}</span>
+            <span>{cinematic.bottomBar.scrollHint} &darr;</span>
           </div>
         </div>
 
-        {BEATS.map((b, i) => {
+        {cinematic.cards.map((b, i) => {
           const visible = visibleBeats.has(b.id);
           const position =
             i === 0
@@ -311,7 +314,7 @@ export function CinematicReveal() {
                 <figcaption className="mt-4 flex items-center justify-between">
                   <span className="font-sans text-sm text-zinc-300">{b.speaker}</span>
                   <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-zinc-400">
-                    {b.film}
+                    {b.source}
                   </span>
                 </figcaption>
               </figure>
@@ -320,7 +323,7 @@ export function CinematicReveal() {
         })}
 
         <div className="pointer-events-none absolute inset-x-0 top-[36%] z-20 flex flex-col gap-3 px-6 md:hidden">
-          {BEATS.map((b) => {
+          {cinematic.cards.map((b) => {
             const visible = visibleBeats.has(b.id);
             return (
               <figure
@@ -338,7 +341,7 @@ export function CinematicReveal() {
                 <figcaption className="mt-3 flex items-center justify-between">
                   <span className="font-sans text-xs text-zinc-300">{b.speaker}</span>
                   <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-zinc-400">
-                    {b.film}
+                    {b.source}
                   </span>
                 </figcaption>
               </figure>
@@ -352,20 +355,20 @@ export function CinematicReveal() {
           style={{ opacity: 0, transition: "opacity 80ms linear" }}
         >
           <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent">
-            Next &mdash; engage
+            {cinematic.outro.kicker}
           </span>
           <a
-            href="#systems"
+            href={cinematic.outro.cta.href}
             className="pointer-events-auto inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-5 py-2.5 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-foreground backdrop-blur-md transition-all duration-200 hover:bg-white/[0.12] active:translate-y-[1px]"
           >
-            Open diagnostics
+            {cinematic.outro.cta.label}
             <span aria-hidden>&darr;</span>
           </a>
         </div>
 
         {!loaded && (
           <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-5 bg-background px-6">
-            <EyebrowBadge>FLIGHT LOG // RESTORING</EyebrowBadge>
+            <EyebrowBadge>{cinematic.loader.eyebrow}</EyebrowBadge>
             <div className="h-px w-60 bg-white/10 md:w-80">
               <div
                 className="h-full bg-accent transition-[width] duration-150 ease-out"
@@ -373,7 +376,7 @@ export function CinematicReveal() {
               />
             </div>
             <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-zinc-500">
-              Rendering Mark III &nbsp;&middot;&nbsp; {Math.round(loadProgress * 100)}%
+              {cinematic.loader.text} &nbsp;&middot;&nbsp; {Math.round(loadProgress * 100)}%
             </p>
           </div>
         )}
