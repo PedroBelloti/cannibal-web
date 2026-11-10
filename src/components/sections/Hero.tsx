@@ -3,7 +3,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 import { HudFrame } from "@/components/ui/HudFrame";
-import { DIALOGUES, FRAME_COUNT, HERO_TEXT_FADE_END, framePath } from "@/lib/hero";
+import { FRAME_COUNT, HERO_TEXT_FADE_END, framePath } from "@/lib/hero";
+import { site } from "@/content/site";
+
+const { hero } = site;
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -160,12 +163,13 @@ export function Hero() {
         }
 
         if (powerReadoutRef.current) {
-          const pwr = 87.3 + Math.sin(progress * Math.PI * 2) * 6.7;
-          powerReadoutRef.current.textContent = pwr.toFixed(1) + "%";
+          const { base, amplitude, decimals, unit } = hero.readout;
+          const value = base + Math.sin(progress * Math.PI * 2) * amplitude;
+          powerReadoutRef.current.textContent = value.toFixed(decimals) + unit;
         }
 
         const newVisible = new Set<string>();
-        for (const d of DIALOGUES) {
+        for (const d of hero.cards) {
           if (progress >= d.show && progress <= d.hide) newVisible.add(d.id);
         }
         const newIds = [...newVisible].sort().join(",");
@@ -219,15 +223,14 @@ export function Hero() {
           className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-start gap-5 px-6 pb-24 md:px-12 md:pb-28"
           style={{ transition: "opacity 80ms linear" }}
         >
-          <EyebrowBadge>MARK LXXXV // STARK INDUSTRIES // ONLINE</EyebrowBadge>
+          <EyebrowBadge>{hero.eyebrow}</EyebrowBadge>
           <h1 className="max-w-[14ch] font-sans text-5xl font-semibold leading-[0.95] tracking-tighter text-foreground md:text-7xl lg:text-8xl">
-            I am
+            {hero.title.line1}
             <br />
-            <span className="text-accent">Iron Man.</span>
+            <span className="text-accent">{hero.title.highlight}</span>
           </h1>
           <p className="max-w-[42ch] font-sans text-sm leading-relaxed text-zinc-400 md:text-base">
-            Mark LXXXV nanotech suit. Arc reactor calibrated. Scroll to run a full
-            system diagnostic — J.A.R.V.I.S. is holding on the line.
+            {hero.lead}
           </p>
         </div>
 
@@ -238,34 +241,34 @@ export function Hero() {
         >
           <span className="inline-flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.3em] text-accent">
             <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(212,162,47,0.85)]" />
-            Protocol &mdash; Mk LXXXV
+            {hero.statement.kicker}
           </span>
           <h2 className="font-sans font-semibold leading-[0.88] tracking-tighter text-foreground text-[clamp(4rem,9.5vw,9rem)]">
-            Build
+            {hero.statement.line1}
             <br />
-            with <span className="text-accent">Devini</span>
+            {hero.statement.line2Prefix} <span className="text-accent">{hero.statement.highlight}</span>
           </h2>
           <p className="max-w-[36ch] font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-400">
-            Interfaces &amp; products, engineered like the Mark LXXXV.
+            {hero.statement.caption}
           </p>
         </div>
 
         <div className="pointer-events-none absolute left-6 top-20 z-10 flex items-center gap-2 md:left-10 md:top-24">
           <div className="h-px w-8 bg-accent/60" />
           <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-zinc-400">
-            Telemetry Link &mdash; Live
+            {hero.statusLabel}
           </span>
         </div>
 
         <div className="pointer-events-none absolute right-6 top-20 z-10 flex items-center gap-3 md:right-10 md:top-24">
           <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-zinc-400">
-            Arc Reactor
+            {hero.readout.label}
           </span>
           <span
             ref={powerReadoutRef}
             className="font-mono text-[10px] uppercase tracking-[0.22em] text-accent"
           >
-            87.3%
+            {hero.readout.base.toFixed(hero.readout.decimals) + hero.readout.unit}
           </span>
           <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(212,162,47,0.85)]" />
         </div>
@@ -279,18 +282,18 @@ export function Hero() {
             />
           </div>
           <div className="mx-6 flex items-center justify-between pb-4 font-mono text-[10px] uppercase tracking-[0.28em] text-zinc-500 md:mx-10">
-            <span>SEQ 001 / 169</span>
-            <span>J.A.R.V.I.S. // DIAGNOSTIC</span>
-            <span>Scroll &darr;</span>
+            <span>SEQ 001 / {FRAME_COUNT}</span>
+            <span>{hero.bottomBar.center}</span>
+            <span>{hero.bottomBar.scrollHint} &darr;</span>
           </div>
         </div>
 
-        {DIALOGUES.map((d) => {
+        {hero.cards.map((d, i) => {
           const visible = visibleCards.has(d.id);
           const position =
-            d.id === "d1"
+            i === 0
               ? "top-[22%] right-6 md:right-12"
-              : d.id === "d2"
+              : i === 1
               ? "top-1/2 -translate-y-1/2 right-6 md:right-12"
               : "bottom-24 right-6 md:bottom-28 md:right-12";
           return (
@@ -309,7 +312,7 @@ export function Hero() {
                 <figcaption className="mt-4 flex items-center justify-between">
                   <span className="font-sans text-sm text-zinc-300">{d.speaker}</span>
                   <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-accent">
-                    {d.film}
+                    {d.source}
                   </span>
                 </figcaption>
               </figure>
@@ -318,7 +321,7 @@ export function Hero() {
         })}
 
         <div className="pointer-events-none absolute inset-x-0 top-[38%] z-20 flex flex-col gap-3 px-6 md:hidden">
-          {DIALOGUES.map((d) => {
+          {hero.cards.map((d) => {
             const visible = visibleCards.has(d.id);
             return (
               <figure
@@ -337,7 +340,7 @@ export function Hero() {
                     {d.speaker}
                   </span>
                   <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-accent">
-                    {d.film}
+                    {d.source}
                   </span>
                 </figcaption>
               </figure>
@@ -347,7 +350,7 @@ export function Hero() {
 
         {!loaded && (
           <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-5 bg-background px-6">
-            <EyebrowBadge>SUIT UP PROTOCOL // BOOTING</EyebrowBadge>
+            <EyebrowBadge>{hero.loader.eyebrow}</EyebrowBadge>
             <div className="h-px w-60 bg-white/10 md:w-80">
               <div
                 className="h-full bg-accent transition-[width] duration-150 ease-out"
@@ -355,7 +358,7 @@ export function Hero() {
               />
             </div>
             <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-zinc-500">
-              Loading Mark LXXXV &nbsp;&middot;&nbsp; {Math.round(loadProgress * 100)}%
+              {hero.loader.text} &nbsp;&middot;&nbsp; {Math.round(loadProgress * 100)}%
             </p>
           </div>
         )}
