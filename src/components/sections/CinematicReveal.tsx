@@ -268,7 +268,7 @@ export function CinematicReveal() {
           </span>
           <span
             aria-hidden
-            className="inline-block h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(212,162,47,0.85)]"
+            className="inline-block h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_var(--accent-glow)]"
           />
         </div>
 

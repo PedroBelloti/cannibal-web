@@ -12,7 +12,7 @@ colchetes, `[campo: o que escrever · limite]`, que aparece na tela até ser sub
 3. Ajuste `meta.lang` (`pt-BR`, `en`, ...) e `meta.siteUrl` (domínio final).
 4. Confira se sobrou algum indicador:
    `grep -nE '"[^"]*\[[^"]*\][^"]*"' src/content/site.ts` não pode retornar nada (o template
-   vazio tem 74 linhas com indicadores).
+   vazio tinha 74 linhas com indicadores).
 5. Rode `npm run lint && npm run build` e role a página inteira no navegador.
 
 **Não mexa** em `show`/`hide` dos cards nem nos frames, a não ser que troque o vídeo (veja a
@@ -44,8 +44,6 @@ texto aparece (0 = topo, 1 = fim).
 | Campo | Onde aparece | Limite | Exemplo original |
 |---|---|---|---|
 | `statusLabel` | Canto superior esquerdo, fixo | 2–3 palavras | Telemetry Link — Live |
-| `readout.label` | Canto superior direito; o número oscila com o scroll | 1–2 palavras | Arc Reactor |
-| `readout.base / amplitude / decimals / unit` | Valor central, variação, casas decimais, unidade | — | 87.3 / 6.7 / 1 / % |
 | `eyebrow` | Selo acima do título | 3 blocos separados por `//` | MARK LXXXV // STARK INDUSTRIES // ONLINE |
 | `title.line1` + `title.highlight` | Título H1 principal (some entre 0 e 0,08) | 1–3 palavras + 1–2 palavras | I am / Iron Man. |
 | `lead` | Parágrafo abaixo do H1 | ≤ 140 caracteres | Mark LXXXV nanotech suit. Arc reactor calibrated. Scroll to run a full system diagnostic… |
@@ -96,8 +94,8 @@ O que o vídeo mostra em cada beat, para escrever falas que combinem com a image
 
 ## Os vídeos
 
-- `public/frames/` e `public/frames2/`: 169 JPGs cada, 1920×1080, extraídos com ffmpeg de duas
-  tomadas contínuas, sem cortes. A configuração está em `src/lib/hero.ts` e `src/lib/cinematic.ts`.
+- `public/frames/` e `public/frames2/`: 169 WebP cada, 1920×1080, extraídos com o script da
+  skill `scroll-video-hero`. Origem e retoques em `media/README.md`. A configuração está em `src/lib/hero.ts` e `src/lib/cinematic.ts`.
 - Os vídeos atuais usam a imagem do Iron Man e de um ator real. Servem como **demonstração**, não
   para uso comercial. Para um cliente, gere um vídeo original com a skill `scroll-video-hero`,
   depois ajuste `FRAME_COUNT` e o caminho dos frames e reposicione os `show`/`hide` dos cards
@@ -105,5 +103,6 @@ O que o vídeo mostra em cada beat, para escrever falas que combinem com a image
 
 ## Cores
 
-Os tokens ficam em `src/app/globals.css` (`--background`, `--accent` ...). O fundo `#0a0a0b`
+Os tokens ficam em `src/app/globals.css`. Troque só `--accent`: `--accent-soft` e `--accent-glow`
+(o brilho dos pontos e selos) derivam dele por `color-mix`. O fundo `#0a0a0b`
 precisa combinar com o fundo do vídeo, senão a borda do canvas aparece.

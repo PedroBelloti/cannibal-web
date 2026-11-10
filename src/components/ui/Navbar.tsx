@@ -30,7 +30,7 @@ export function Navbar() {
         >
           <span
             aria-hidden
-            className="inline-block h-2 w-2 rounded-full bg-accent shadow-[0_0_12px_rgba(212,162,47,0.9)]"
+            className="inline-block h-2 w-2 rounded-full bg-accent shadow-[0_0_12px_var(--accent-glow)]"
           />
           {site.brand.name}
         </Link>
