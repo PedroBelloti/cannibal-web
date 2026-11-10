@@ -52,6 +52,9 @@ declarados (nenhuma regra foi quebrada em silêncio).
 
 ### Sequência A (Hero), foto real em 2.5D, produzida fora do Higgsfield
 
+> **Substituída em 2026-11-10.** A versão abaixo (foto 4) foi reprovada. A Sequência A em uso é
+> a foto 1 por camadas locais: ver `plan-sequencia-a.md`.
+
 - `duracao_s`: 7 (169 frames a 24 fps, 1920x1080)
 - **Movimento:** afastamento lento e contínuo da câmera (pull-back por profundidade) enquanto o
   atleta desliza um pouco para a direita e a luz de contorno troca de âmbar para vermelho.

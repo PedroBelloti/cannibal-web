@@ -30,6 +30,7 @@ export type SiteContent = {
     lead: string;
     statement: { kicker: string; line1: string; line2Prefix: string; highlight: string; caption: string };
     bottomBar: { center: string; scrollHint: string };
+    photoCredit: string;
     cards: TimedCard[];
     loader: { eyebrow: string; text: string };
   };
@@ -99,6 +100,7 @@ export const site: SiteContent = {
       center: "VAMOS // VENCER",
       scrollHint: "Role",
     },
+    photoCredit: "Foto: @luigimoraess",
     cards: [
       {
         id: "hero-1",

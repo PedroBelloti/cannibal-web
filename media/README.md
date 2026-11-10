@@ -1,7 +1,8 @@
 # Mídias do site
 
-> **Provisório.** As sequências abaixo foram reprovadas: cada vídeo deve usar uma única foto,
-> animada no estilo do template. Pendência e opções em `docs/HANDOFF.md`.
+> **Provisório na Sequência B.** `video/seq-b-trajetoria.mp4` foi reprovado: cada vídeo deve
+> usar uma única foto. A Sequência A já foi refeita assim (`seq-a/`). Pendência em
+> `docs/HANDOFF.md`.
 
 Fonte dos frames em `public/frames/` (Hero) e `public/frames2/` (Trajetória). Regra do cliente:
 **nenhum rosto ou pessoa das fotos pode ser alterado**. Toda imagem aqui foi verificada por
@@ -15,11 +16,15 @@ comparação de pixels contra a foto original.
 | `stills/foto3-16x9-estendida.jpg` | Foto 3 | Logos e o texto "BROTHERS" do saco desfocados (máscara que não encosta no braço); laterais estendidas como na foto 4 |
 | `stills/foto5-16x9-recorte.jpg` | Foto 5 | Logos desfocados; **só recorte** 16:9, sem IA |
 | `stills/foto2-logos-desfocados.jpg` | Foto 2, vitória | Logos do short desfocados; **sem IA**; a sequência usa uma panorâmica vertical dela |
-| `video/seq-a-hero.mp4` | foto 4 | push-in de 7 s (169 frames, 24 fps); o atleta desliza para o centro-direita |
+| `seq-a/seq-a.mp4` | Foto 1, © luigimoraess | 7 s (169 frames, 24 fps), gerado por `seq-a/render.py`: atleta e fundo em escalas diferentes, fumaça, partículas e luz só no fundo, revelação pela luz no começo; **sem IA**. Decisões em `docs/plan-sequencia-a.md` |
+| `seq-a/mask-atleta.png` | Foto 1 | máscara do atleta (`seq-a/make_mask.py`, rembg `bria-rmbg`) |
+| `seq-a/poster.jpg` | Foto 1 | quadro 56 da sequência, o primeiro com a cena toda acesa |
 | `video/seq-b-trajetoria.mp4` | fotos 5 → 3 → 2 | zoom lento em cada foto e fusão entre elas; a troca para a foto 2 cai em 0,48–0,56, junto com a virada do título |
 
 Os frames do site saem do MP4 pelo script da skill `scroll-video-hero`
-(`scripts/extract-frames.sh <video> <pasta>`: 169 frames WebP q80, 1920×1080).
+(`scripts/extract-frames.sh <video> <pasta> [frames] [largura] [qualidade]`). Sequência B:
+padrão do script (WebP q80, 1920×1080). Sequência A: `169 1600 70`, porque a foto 1 comprime
+mal (MEDIDO: 35 MB em 1920 q80, 17 MB em 1600 q70).
 
 ## Por que o outpaint é colado por baixo da foto
 
@@ -41,4 +46,3 @@ final: `magick compare -metric AE <original> <final> null:` precisa dar `0`.
 ## Pendências
 
 - Autorização de uso das fotos pelos fotógrafos (@m2l.cs, @luigimoraess, Foguinho Clicks).
-- A foto 1 (sangue, fumaça vermelha, @luigimoraess) ficou de reserva para uma seção futura.
