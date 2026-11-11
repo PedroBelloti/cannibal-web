@@ -145,6 +145,12 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
   existir. Precisa ser `<script>` inline: o `<Script beforeInteractive>` do Next não bloqueia e
   pode rodar depois do salto para o `#`. Link aberto direto com `#` (sem ser recarga) segue indo
   à seção. Efeito colateral: voltar de outro site também abre no topo.
+- **Cabeçalhos de segurança**: `next.config.ts` desliga o `X-Powered-By` e manda CSP,
+  `X-Frame-Options`, `nosniff`, `Referrer-Policy` e `Permissions-Policy` em todas as rotas. A CSP só
+  aceita o próprio domínio: recurso de fora (fonte, script, imagem, embed) exige incluir o domínio
+  na diretiva certa, senão o navegador bloqueia em silêncio. `script-src 'unsafe-inline'` é
+  concessão aceita (scripts inline do Next e `RELOAD_TO_TOP`; nonce tiraria a página do cache).
+  O HSTS vem da Vercel. Auditoria de 2026-11-11, skill `security-compendium-vpio`.
 - **Validar**: `npm run lint && npx tsc --noEmit && npm run build`, e depois rolar a página inteira
   no navegador. O build não verifica a animação. A medição de
   design é `node ~/.claude/skills/design-taste-frontend/scripts/inspect.mjs <url>` (0 FAIL; os
