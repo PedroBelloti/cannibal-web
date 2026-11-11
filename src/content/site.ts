@@ -105,7 +105,7 @@ export const site: SiteContent = {
     title: "Arthur The Cannibal | Lutador de MMA de Brasília",
     description:
       "Site oficial de Arthur The Cannibal, lutador de MMA de Brasília com base no Muay Thai. Trajetória, lutas e contato para patrocínio.",
-    siteUrl: "https://cannibal-web.vercel.app",
+    siteUrl: "https://thecannibal.vercel.app",
   },
 
   brand: {

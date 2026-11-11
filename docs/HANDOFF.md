@@ -24,6 +24,14 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
+- **11/11/2026 (noite, fim, depois), agente do template — projeto Vercel renomeado (ler primeiro)**:
+  - Pedido do Pedro: o nome passa a ser `the.cannibal`. Na Vercel, o projeto virou
+    `the.cannibal` e o endereço público é `https://thecannibal.vercel.app` (o subdomínio gratuito
+    não aceita ponto); `cannibal-web.vercel.app` redireciona com 308. O `name` do `package.json`
+    virou `the.cannibal`. Repositório (`PedroBelloti/cannibal-web`) e pasta
+    (`~/Projects/cannibal-web`) continuam com o nome anterior, por escolha do Pedro.
+  - `meta.siteUrl` agora aponta para `thecannibal.vercel.app`, mas só entra no ar no próximo
+    `vercel deploy --prod`: o deploy publicado ainda tem `siteUrl` em `localhost`.
 - **11/11/2026 (noite, fim), agente do template — site publicado na Vercel, PÚBLICO (ler primeiro)**:
   - Projeto Vercel `cannibal-web` (conta `pedrobelloti`, equipe Hobby), endereço público
     `https://cannibal-web.vercel.app`. Deploy feito pela CLI a partir da pasta local, branch
