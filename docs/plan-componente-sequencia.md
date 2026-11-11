@@ -130,7 +130,7 @@ alta densidade, celular (onde o corte amplia o rosto), AVIF e frames menores par
 
 ### Fase 3, parte B
 
-Parte A no commit `e432d67`. Parte B no commit seguinte ao `2667d48`, no branch
+Parte A no commit `9d9441c`. Parte B no commit seguinte ao `f7faccf`, no branch
 `feat/componente-sequencia`. F1 (cards do Hero sobre o rosto) fica para um próximo trabalho, por decisão de 2026-11-11.
 
 O que mudou: o resize passa pelo mesmo rAF do scroll e recalcula progresso, frame, cards e textos
@@ -144,7 +144,7 @@ tipos e build com código 0:
 
 | Verificação | Resultado |
 | --- | --- |
-| Antes (commit `2667d48`) e depois, 390×844, 1024×768 e 1920×1080, 8 progressos por seção | 48 pontos iguais em progresso, hash do canvas, cards e readout |
+| Antes (commit `f7faccf`) e depois, 390×844, 1024×768 e 1920×1080, 8 progressos por seção | 48 pontos iguais em progresso, hash do canvas, cards e readout |
 | Frame e corte contra a regra, em 9 telas (390×844 com densidade 1 e 3, 768×1024, 800×1100, 1000×1323, 1100×1000, 1024×768, 1280×850, 1920×1080), ida e volta | 144 pontos com o canvas idêntico pixel a pixel ao frame `floor(progresso × 169)` desenhado com o foco esperado; cards dentro de `show`/`hide`; volta igual à ida |
 | F2: redimensionar sem rolar (900→700, 700→1300 e 1280×850→800×1100), nas duas seções | frame, cards e readout no progresso novo nos 6 casos |
 | F3 e F3b: Cinematic em 800×1100, 1000×1323 e 768×1024 | faixa visível de 0,47 a 0,89 do frame, centrada no atleta (era 0,295 a 0,705) |

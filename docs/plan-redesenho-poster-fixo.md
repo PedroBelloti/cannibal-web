@@ -154,7 +154,7 @@ e `image.md`, como manda o `AGENTS.md`.
 
 | Fase | O que faz | Parada |
 | --- | --- | --- |
-| 0 | Commit da parte B (#4) e branch novo `feat/redesenho-poster-fixo` a partir dele | feita: `ebf1fa8` |
+| 0 | Commit da parte B (#4) e branch novo `feat/redesenho-poster-fixo` a partir dele | feita: `8b34d8b` |
 | 1 | Tokens de cor e tipo, fonte, `Button`, `PinnedTitle`, `SequenceQuote`, Hero e Navbar (adiantada da fase 3: a barra antiga cobria o título novo) | feita: o Pedro viu o Hero e manteve o título em uma linha. Sem commit |
 | 2 | Cinematic com os mesmos componentes | feita, sem commit; ver "Fase 2: o que saiu diferente do desenho" |
 | 3 | Cartel com as marcas que tocam, foto do cage | feita, sem commit |
@@ -165,7 +165,7 @@ e `image.md`, como manda o `AGENTS.md`.
 ## Fase 2: o que saiu diferente do desenho
 
 MEDIDO em 2026-11-11, sobre o build servido na porta 3102: lint, tipos e build com saída 0; os
-48 pontos de frame e de frase iguais aos do `ebf1fa8`; `lint.mjs` da skill sem achado nos
+48 pontos de frame e de frase iguais aos do `8b34d8b`; `lint.mjs` da skill sem achado nos
 arquivos tocados; `inspect.mjs` com 7 FAIL, todos do bloco de números e do rodapé antigos ou da
 falta de fotos (fases 3 a 5). Estados dos textos conferidos em 6 pontos do scroll, em 390×844,
 844×390 e 1920×1080, com e sem movimento reduzido; capturas também em 768×1024.
@@ -223,7 +223,7 @@ Defeitos achados pela medição e corrigidos:
 | "Ver o cartel" não recebia o clique em 1440 px | o texto de apoio transparente era pintado por cima do link | `pointer-events-none` no texto de apoio e `relative z-10` no link |
 | Título transparente da Trajetória cobria o visível no teste de clique e seria lido duas vezes | os dois `h2` ocupam o mesmo lugar e só a opacidade mudava | `visibility: hidden` no transparente (`setTitleOpacity`) |
 
-Sem medição nesta etapa: a comparação dos 48 pontos de frame e de frase contra o `ebf1fa8` não foi
+Sem medição nesta etapa: a comparação dos 48 pontos de frame e de frase contra o `8b34d8b` não foi
 refeita depois da fase 2 (o script ficou numa pasta temporária que se perdeu); as fases 3 a 6 não
 editaram a fórmula de progresso, o desenho do canvas nem `useFramePreload.ts`. Navegação por
 teclado no cartel e a página com JavaScript desligado foram conferidas no servidor de
@@ -330,7 +330,7 @@ No celular (390 px): 58 px para 43 px, 52 px/s para 34 px/s.
 
 | # | O quê | Bloqueia |
 | --- | --- | --- |
-| 1 | Autorizar o commit da parte B (#4) e o branch novo | respondido em 2026-11-11: autorizado (`ebf1fa8`) |
+| 1 | Autorizar o commit da parte B (#4) e o branch novo | respondido em 2026-11-11: autorizado (`8b34d8b`) |
 | 2 | Aceitar a retirada do bloco "Forjado no quartel / Disciplina e instinto" | respondido: aceito |
 | 3 | IMG_7798: foto larga com adversário e público, ou recorte fechado só no Arthur | respondido: foto larga |
 | 4 | Destino do botão "Seja patrocinador" (WhatsApp, e-mail ou Instagram) e dos links do rodapé | publicar |

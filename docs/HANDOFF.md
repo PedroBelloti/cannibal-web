@@ -9,8 +9,8 @@ Sequência B). Escreva no topo, com data, quem escreveu e o que precisa.
 |---|---|---|
 | Perfil de comunicação | Claude | Feito |
 | Roteiro, grade de mídias e JSON de textos | Claude | Feito (falta a categoria do Arthur) |
-| Sequência A (Hero): foto 1 (sangue, fumaça vermelha), animada por camadas locais, 7 s, 169 frames | Agente do template | **Feito, commit `f8f8c66` no branch `feat/seq-a-camadas`, PR #2 aberto, sem merge** (issue #1; ver `plan-sequencia-a.md`) |
-| Sequência B (Cinematic): foto 3 (treino, cabeça baixa), animada por camadas locais, 7 s, 169 frames | Agente do template | **Feito: segunda versão aprovada pelo Pedro e validada no navegador; commit `67f9596` no branch `feat/seq-b-camadas`, sem push nem PR** (issue #3; ver `plan-sequencia-b.md`) |
+| Sequência A (Hero): foto 1 (sangue, fumaça vermelha), animada por camadas locais, 7 s, 169 frames | Agente do template | **Feito, commit `7fdbe49` no branch `feat/seq-a-camadas`, PR #2 aberto, sem merge** (issue #1; ver `plan-sequencia-a.md`) |
+| Sequência B (Cinematic): foto 3 (treino, cabeça baixa), animada por camadas locais, 7 s, 169 frames | Agente do template | **Feito: segunda versão aprovada pelo Pedro e validada no navegador; commit `c09ed5e` no branch `feat/seq-b-camadas`, sem push nem PR** (issue #3; ver `plan-sequencia-b.md`) |
 | Remover o `readout` do Hero (desligado pelo cliente) | Agente do template | Feito |
 | Aplicar o JSON de textos e a paleta (`#0a0a0b`, accent `#D72631`) | Agente do template | Feito |
 | Trocar "A definir" pela categoria do Arthur | Agente do template | Feito: Peso Galo, 61 kg |
@@ -35,7 +35,7 @@ recado.
 | Endereço antigo | `https://cannibal-web.vercel.app`, redireciona com 308 |
 | Projeto Vercel | `the.cannibal`, equipe `pedro-bellotis-projects` (Hobby), conta `pedrobelloti` |
 | Repositório | `PedroBelloti/cannibal-web` (privado), pasta `~/Projects/cannibal-web` |
-| Branch publicado | `feat/redesenho-poster-fixo`; o `main` ainda tem o visual antigo |
+| Branch publicado | `main` e `feat/redesenho-poster-fixo`, iguais desde 11/11 |
 
 O repositório **não está ligado** à Vercel: push no GitHub não publica nada. Cada atualização é
 um deploy manual, feito pela CLI a partir da pasta local (`.vercel/project.json` liga a pasta ao
@@ -69,15 +69,23 @@ projeto; o arquivo não vai para o git).
 - Publicar o site com as fotos e os nomes depende das autorizações pendentes (recados abaixo);
   o Pedro decidiu publicar com elas em aberto.
 
-**Próximo passo recomendado**: PR de `feat/redesenho-poster-fixo` para `main` (`Closes #6`) e
-ligar o repositório à Vercel com `main` como produção. Aí push no `main` publica sozinho e
+**Próximo passo recomendado**: ligar o repositório à Vercel com `main` como produção. Aí push no `main` publica sozinho e
 cada PR ganha uma prévia; este passo a passo passa a valer só para emergências.
 
 ## Recados
 
+- **11/11/2026 (noite, história reescrita), pedido do Pedro**: os dois commits do template
+  (21/04, autor de fora) viraram um commit inicial do Pedro ("chore: base do projeto"); os 27
+  seguintes foram reaplicados por cima com autor, data e mensagem originais, então **todos os
+  hashes mudaram**. MEDIDO: a árvore final é idêntica à de antes (`git rev-parse HEAD^{tree}`).
+  Os hashes citados nos documentos e nas mensagens de commit foram trocados pelos novos. Branches
+  antigos (`feat/seq-a-camadas`, `feat/seq-b-camadas`, `feat/componente-sequencia`) apagados,
+  já estavam contidos no `main`. Cópia de antes: `~/Projects/cannibal-web-pre-rewrite-2026-11-11.bundle`
+  e tag local `backup/pre-rewrite-2026-11-11`. O PR #2 no GitHub ainda guarda os commits antigos
+  (referência que só o suporte do GitHub apaga). Clone antigo em outra máquina: apagar e clonar de novo.
 - **11/11/2026 (noite, auditoria de segurança), skill `security-compendium-vpio` (fluxos A, B e D)**:
   - Achado único: sem cabeçalho de segurança e com `X-Powered-By: Next.js` (medido no
-    `next start`). Corrigido em `c2c6ca2` (`next.config.ts`) e publicado pelo Pedro
+    `next start`). Corrigido em `cdb55ff` (`next.config.ts`) e publicado pelo Pedro
     (`dpl_7CQQkgSRSDC9wZxWTCj9N9Tx3CYo`). MEDIDO em produção depois do deploy: CSP,
     `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy` e `Permissions-Policy` em `/`, na 404 e
     nas fotos; HSTS vem da Vercel; página rolada inteira no Chromium (1440 e 390 px) sem violação
@@ -93,7 +101,7 @@ cada PR ganha uma prévia; este passo a passo passa a valer só para emergência
 - **11/11/2026 (noite, encerramento), agente do template — instruções de atualização (ler primeiro)**:
   o deploy em produção com o `siteUrl` novo foi feito pelo Pedro
   (`dpl_71CnC8TVRJDo2anek2mow9xA2CiU`). MEDIDO: `thecannibal.vercel.app` responde 200 com a
-  versão do commit `5e6ec6c` (tem o script de recarga), sem `localhost` no HTML; o endereço antigo
+  versão do commit `1d6928f` (tem o script de recarga), sem `localhost` no HTML; o endereço antigo
   redireciona. Como publicar daqui em diante: seção "Como atualizar o site no ar", acima.
 - **11/11/2026 (noite, fim, depois), agente do template — projeto Vercel renomeado (ler primeiro)**:
   - Pedido do Pedro: o nome passa a ser `the.cannibal`. Na Vercel, o projeto virou
@@ -123,11 +131,11 @@ cada PR ganha uma prévia; este passo a passo passa a valer só para emergência
     `origin` local já aponta para ele. Com `gh`, use `-R PedroBelloti/cannibal-web`. A pasta é
     `~/Projects/cannibal-web` e o `name` do `package.json` também mudou. Os caminhos antigos
     citados nos recados abaixo ficam como histórico.
-  - Commit `3da826f` (carga progressiva e recarga no topo) enviado no branch
+  - Commit `63c0577` (carga progressiva e recarga no topo) enviado no branch
     `feat/redesenho-poster-fixo`.
 - **11/11/2026 (noite), agente do template — carga progressiva e recarga no topo, SEM COMMIT (ler primeiro)**:
   - RELATO (Pedro): o loading demorava muito, e recarregar a página levava a uma seção que não
-    era o começo. Os commits `59dc96b` e `4ab9f3c` (scroll suave, nome da barra, aviso de scroll)
+    era o começo. Os commits `efee973` e `b197120` (scroll suave, nome da barra, aviso de scroll)
     estão feitos, sem push.
   - Carga: `useFramePreload` baixa por prioridade e libera a tela com 11 frames; o resto chega
     com a página já em uso (`AGENTS.md`, "Sequência por scroll"). MEDIDO (Chromium, 390 px 3x):
@@ -161,8 +169,8 @@ cada PR ganha uma prévia; este passo a passo passa a valer só para emergência
     (fica no salto nativo), leitor de tela anunciando a seção focada.
   - Laboratório: depois do commit, o `next start` da porta 3102 foi parado, o build refeito e o
     servidor subiu de novo com esta mudança.
-- **11/11/2026 (manhã, depois), agente do template — rodapé e aviso de scroll, commit `940072d`, enviado (ler primeiro)**:
-  - Estado: branch `feat/redesenho-poster-fixo` igual ao remoto em `940072d`, working tree limpo.
+- **11/11/2026 (manhã, depois), agente do template — rodapé e aviso de scroll, commit `77549b8`, enviado (ler primeiro)**:
+  - Estado: branch `feat/redesenho-poster-fixo` igual ao remoto em `77549b8`, working tree limpo.
     Issue #6 aberta, sem PR deste branch.
   - Saiu o item "Imprensa e eventos" do contato; o nome do rodapé subiu e "The Cannibal" ficou
     em vermelho (exceção à regra do vermelho, registrada no `AGENTS.md`). O nome do rodapé sai
@@ -176,25 +184,25 @@ cada PR ganha uma prévia; este passo a passo passa a valer só para emergência
   - Aberto com o Pedro: a 1366 px os dois botões da chamada empilham (lado a lado pede tirar a
     seta dos botões com símbolo); nome do link "Mentalidade"; manter ou não o "Seja
     patrocinador" do Hero.
-- **11/11/2026 (manhã), agente do template — botão do Instagram e símbolos das redes, commit `30d4aa2`, enviado**:
+- **11/11/2026 (manhã), agente do template — botão do Instagram e símbolos das redes, commit `17a1cd8`, enviado**:
   - Na chamada (`#patrocinio`): "Chamar no Instagram" ao lado de "Chamar no WhatsApp", em placa
     escura (`tone="quiet"`), e o símbolo de cada rede antes do texto (`ui/BrandGlyph.tsx`).
-- **11/11/2026 (madrugada, depois), agente do template — links, botão e freio da faixa, commit `9d5fea1`, enviado**:
-  - O aviso do cartel e a marca nova foram commitados e enviados (`609fd79`).
+- **11/11/2026 (madrugada, depois), agente do template — links, botão e freio da faixa, commit `8012ad7`, enviado**:
+  - O aviso do cartel e a marca nova foram commitados e enviados (`814b9c6`).
   - Neste commit: o link "Trajetória" virou "Mentalidade" (`#mentalidade`); o botão ganhou
     ponta cortada, seta e varredura; a faixa de nomes freia com o mouse (`ui/HoverBrake.tsx`); o
     botão da chamada abre o WhatsApp ("Chamar no WhatsApp"); rodapé com Instagram, WhatsApp e
     endereços dos parceiros; "+11 mil seguidores" no rodapé e na chamada.
-- **11/11/2026 (madrugada), agente do template — aviso sorteado no cartel e marca nova, commit `609fd79`, enviado**:
-  - Os commits `6944c4b` e `fdc1883` já estão no remoto (o recado abaixo, que diz "sem push",
+- **11/11/2026 (madrugada), agente do template — aviso sorteado no cartel e marca nova, commit `814b9c6`, enviado**:
+  - Os commits `0309483` e `868adfa` já estão no remoto (o recado abaixo, que diz "sem push",
     ficou velho nesse ponto).
   - Neste commit: `ui/useHintCycle.ts` (novo, extraído do `HintMenu`), `HintMenu.tsx` e
     `RecordMarks.tsx`. O cartel ganhou o mesmo aviso do menu do rodapé (as marcas de um método
     sorteado acendem) e a marca deixou de ser quadrado: é um risco inclinado, a barra do "%".
     Uma presa foi tentada antes e recusada pelo Pedro; não voltar a ela.
 - **11/11/2026 (fim da noite), agente do template — rodada do cartel, commitada, SEM PUSH (ler primeiro)**:
-  - **Onde está**: branch `feat/redesenho-poster-fixo`. O redesenho está commitado em `fe93432`
-    (no remoto) e `6944c4b` (só local). A rodada do cartel, a faixa de nomes e o aviso do menu do
+  - **Onde está**: branch `feat/redesenho-poster-fixo`. O redesenho está commitado em `e77e063`
+    (no remoto) e `0309483` (só local). A rodada do cartel, a faixa de nomes e o aviso do menu do
     rodapé estão no commit seguinte, também só local. Push depende de pedido do Pedro.
   - **O que mudou**: o Cartel abre com o percentual de vitórias gigante (calculado dos `count`),
     Nocautes e Finalizações em destaque, Decisões e a derrota numa linha menor. Saíram
@@ -210,7 +218,7 @@ cada PR ganha uma prévia; este passo a passo passa a valer só para emergência
   - **Menu do rodapé**: o sorteio começa quando o menu entra na tela (primeiro link em ~0,3 s);
     o intervalo entre um e outro não mudou.
 - **11/11/2026 (noite), agente do template — redesenho, fases 3 a 6 feitas, SEM COMMIT (ler primeiro)**:
-  - **Onde está**: branch `feat/redesenho-poster-fixo`, a partir de `ebf1fa8`; todo o redesenho
+  - **Onde está**: branch `feat/redesenho-poster-fixo`, a partir de `8b34d8b`; todo o redesenho
     (issue #6) está na árvore de trabalho, nada em stage. Commit, push e PR dependem de pedido do
     Pedro.
   - **O que existe**: Cartel que toca (`FightRecord` + `ui/RecordMarks`), Equipe, faixa de nomes,
@@ -221,7 +229,7 @@ cada PR ganha uma prévia; este passo a passo passa a valer só para emergência
     dois avisos esperados; seis tamanhos de tela no Chromium. Números, desvios e os três defeitos
     corrigidos (um deles no scroll suave, anterior ao redesenho) em
     `plan-redesenho-poster-fixo.md`, "Fases 3 a 6".
-  - **Sem medição**: celular real, Safari e Firefox; a regressão dos 48 pontos contra o `ebf1fa8`
+  - **Sem medição**: celular real, Safari e Firefox; a regressão dos 48 pontos contra o `8b34d8b`
     não foi refeita depois da fase 2.
   - **Bloqueia publicar**: destino de "Seja patrocinador" e dos itens de contato e parceiros
     (hoje texto sem link); autor da IMG_0438 e da IMG_0554 e autorização dos fotógrafos; terceiros
@@ -237,17 +245,17 @@ cada PR ganha uma prévia; este passo a passo passa a valer só para emergência
   componentes (`PinnedTitle`, `SequenceQuote`): coluna à esquerda, títulos que trocam em 50% do
   scroll, link "Ver o cartel" no fim. Saíram `HudFrame.tsx`, `.card-surface`, `.hud-tick` e os
   campos `statusLabel`, `eyebrow`, `bottomBar`, `cards[].label` e `outro.kicker` do `cinematic`.
-  MEDIDO: lint, tsc e build com saída 0; 48 pontos de frame e de frase iguais aos do `ebf1fa8`.
+  MEDIDO: lint, tsc e build com saída 0; 48 pontos de frame e de frase iguais aos do `8b34d8b`.
   Desvios do desenho em `plan-redesenho-poster-fixo.md`, "Fase 2". O bloco de números e o
   rodapé seguem no visual antigo; `TEMPLATE.md` está desatualizado até a fase 5.
 - **11/11/2026 (tarde), agente do template — redesenho aprovado, fase 1 na parada do Pedro**:
   o Pedro aprovou o PLAN `plan-redesenho-poster-fixo.md` (issue #6), a retirada do bloco
-  "Forjado no quartel" e a IMG_7798 larga. A parte B (#4) está em `ebf1fa8`; o trabalho segue no
+  "Forjado no quartel" e a IMG_7798 larga. A parte B (#4) está em `8b34d8b`; o trabalho segue no
   branch `feat/redesenho-poster-fixo`, **sem commit**. Fase 1 implementada: tokens e fonte
   (`globals.css`, `layout.tsx`), `Button`, `PinnedTitle`, `SequenceQuote`, Hero e Navbar novos.
   A Trajetória, o bloco de números e o rodapé continuam no visual antigo até as fases 2 a 4, e
   os links `#cartel`, `#equipe` e `#patrocinio` ainda não têm destino. MEDIDO: lint, tsc e build
-  com saída 0; os 48 pontos de frame e de frase das duas sequências iguais aos do `ebf1fa8`.
+  com saída 0; os 48 pontos de frame e de frase das duas sequências iguais aos do `8b34d8b`.
   **Depende do Pedro**: ver as capturas do Hero e escolher o título em uma ou duas linhas
   (item 8 da tabela do PLAN); só então começa a fase 2.
 - **11/11/2026 (tarde), agente do template — auditoria de design**: a pedido do Pedro, o site
@@ -258,8 +266,8 @@ cada PR ganha uma prévia; este passo a passo passa a valer só para emergência
   arquivo de trabalho da skill, sem rastreio no git e fora do `.gitignore`.
 - **11/11/2026 (manhã), agente do template — ESTADO ATUAL E PONTO DE RETOMADA (ler primeiro)**:
   - **Onde está**: branch `feat/componente-sequencia`, só local, a partir de `feat/seq-b-camadas`.
-    Commits: `e432d67` (componente único, parte A, #4) e `2667d48` (frames do Hero em q60, #5).
-    A parte B da fase 3 (#4) está no commit seguinte ao `2667d48`: `ScrollSequence.tsx`,
+    Commits: `9d9441c` (componente único, parte A, #4) e `f7faccf` (frames do Hero em q60, #5).
+    A parte B da fase 3 (#4) está no commit seguinte ao `f7faccf`: `ScrollSequence.tsx`,
     `useFramePreload.ts`, `Hero.tsx`, `CinematicReveal.tsx`, `src/lib/hero.ts`,
     `src/lib/cinematic.ts` e `AGENTS.md`. Detalhe e medições em `plan-componente-sequencia.md`,
     "Fase 3, parte B".
@@ -279,8 +287,8 @@ cada PR ganha uma prévia; este passo a passo passa a valer só para emergência
   - O recado abaixo fica como histórico da Sequência B.
 
 - **11/11/2026 (início do dia), agente do template — SEQUÊNCIA B COMMITADA (histórico)**:
-  - **Onde está**: Sequência B commitada em `67f9596`, branch `feat/seq-b-camadas`, só local
-    (sem push, sem PR). O branch parte de `feat/seq-a-camadas` (`f8f8c66`, PR #2 aberto, sem
+  - **Onde está**: Sequência B commitada em `c09ed5e`, branch `feat/seq-b-camadas`, só local
+    (sem push, sem PR). O branch parte de `feat/seq-a-camadas` (`7fdbe49`, PR #2 aberto, sem
     merge), então um PR da B contra `main` leva junto o commit da A enquanto o #2 não entrar.
     Árvore limpa depois do commit; servidor local parado.
   - RELATO (Pedro, 10/11): o movimento "atende perfeitamente"; o emblema "D" da luva fica sem
@@ -359,7 +367,7 @@ cada PR ganha uma prévia; este passo a passo passa a valer só para emergência
     estão no recado seguinte e continuam valendo.
 
 - **10/11/2026, agente do template — PONTO DE RETOMADA (ler primeiro numa sessão nova)**:
-  - **Sequência A**: commit `f8f8c66` enviado, PR #2 aberto contra `main`
+  - **Sequência A**: commit `7fdbe49` enviado, PR #2 aberto contra `main`
     (https://github.com/PedroBelloti/iron-man-scroll-template/pull/2, `Closes #1`). Merge e
     fechamento da issue dependem de pedido do Pedro.
   - **Sequência B**: `docs/plan-sequencia-b.md` foi enviado ao Pedro e **ainda não foi
