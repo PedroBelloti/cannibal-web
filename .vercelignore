@@ -1,0 +1,8 @@
+# Material de origem e documentos: o build não usa e não precisa ir para a Vercel.
+/media
+/docs
+/.taste-skill
+/node_modules
+/.next
+.env*
+*.tsbuildinfo

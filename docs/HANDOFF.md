@@ -24,6 +24,20 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
+- **11/11/2026 (noite, fim), agente do template — site publicado na Vercel, PÚBLICO (ler primeiro)**:
+  - Projeto Vercel `cannibal-web` (conta `pedrobelloti`, equipe Hobby), endereço público
+    `https://cannibal-web.vercel.app`. Deploy feito pela CLI a partir da pasta local, branch
+    `feat/redesenho-poster-fixo`; o repositório ainda não está conectado à Vercel.
+  - MEDIDO: o primeiro `vercel deploy` (sem `--prod`) saiu como produção, com o domínio público,
+    porque é o primeiro deploy de um projeto novo. O Pedro tinha escolhido preview; informado,
+    decidiu deixar público. Os próximos `vercel deploy` sem `--prod` saem como preview.
+  - Publicado com as pendências do recado de 11/11 (noite) abertas: autoria e autorização das
+    fotos IMG_0438 e IMG_0554, terceiros identificáveis na IMG_7798 e na IMG_0554, nomes da faixa
+    e o que o 8–1 cobre.
+  - `meta.siteUrl` agora é o domínio da Vercel. `.vercelignore` deixa `media/`, `docs/` e
+    `.taste-skill/` fora do envio.
+  - Reverter: `npx vercel rollback` volta ao deploy anterior; `npx vercel remove <deploy>`
+    tira um deploy do ar.
 - **11/11/2026 (noite, depois), agente do template — projeto renomeado para `cannibal-web` (ler primeiro)**:
   - Pedido do Pedro: repositório e pasta passam a se chamar `cannibal-web`. O GitHub agora é
     `PedroBelloti/cannibal-web` (o endereço antigo `iron-man-scroll-template` redireciona) e o

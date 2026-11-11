@@ -19,7 +19,7 @@ vídeos").
 | `title` | Nome + o que ele é | até 60 caracteres |
 | `description` | O que é o site | 120 a 160 caracteres |
 | `lang` | Idioma do conteúdo | `pt-BR` |
-| `siteUrl` | URL final, com protocolo | PENDENTE: ainda `http://localhost:3000` |
+| `siteUrl` | URL final, com protocolo | `https://cannibal-web.vercel.app` (Vercel, sem domínio próprio) |
 
 ## `brand` e `nav`: barra fixa no topo
 
