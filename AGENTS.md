@@ -45,15 +45,15 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
   relação aos frames), a altura de `.scroll-animation` em `globals.css` (entra no progresso) e
   `coverRect`/`focusForRatio` (corte). Nada é desenhado nem notificado antes de a carga terminar.
 - **Texto sobre as sequências**: `ui/PinnedTitle.tsx` (título preso em dois cantos) e
-  `ui/SequenceQuote.tsx` (frase solta, uma por vez) servem ao Hero e à Trajetória. Card sem
+  `ui/SequenceQuote.tsx` (frase solta, uma por vez) servem ao Hero e à Mentalidade (`CinematicReveal`, `#mentalidade`; o link se chamava Trajetória). Card sem
   `speaker` e `source` é frase do site e sai sem aspas nem assinatura; fala atribuída ao Arthur só
   com fonte em `docs/perfil-comunicacao.md`. Texto de apoio,
   frases e link final ocupam o mesmo lugar (`--slot-h` em `globals.css`), um de cada vez. Os marcos
   de entrada e saída ficam em `src/lib/hero.ts` (`HERO_TEXT_FADE_END`) e `src/lib/cinematic.ts`
   (`CINE_INTRO_FADE_END`, `CINE_TITLE_SWAP`, `CINE_OUTRO`) e convivem com os `show`/`hide` das
   frases: mexeu num, confira o outro. Elemento que some por opacidade e tem link ou botão recebe
-  `inert` junto; o link final da Trajetória, em letra grande, recebe também `visibility: hidden`.
-  Na Trajetória os dois títulos dividem o lugar: o transparente recebe também
+  `inert` junto; o link final da Mentalidade, em letra grande, recebe também `visibility: hidden`.
+  Na Mentalidade os dois títulos dividem o lugar: o transparente recebe também
   `visibility: hidden` (`setTitleOpacity`), senão cobre o outro no teste de clique e é lido duas
   vezes pelo leitor de tela. O link final leva `relative z-10` e o texto de apoio
   `pointer-events-none`: elemento com opacidade abaixo de 1 é pintado acima dos vizinhos estáticos
@@ -74,8 +74,9 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
     código. Na composição larga o bloco dos métodos fica preso ao pé da tela fixa e por isso usa
     `.rise-entry` em vez de `.rise`. Mensagens e provas: `docs/brand-guidelines.md`.
   - Faixa de nomes (`NamesBand`): duas fileiras em sentidos opostos, a de cima cheia e a de baixo
-    em contorno (`.names-outline`), com as bordas esmaecidas por máscara (`.names-fade`) e pausa
-    com o ponteiro em cima. A fileira de baixo é cópia para o olho (`aria-hidden`) e começa na
+    em contorno (`.names-outline`), com as bordas esmaecidas por máscara (`.names-fade`). O mouse em cima freia as duas
+    em ~0,4 s e a saída as solta do mesmo jeito (`ui/HoverBrake.tsx`, pelo `playbackRate` das
+    animações; `animation-play-state` trava de uma vez). Toque não freia. A fileira de baixo é cópia para o olho (`aria-hidden`) e começa na
     metade da lista. O tamanho é só em `vw`, sem teto: a volta mede ~39,5em e precisa ser mais
     larga que a tela, senão aparece o vazio; menos nomes ou nomes mais curtos pedem medir de novo.
     A duração em `.names-track` vale para essa largura. O contorno é traço com preenchimento da
@@ -97,9 +98,15 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
     sorteio, e com movimento reduzido ele não roda. Item de `contact`/`partners` sem `href` sai como texto. O
     nome na largura toda usa o divisor `9.35` (largura do nome em em); mudou o nome ou a fonte,
     meça de novo.
+  - Botão (`ui/Button.tsx`): placa vermelha com a ponta cortada na inclinação das marcas do
+    cartel e uma seta; ponteiro ou foco fazem um tom mais escuro varrer a placa. O corte fica num
+    `span` interno, porque `clip-path` no link cortaria o contorno de foco. Endereço `http` abre
+    em outra aba. Caminho do patrocínio: os botões da barra e do Hero levam a `#patrocinio`, e o
+    botão de lá abre o WhatsApp (`WHATSAPP_URL` em `site.ts`); não repita "Seja patrocinador"
+    na chamada.
   - Vermelho (`--accent`) marca o que leva a algum lugar ou responde ao toque: o botão principal
     (`ui/Button.tsx`), as marcas acesas do cartel, a palavra de destino do link final da
-    Trajetória (`cinematic.outro.highlight`) e o link apontado ou sorteado do menu do rodapé.
+    Mentalidade (`cinematic.outro.highlight`) e o link apontado ou sorteado do menu do rodapé.
     Fora disso, não.
 - **Entradas e movimento**: classes `.rise`, `.rise-late`, `.rise-entry`, `.drift` e `.names-track` em
   `globals.css`, animações CSS presas ao scroll, sem JavaScript. Só valem com suporte a

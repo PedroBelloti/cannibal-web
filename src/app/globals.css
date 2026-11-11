@@ -180,12 +180,6 @@ body {
   }
 }
 
-@media (prefers-reduced-motion: no-preference) and (hover: hover) {
-  .names-fade:hover .names-track {
-    animation-play-state: paused;
-  }
-}
-
 /* Preenchido com a cor do fundo por cima do traço: letra vazada mostraria o cruzamento dos
    contornos internos da fonte. Só a metade de fora do traço aparece. */
 .names-outline {

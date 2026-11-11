@@ -36,7 +36,7 @@ function setTitleOpacity(title: HTMLElement | null, opacity: number) {
 }
 
 /**
- * Trajetória: mesma peça do Hero, em coluna à esquerda, com o atleta livre à direita. O título
+ * Mentalidade: mesma peça do Hero, em coluna à esquerda, com o atleta livre à direita. O título
  * troca no meio da sequência e o link para o cartel entra depois da última frase.
  */
 export function CinematicReveal() {
@@ -62,7 +62,7 @@ export function CinematicReveal() {
 
   return (
     <ScrollSequence
-      id="trajetoria"
+      id="mentalidade"
       frameCount={CINE_FRAME_COUNT}
       framePath={cineFramePath}
       portraitFocusX={CINE_MOBILE_FOCUS_X}

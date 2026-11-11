@@ -24,6 +24,13 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
+- **11/11/2026 (madrugada, depois), agente do template — links, botão e freio da faixa, SEM COMMIT**:
+  - O aviso do cartel e a marca nova foram commitados e enviados (`609fd79`).
+  - No working tree: o link "Trajetória" virou "Mentalidade" (`#mentalidade`); o botão ganhou
+    ponta cortada, seta e varredura; a faixa de nomes freia com o mouse (`ui/HoverBrake.tsx`); o
+    botão da chamada abre o WhatsApp ("Chamar no WhatsApp"); rodapé com Instagram, WhatsApp e
+    endereços dos parceiros; "+11 mil seguidores" no rodapé e na chamada.
+  - Commit e push dependem de pedido do Pedro.
 - **11/11/2026 (madrugada), agente do template — aviso sorteado no cartel e marca nova, SEM COMMIT**:
   - Os commits `6944c4b` e `fdc1883` já estão no remoto (o recado abaixo, que diz "sem push",
     ficou velho nesse ponto).

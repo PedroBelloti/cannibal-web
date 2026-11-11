@@ -1,3 +1,4 @@
+import { HoverBrake } from "@/components/ui/HoverBrake";
 import { site } from "@/content/site";
 
 const { names } = site;
@@ -26,12 +27,12 @@ function NameList({ items, clone = false }: { items: string[]; clone?: boolean }
 /**
  * Faixa de nomes em duas fileiras que andam em sentidos opostos, a de baixo só em contorno. Cada
  * lista é repetida uma vez para a volta não ter emenda; com movimento reduzido fica só a primeira
- * fileira, parada e quebrando linha. O ponteiro sobre a faixa pausa as duas.
+ * fileira, parada e quebrando linha. O mouse sobre a faixa freia as duas (`HoverBrake`).
  */
 export function NamesBand() {
   return (
     <section aria-label={names.label} className="overflow-hidden bg-ground py-14 wide:py-20">
-      <div className="names-fade flex flex-col gap-[2.4vw] wide:gap-[1.2vw]">
+      <HoverBrake className="names-fade flex flex-col gap-[2.4vw] wide:gap-[1.2vw]">
         <div className={`${TRACK} text-ink motion-reduce:w-auto motion-reduce:px-(--margin) motion-reduce:text-[9.5vw] motion-reduce:wide:text-[4.4vw]`}>
           <NameList items={names.items} />
           <NameList items={names.items} clone />
@@ -40,7 +41,7 @@ export function NamesBand() {
           <NameList items={shifted} />
           <NameList items={shifted} clone />
         </div>
-      </div>
+      </HoverBrake>
       <p className="rise mt-10 max-w-[34ch] px-(--margin) text-body text-ink">{names.caption}</p>
     </section>
   );

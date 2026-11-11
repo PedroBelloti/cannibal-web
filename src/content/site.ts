@@ -93,6 +93,9 @@ export type SiteContent = {
   };
 };
 
+// Número informado para contato de patrocínio; o mesmo no botão da chamada e no rodapé.
+const WHATSAPP_URL = "https://wa.me/5561986394253";
+
 export const site: SiteContent = {
   meta: {
     lang: "pt-BR",
@@ -109,7 +112,7 @@ export const site: SiteContent = {
   nav: {
     label: "Seções do site",
     links: [
-      { label: "Trajetória", href: "#trajetoria" },
+      { label: "Mentalidade", href: "#mentalidade" },
       { label: "Cartel", href: "#cartel" },
       { label: "Equipe", href: "#equipe" },
     ],
@@ -257,10 +260,9 @@ export const site: SiteContent = {
 
   sponsorCall: {
     title: "Vamos vencer.",
-    body: "Sua marca ao lado de um lutador de Brasília com 8 vitórias em 9 lutas.",
-    // PENDENTE: destino final (WhatsApp, e-mail ou Instagram), a definir pelo Pedro; até lá leva
-    // ao bloco de contato do rodapé.
-    cta: { label: "Seja patrocinador", href: "#contato" },
+    body: "Sua marca ao lado de um lutador de Brasília com 8 vitórias em 9 lutas e mais de 11 mil seguidores.",
+    // Os botões da barra e do Hero trazem até aqui; este é o que abre a conversa.
+    cta: { label: "Chamar no WhatsApp", href: WHATSAPP_URL },
     photo: {
       src: "/photos/vitoria.webp",
       alt: "Arthur beija a luva, com o outro braço erguido pelo árbitro, depois de uma vitória no cage.",
@@ -273,28 +275,39 @@ export const site: SiteContent = {
     menu: {
       label: "Mapa do site",
       links: [
-        { label: "Trajetória", href: "#trajetoria" },
+        { label: "Mentalidade", href: "#mentalidade" },
         { label: "Cartel", href: "#cartel" },
         { label: "Equipe", href: "#equipe" },
         { label: "Patrocínio", href: "#patrocinio" },
       ],
     },
-    // PENDENTE: URL do Instagram oficial e destinos de contato e dos parceiros
-    // (docs/roteiro-grade-midias.md). Sem `href` o item sai como texto.
+    // Sem `href` o item sai como texto. PENDENTE: contato de imprensa e eventos.
     contact: {
       title: "Contato",
       items: [
-        { name: "Instagram", note: "Perfil oficial" },
-        { name: "Patrocínio", note: "Seja parceiro" },
+        {
+          name: "Instagram",
+          note: "+11 mil seguidores",
+          href: "https://www.instagram.com/arthurcannibal",
+        },
+        { name: "WhatsApp", note: "+55 (61) 98639-4253", href: WHATSAPP_URL },
         { name: "Imprensa e eventos" },
       ],
     },
     partners: {
       title: "Parceiros",
       items: [
-        { name: "Move Nutrição", note: "Cupom CANNIBAL" },
-        { name: "No Talk", note: "Cupom CANNIBAL" },
-        { name: "Tarumã", note: "Gama e Sudoeste" },
+        {
+          name: "Move Nutrição",
+          note: "Cupom CANNIBAL",
+          href: "https://www.instagram.com/movenutricaoesportiva",
+        },
+        { name: "No Talk", note: "Cupom CANNIBAL", href: "https://notalk.com.br/" },
+        {
+          name: "Tarumã",
+          note: "Gama e Sudoeste",
+          href: "https://www.instagram.com/tarumacozinhaebar",
+        },
       ],
     },
     photo: {

@@ -15,7 +15,13 @@ function GroupBlock({ id, group, note }: { id?: string; group: FooterGroup; note
         {group.items.map((item) => (
           <li key={item.name}>
             {item.href ? (
-              <a href={item.href} className={TEXT_LINK}>
+              <a
+                href={item.href}
+                className={TEXT_LINK}
+                {...(item.href.startsWith("http")
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+              >
                 {item.name}
               </a>
             ) : (

@@ -43,7 +43,7 @@ Os números entre parênteses são a fração do scroll da seção (0 = topo, 1 
 | `cards[0..2]` | Frases soltas, uma por vez, no lugar do texto de apoio (0,10–0,30 · 0,35–0,55 · 0,60–0,80): `quote`, `speaker`, `source`. Sem `speaker` e `source` a frase é do site e sai sem aspas e sem assinatura; só assine fala dele com fonte no perfil | frase até 60 caracteres |
 | `loader.text` | Tela de carga dos frames | até 24 caracteres |
 
-## `cinematic`: segunda sequência (`public/frames2/`), `#trajetoria`
+## `cinematic`: segunda sequência (`public/frames2/`), `#mentalidade`
 
 | Campo | Onde aparece | Tamanho |
 |---|---|---|
@@ -97,8 +97,8 @@ Só entram nomes com fonte no perfil. "Jungle Fight" fica fora: o perfil registr
 |---|---|---|
 | `photo` | Metade esquerda | ver "Fotos" |
 | `title` | Título | 2 palavras |
-| `body` | Uma frase | até 75 caracteres |
-| `cta` | Botão vermelho. PENDENTE: destino final (WhatsApp, e-mail ou Instagram); hoje leva a `#contato` | 2 palavras |
+| `body` | Uma frase | até 100 caracteres |
+| `cta` | Botão vermelho que abre o WhatsApp. O rótulo diz o que acontece; "Seja patrocinador" fica só nos botões que trazem até esta seção | até 3 palavras |
 
 ## `footer`, `#contato`
 
@@ -110,8 +110,9 @@ Só entram nomes com fonte no perfil. "Jungle Fight" fica fora: o perfil registr
 | `legal` | Linha de direitos e créditos das fotos | até 110 caracteres |
 | `disclaimer` | Aviso abaixo dos parceiros | até 50 caracteres |
 
-Item sem `href` aparece como texto, não como link. PENDENTE: hoje nenhum item de contato ou
-parceiro tem destino.
+Item sem `href` aparece como texto, não como link; endereço `http` abre em outra aba. O número
+de seguidores na nota do Instagram e em `sponsorCall.body` é digitado: mudou, revise os dois.
+PENDENTE: contato de imprensa e eventos.
 
 ## Fotos
 
@@ -131,5 +132,5 @@ texto, e confira o foco da tela em pé (`AGENTS.md`).
 
 Os tokens ficam em `src/app/globals.css`. `--bg` precisa ser igual ao fundo dos frames, senão a
 borda do canvas aparece. `--accent` marca o que leva a algum lugar ou responde ao toque: botão
-principal, marcas acesas ou sorteadas do cartel, a palavra de destino do link final da Trajetória e o link
+principal, marcas acesas ou sorteadas do cartel, a palavra de destino do link final da Mentalidade e o link
 apontado ou sorteado do menu do rodapé.

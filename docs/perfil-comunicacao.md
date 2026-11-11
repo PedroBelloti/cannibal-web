@@ -124,11 +124,15 @@ retorno. É um aviso." · "Fome de vencer: algo que não se ensina." · "Agora s
 ## 9. Pendências
 
 - Se as 9 lutas somam todas as modalidades.
-- @ oficial do Instagram para o rodapé.
+- Contato de imprensa e eventos.
 - Nome completo e data de nascimento (dados do Tapology, a confirmar).
 
 ## Fontes
 
+- RELATO (dono do projeto, 11/11/2026): Instagram oficial `@arthurcannibal`, com mais de 11 mil
+  seguidores; WhatsApp de contato para patrocínio; endereços dos parceiros (Move Nutrição e
+  Tarumã no Instagram, No Talk em notalk.com.br). O número de seguidores não foi conferido no
+  perfil.
 - Respostas do Arthur (10/11/2026) e legendas do Instagram dele.
 - Tapology: perfil Arthur "The Cannibal" Ferreira.
 - Sherdog: Samurai Fight 7.

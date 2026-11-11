@@ -25,7 +25,7 @@ decisões de página: `docs/plan-redesenho-poster-fixo.md`. Os valores de cor e 
 | Ele vence | 89% de vitórias em 9 lutas, cartel 8–1 | Cartel, número gigante |
 | Ele resolve a luta | 3 nocautes e 2 finalizações em 8 vitórias | Cartel, linha de destaque |
 | Ele tem base e equipe | Muay Thai desde os 16, Equipe Kairós, Brasília Luta Livre | Equipe |
-| Ele tem história própria | apelido do quartel, família | Hero e Trajetória |
+| Ele tem história própria | apelido do quartel, família | Hero e Mentalidade |
 
 Por público:
 
@@ -99,7 +99,7 @@ Por contexto:
 |---|---|---|
 | Número | seco | "89% de vitórias" |
 | Chamada a patrocinador | convite direto | "Sua marca ao lado de um lutador de Brasília com 8 vitórias em 9 lutas." |
-| Trajetória | fala dele, entre aspas, com origem | "Fome de vencer: algo que não se ensina." |
+| Mentalidade | fala dele, entre aspas, com origem | "Fome de vencer: algo que não se ensina." |
 
 Frase entre aspas e com o nome dele só quando ele disse e o perfil registra. Frase criada para o
 site ("Sede de sangue. Fome de vitória.") sai sem aspas e sem assinatura.
@@ -119,5 +119,5 @@ for confirmada (o rótulo é só "Cartel").
 ## Sem medição
 
 - Reconhecimento da marca e leitura das mensagens por patrocinador ou organizador real.
-- Contraste do vermelho sobre foto (link final da Trajetória): só os pares sobre cor chapada
+- Contraste do vermelho sobre foto (link final da Mentalidade): só os pares sobre cor chapada
   foram calculados.
