@@ -24,6 +24,53 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
+- **11/11/2026 (noite), agente do template — redesenho, fases 3 a 6 feitas, SEM COMMIT (ler primeiro)**:
+  - **Onde está**: branch `feat/redesenho-poster-fixo`, a partir de `ebf1fa8`; todo o redesenho
+    (issue #6) está na árvore de trabalho, nada em stage. Commit, push e PR dependem de pedido do
+    Pedro.
+  - **O que existe**: Cartel que toca (`FightRecord` + `ui/RecordMarks`), Equipe, faixa de nomes,
+    chamada e rodapé novos; quatro fotos em `public/photos/`; entradas por CSS preso ao scroll.
+    Saíram `SystemsNominal.tsx`, `EyebrowBadge.tsx`, `AnimatedSection.tsx`, `HudFrame.tsx`, a
+    dependência `geist` e os campos `systems`, `footer.links` e `footer.buildLine`.
+  - **Validado**: MEDIDO lint, tipos e build com saída 0; `inspect.mjs` da skill com 0 FAIL e os
+    dois avisos esperados; seis tamanhos de tela no Chromium. Números, desvios e os três defeitos
+    corrigidos (um deles no scroll suave, anterior ao redesenho) em
+    `plan-redesenho-poster-fixo.md`, "Fases 3 a 6".
+  - **Sem medição**: celular real, Safari e Firefox; a regressão dos 48 pontos contra o `ebf1fa8`
+    não foi refeita depois da fase 2.
+  - **Bloqueia publicar**: destino de "Seja patrocinador" e dos itens de contato e parceiros
+    (hoje texto sem link); autor da IMG_0438 e da IMG_0554 e autorização dos fotógrafos; terceiros
+    identificáveis na IMG_7798 e na IMG_0554; o Arthur confirmar os nomes da faixa e o que o 8–1
+    cobre; `meta.siteUrl` ainda é `localhost`.
+  - **Recomendações em aberto**: remover `framer-motion` e `@phosphor-icons/react` (sem uso);
+    suíte E2E permanente.
+  - **Ferramenta**: o build de produção fica em `npx next start -p 3102 -H 0.0.0.0`; rodar
+    `next build` com ele no ar derruba as páginas, então pare o servidor antes. O Funnel do
+    Tailscale não está habilitado na tailnet: o acesso de fora da rede é só pela tailnet.
+- **11/11/2026 (tarde), agente do template — redesenho, fases 1 e 2 feitas, sem commit**:
+  o Pedro viu o Hero e manteve o título em uma linha. A Trajetória foi refeita com os mesmos
+  componentes (`PinnedTitle`, `SequenceQuote`): coluna à esquerda, títulos que trocam em 50% do
+  scroll, link "Ver o cartel" no fim. Saíram `HudFrame.tsx`, `.card-surface`, `.hud-tick` e os
+  campos `statusLabel`, `eyebrow`, `bottomBar`, `cards[].label` e `outro.kicker` do `cinematic`.
+  MEDIDO: lint, tsc e build com saída 0; 48 pontos de frame e de frase iguais aos do `ebf1fa8`.
+  Desvios do desenho em `plan-redesenho-poster-fixo.md`, "Fase 2". O bloco de números e o
+  rodapé seguem no visual antigo; `TEMPLATE.md` está desatualizado até a fase 5.
+- **11/11/2026 (tarde), agente do template — redesenho aprovado, fase 1 na parada do Pedro**:
+  o Pedro aprovou o PLAN `plan-redesenho-poster-fixo.md` (issue #6), a retirada do bloco
+  "Forjado no quartel" e a IMG_7798 larga. A parte B (#4) está em `ebf1fa8`; o trabalho segue no
+  branch `feat/redesenho-poster-fixo`, **sem commit**. Fase 1 implementada: tokens e fonte
+  (`globals.css`, `layout.tsx`), `Button`, `PinnedTitle`, `SequenceQuote`, Hero e Navbar novos.
+  A Trajetória, o bloco de números e o rodapé continuam no visual antigo até as fases 2 a 4, e
+  os links `#cartel`, `#equipe` e `#patrocinio` ainda não têm destino. MEDIDO: lint, tsc e build
+  com saída 0; os 48 pontos de frame e de frase das duas sequências iguais aos do `ebf1fa8`.
+  **Depende do Pedro**: ver as capturas do Hero e escolher o título em uma ou duas linhas
+  (item 8 da tabela do PLAN); só então começa a fase 2.
+- **11/11/2026 (tarde), agente do template — auditoria de design**: a pedido do Pedro, o site
+  foi auditado com a skill `design-taste-frontend`. Resultado, nota e direção proposta em
+  `auditoria-design.md`. Nenhum código foi alterado. **Depende do Pedro**: aprovar a direção,
+  dizer se o redesenho vale para o template ou só para o site do Arthur e escolher a coisa
+  viva; só depois disso entram PLAN, issue e implementação. A pasta `.taste-skill/` na raiz é
+  arquivo de trabalho da skill, sem rastreio no git e fora do `.gitignore`.
 - **11/11/2026 (manhã), agente do template — ESTADO ATUAL E PONTO DE RETOMADA (ler primeiro)**:
   - **Onde está**: branch `feat/componente-sequencia`, só local, a partir de `feat/seq-b-camadas`.
     Commits: `e432d67` (componente único, parte A, #4) e `2667d48` (frames do Hero em q60, #5).

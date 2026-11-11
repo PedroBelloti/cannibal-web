@@ -1,6 +1,7 @@
 # Mídias do site
 
-Fonte dos frames em `public/frames/` (Hero) e `public/frames2/` (Trajetória). Regra do cliente:
+Fonte dos frames em `public/frames/` (Hero) e `public/frames2/` (Trajetória) e das fotos em
+`public/photos/`. Regra do cliente:
 **nenhum rosto ou pessoa das fotos pode ser alterado**. Toda imagem aqui foi verificada por
 comparação de pixels contra a foto original.
 
@@ -22,6 +23,34 @@ Os frames do site saem do MP4 pelo script da skill `scroll-video-hero`
 `169 1600 60` e a B com `169 1600 70`. MEDIDO: a foto 1 dá 35 MB em 1920 q80, 17,3 MB em 1600
 q70 e 14,9 MB em 1600 q60; a Sequência B dá 6,8 MB em 1600 q70. A comparação de q70, q60, q50 e
 q40 da Sequência A está em `docs/plan-componente-sequencia.md` (issue #5).
+
+## Fotos das seções (`public/photos/`)
+
+Só rotação pelo EXIF, recorte, redução e conversão para WebP, sem perfil de cor embutido além do
+ICC. Originais em `~/Downloads` (fora do repositório).
+
+| Arquivo | Original | Seção | Crédito |
+|---|---|---|---|
+| `guarda-cage.webp` (1800 px) | `IMG_0438.JPG.jpeg` | Cartel | PENDENTE: autor a confirmar com o Arthur |
+| `muay-thai-kairos.webp` (2400 px) | `IMG_7798.JPEG` | Equipe | Foguinho Clicks |
+| `vitoria.webp` (1365 px, tamanho original) | `IMG_0554.JPG.jpeg` | Chamada | PENDENTE: autor a confirmar com o Arthur |
+| `protetor.webp` (1600 px) | `IMG_3709.JPEG`, recorte `2216x1385+316+680` | Rodapé | @m2l.cs |
+
+```bash
+D=~/Downloads; KEEP='+profile !icc,*'
+magick $D/IMG_0438.JPG.jpeg -auto-orient -resize 1800x $KEEP -quality 88 public/photos/guarda-cage.webp
+magick $D/IMG_7798.JPEG -auto-orient -resize 2400x $KEEP -quality 88 public/photos/muay-thai-kairos.webp
+magick $D/IMG_0554.JPG.jpeg -auto-orient $KEEP -quality 90 public/photos/vitoria.webp
+magick $D/IMG_3709.JPEG -auto-orient -crop 2216x1385+316+680 +repage -resize 1600x $KEEP -quality 88 public/photos/protetor.webp
+```
+
+MEDIDO em 2026-11-11: cada WebP comparado com o original passado pelo mesmo recorte e redução
+(`magick compare -metric RMSE`, valor normalizado): 0,0097, 0,0116, 0,0085 e 0,0103, na ordem da
+tabela. É a perda da compressão; não há 0 pixel de diferença como nas sequências, porque aqui o
+formato de saída tem perda.
+
+A IMG_7798 e a IMG_0554 mostram terceiros identificáveis (adversário, árbitro, equipe do evento,
+público).
 
 ## Por que o outpaint é colado por baixo da foto
 
@@ -46,3 +75,4 @@ conferido com a foto original passada pela mesma transformação e precisa dar 0
 ## Pendências
 
 - Autorização de uso das fotos pelos fotógrafos (@m2l.cs, @luigimoraess, Foguinho Clicks).
+- Autor da IMG_0438 e da IMG_0554; até lá `credit` fica `null` em `site.ts`.

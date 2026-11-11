@@ -1,63 +1,112 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { ArrowUpRight } from "@phosphor-icons/react";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { scrollProgress } from "@/components/ui/ScrollSequence";
+import { HERO_SECTION_ID, HERO_TEXT_FADE_END } from "@/lib/hero";
 import { site } from "@/content/site";
 
+type NavState = {
+  /** Há uma sequência atrás da barra; ela fica transparente para a foto aparecer. */
+  overSequence: boolean;
+  /** O título gigante do Hero já é o nome; o nome pequeno some para não repetir. */
+  heroOnScreen: boolean;
+  /** O botão do Hero ainda está visível; o da barra espera, para haver um só na tela. */
+  heroActionVisible: boolean;
+};
+
+const TOP_OF_PAGE: NavState = { overSequence: true, heroOnScreen: true, heroActionVisible: true };
+
+const FADE = "transition-[opacity,visibility] duration-200";
+const SHOWN = "visible opacity-100";
+const HIDDEN = "invisible opacity-0";
+
+function readNavState(header: HTMLElement): NavState {
+  // Pelo meio da barra: na emenda de duas sequências sempre há uma delas atrás dele.
+  const barMiddle = header.getBoundingClientRect().height / 2;
+  const overSequence = [...document.querySelectorAll("section.scroll-animation")].some((section) => {
+    const rect = section.getBoundingClientRect();
+    return rect.top <= barMiddle && rect.bottom > barMiddle;
+  });
+  const hero = document.getElementById(HERO_SECTION_ID);
+  return {
+    overSequence,
+    heroOnScreen: hero !== null && hero.getBoundingClientRect().bottom > 0,
+    heroActionVisible: hero !== null && scrollProgress(hero) < HERO_TEXT_FADE_END,
+  };
+}
+
+function sameState(a: NavState, b: NavState): boolean {
+  return (
+    a.overSequence === b.overSequence &&
+    a.heroOnScreen === b.heroOnScreen &&
+    a.heroActionVisible === b.heroActionVisible
+  );
+}
+
+/** Barra fixa: nome, links das seções e o botão principal, mostrados conforme o que está na tela. */
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement | null>(null);
+  const [state, setState] = useState(TOP_OF_PAGE);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      const header = headerRef.current;
+      if (!header) return;
+      const next = readNavState(header);
+      setState((prev) => (sameState(prev, next) ? prev : next));
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(measure);
+    };
+
+    schedule();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
   }, []);
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-40 transition-[background-color,backdrop-filter,border-color] duration-300 ${
-        scrolled
-          ? "border-b border-white/10 bg-black/60 backdrop-blur-2xl backdrop-saturate-150"
-          : "border-b border-transparent bg-transparent"
+      ref={headerRef}
+      className={`fixed inset-x-0 top-0 z-40 transition-colors duration-200 ${
+        state.overSequence ? "bg-transparent" : "bg-ground"
       }`}
     >
-      <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-8 md:py-5">
+      <div className="flex h-(--nav-h) items-center gap-6 px-(--margin)">
         <Link
           href="/"
-          className="flex items-center gap-2.5 font-mono text-[11px] font-semibold uppercase tracking-[0.32em] text-foreground"
+          className={`mr-auto text-small font-bold text-ink ${FADE} ${
+            state.heroOnScreen ? HIDDEN : SHOWN
+          }`}
         >
-          <span
-            aria-hidden
-            className="inline-block h-2 w-2 rounded-full bg-accent shadow-[0_0_12px_var(--accent-glow)]"
-          />
           {site.brand.name}
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav aria-label={site.nav.label} className="hidden items-center gap-6 md:flex">
           {site.nav.links.map((link) => (
             <a
-              key={link.label}
+              key={link.href}
               href={link.href}
-              className="font-mono text-[11px] uppercase tracking-[0.24em] text-zinc-400 transition-colors hover:text-foreground"
+              className="text-small font-semibold text-ink decoration-2 underline-offset-4 hover:underline"
             >
               {link.label}
             </a>
           ))}
         </nav>
 
-        <a
-          href={site.nav.cta.href}
-          className="group inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.05] px-4 py-2 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-foreground backdrop-blur-md transition-all duration-200 hover:bg-white/[0.1] active:translate-y-[1px]"
-        >
-          {site.nav.cta.label}
-          <ArrowUpRight
-            size={14}
-            weight="bold"
-            className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-          />
-        </a>
+        <span className={`${FADE} ${state.heroActionVisible ? HIDDEN : SHOWN}`}>
+          <Button href={site.nav.cta.href} size="sm">
+            {site.nav.cta.label}
+          </Button>
+        </span>
       </div>
     </header>
   );

@@ -1,109 +1,132 @@
-# Guia de preenchimento do template
+# Guia dos campos de texto
 
-Site de uma página com dois vídeos controlados por scroll. **Todo o texto fica em
-`src/content/site.ts`**: nenhum componente tem texto fixo. Cada valor vem com um indicador entre
-colchetes, `[campo: o que escrever · limite]`, que aparece na tela até ser substituído.
+Site de uma página: duas sequências controladas por scroll e cinco seções abaixo delas. **Todo o
+texto fica em `src/content/site.ts`**, tipado por `SiteContent`; nenhum componente tem texto fixo.
+Fatos sobre o atleta só entram com fonte em `docs/perfil-comunicacao.md`.
 
-## Como preencher (para agentes)
+A coluna "Tamanho" traz o texto atual como referência: é o que foi conferido no navegador de 390 a
+1920 px. Texto mais longo que o atual não foi testado; depois de trocar, rode
+`npm run lint && npx tsc --noEmit && npm run build` e role a página inteira em tela larga e em pé.
+Todo título precisa caber em duas linhas em qualquer largura.
 
-1. Leia o briefing: marca, produto, tom, público e idioma.
-2. Substitua **todos** os `[...]` em `src/content/site.ts`, respeitando os limites de caracteres
-   abaixo, porque o layout foi desenhado para eles. Apague os colchetes.
-3. Ajuste `meta.lang` (`pt-BR`, `en`, ...) e `meta.siteUrl` (domínio final).
-4. Confira se sobrou algum indicador:
-   `grep -nE '"[^"]*\[[^"]*\][^"]*"' src/content/site.ts` não pode retornar nada (o template
-   vazio tinha 74 linhas com indicadores).
-5. Rode `npm run lint && npm run build` e role a página inteira no navegador.
+**Não mexa** em `show`/`hide` das frases nem nos frames, a não ser que troque o vídeo (seção "Os
+vídeos").
 
-**Não mexa** em `show`/`hide` dos cards nem nos frames, a não ser que troque o vídeo (veja a
-seção "Os vídeos").
+## `meta`: aba do navegador e buscadores
 
-## O que vai em cada campo
+| Campo | O que escrever | Tamanho |
+|---|---|---|
+| `title` | Nome + o que ele é | até 60 caracteres |
+| `description` | O que é o site | 120 a 160 caracteres |
+| `lang` | Idioma do conteúdo | `pt-BR` |
+| `siteUrl` | URL final, com protocolo | PENDENTE: ainda `http://localhost:3000` |
 
-A coluna "Exemplo original" mostra o texto do site Iron Man, para dar referência de tom e tamanho.
+## `brand` e `nav`: barra fixa no topo
 
-### `meta`: aba do navegador e buscadores
-| Campo | O que escrever | Limite | Exemplo original |
-|---|---|---|---|
-| `title` | Marca + produto ou slogan | ≤ 60 caracteres | Stark Industries — Mark LXXXV |
-| `description` | O que é e por que rolar a página | 120–160 caracteres | Arc reactor online. J.A.R.V.I.S. standing by. Scroll to engage the Mark LXXXV. |
-| `lang` | Código do idioma do conteúdo | — | en |
-| `siteUrl` | URL final, com protocolo | — | http://localhost:3000 |
+| Campo | Onde aparece | Tamanho |
+|---|---|---|
+| `brand.name` | Canto esquerdo da barra (escondido enquanto o Hero está na tela) e nome na largura toda do rodapé | "Arthur The Cannibal"; o rodapé depende do divisor `9.35` em `Footer.tsx` |
+| `nav.label` | Nome da navegação para leitor de tela | curto |
+| `nav.links[]` | Links da barra na composição larga; `href` é a âncora da seção | 1 palavra cada |
+| `nav.cta` | Botão vermelho da barra | 2 palavras |
 
-### `brand` e `nav`: barra fixa no topo
-| Campo | O que escrever | Limite | Exemplo original |
-|---|---|---|---|
-| `brand.name` | Nome da marca; a barra `/` é estética | ≤ 20 caracteres | Stark / Industries |
-| `nav.links[].label` | Âncoras para as seções (`#systems`, `#footer`) | 1 palavra | Systems · Archive |
-| `nav.cta.label` | Verbo de ação do botão | 1 palavra | Engage |
+## `hero`: primeira sequência (`public/frames/`)
 
-### `hero`: primeiro vídeo (`public/frames/`), tela cheia
-O hero ocupa 400vh de rolagem. Os números entre parênteses mostram em que parte do scroll o
-texto aparece (0 = topo, 1 = fim).
+Os números entre parênteses são a fração do scroll da seção (0 = topo, 1 = fim).
 
-| Campo | Onde aparece | Limite | Exemplo original |
-|---|---|---|---|
-| `statusLabel` | Canto superior esquerdo, fixo | 2–3 palavras | Telemetry Link — Live |
-| `eyebrow` | Selo acima do título | 3 blocos separados por `//` | MARK LXXXV // STARK INDUSTRIES // ONLINE |
-| `title.line1` + `title.highlight` | Título H1 principal (some entre 0 e 0,08) | 1–3 palavras + 1–2 palavras | I am / Iron Man. |
-| `lead` | Parágrafo abaixo do H1 | ≤ 140 caracteres | Mark LXXXV nanotech suit. Arc reactor calibrated. Scroll to run a full system diagnostic… |
-| `statement.kicker` | Rótulo acima da frase gigante (entra em 0,10–0,18, só desktop) | 2–3 palavras | Protocol — Mk LXXXV |
-| `statement.line1 / line2Prefix / highlight` | Frase gigante em 2 linhas, a última palavra destacada | 1 + 1 + 1 palavra | Build / with / Devini |
-| `statement.caption` | Linha embaixo da frase gigante | ≤ 60 caracteres | Interfaces & products, engineered like the Mark LXXXV. |
-| `bottomBar.center` / `scrollHint` | Rodapé do vídeo | 2 blocos `//` / 1 palavra | J.A.R.V.I.S. // DIAGNOSTIC / Scroll |
-| `photoCredit` | Canto superior direito, fixo | crédito de quem fez a imagem do vídeo, ≤ 30 caracteres | Foto: @luigimoraess |
-| `cards[0..2].quote` | Cards de vidro à direita (0,10–0,30 · 0,35–0,55 · 0,60–0,80) | ≤ 60 caracteres | Sometimes you gotta run before you can walk. |
-| `cards[].speaker` / `source` | Autor / origem e ano | ≤ 20 / ≤ 24 caracteres | Tony Stark / IRON MAN — 2008 |
-| `loader.eyebrow` / `text` | Tela de carregamento dos frames | 2 blocos `//` / ≤ 24 caracteres | SUIT UP PROTOCOL // BOOTING / Loading Mark LXXXV |
+| Campo | Onde aparece | Tamanho |
+|---|---|---|
+| `title.top` / `title.bottom` | Título fixo: `top` no canto superior esquerdo, `bottom` no inferior direito (tela larga) ou acima do texto de apoio (tela em pé) | 1 palavra / 2 palavras; `bottom` fica numa linha só |
+| `lead` | Texto de apoio embaixo à esquerda; some no começo do scroll (`HERO_TEXT_FADE_END`) | até 130 caracteres |
+| `cta` | Botão abaixo do texto de apoio, some junto com ele | 2 palavras |
+| `photoCredit` | Canto superior direito, fixo | até 30 caracteres |
+| `cards[0..2]` | Frases soltas, uma por vez, no lugar do texto de apoio (0,10–0,30 · 0,35–0,55 · 0,60–0,80): `quote`, `speaker`, `source` | frase até 60 caracteres |
+| `loader.text` | Tela de carga dos frames | até 24 caracteres |
 
-### `cinematic`: segundo vídeo (`public/frames2/`), a história em 3 beats
-| Campo | Onde aparece | Limite | Exemplo original |
-|---|---|---|---|
-| `statusLabel` | Canto superior esquerdo | 2–3 palavras | Flight Log — Archived |
-| `eyebrow` | Selo à direita | 2 blocos `//` | TITAN II // FINAL FRAME |
-| `titleBefore` | Título da 1ª metade (some entre 0,42 e 0,52) | 1–3 + 1 palavra | I am / Inevitable. |
-| `titleAfter` | Título da 2ª metade, no lugar do anterior (0,48–0,58) | 1–3 + 1–2 palavras | And I am / Iron Man. |
-| `lead` | Parágrafo abaixo dos títulos | ≤ 120 caracteres | Endgame — the snap heard across the universe… |
-| `cards[].label` | Número + nome do beat | `0N — 1 palavra` | 01 — Ignition · 02 — Sync · 03 — Aftermath |
-| `cards[].quote` | Fala de cada beat; casa com o que o vídeo mostra | ≤ 60 (o 3º, ≤ 80) caracteres | Yeah, I can fly. |
-| `cards[].speaker` / `source` | Autor / origem | igual ao hero | Tony Stark / IRON MAN 3 — 2013 |
-| `bottomBar.left / center / scrollHint` | Rodapé do vídeo | blocos `//` | MARK III // ARCHIVE · J.A.R.V.I.S. // PLAYBACK · Scroll |
-| `outro.kicker` + `outro.cta` | Botão que aparece no fim (0,86+) e leva à próxima seção | 2 palavras cada | Next — engage / Open diagnostics |
-| `loader` | Tela de carregamento | igual ao hero | FLIGHT LOG // RESTORING / Rendering Mark III |
+## `cinematic`: segunda sequência (`public/frames2/`), `#trajetoria`
 
-O que o vídeo mostra em cada beat, para escrever falas que combinem com a imagem:
-1. **0,10–0,30**: silhueta num campo de batalha vermelho, com poeira e destroços.
-2. **0,35–0,55**: a câmera se aproxima e o fundo vermelho vira cinza claro.
-3. **0,60–0,80**: gesto final e desintegração em partículas douradas.
+| Campo | Onde aparece | Tamanho |
+|---|---|---|
+| `titleBefore` | Título da primeira metade, coluna à esquerda (`top` em cima, `bottom` embaixo) | 1 + 2 palavras |
+| `titleAfter` | Entra no lugar do anterior em 0,50 (`CINE_TITLE_SWAP`) | 1 + 2 palavras |
+| `lead` | Texto de apoio no meio da coluna; some até 0,08 (`CINE_INTRO_FADE_END`) | até 120 caracteres |
+| `cards[0..2]` | Frases no lugar do texto de apoio, mesmos intervalos do Hero | frase até 65 caracteres |
+| `outro` | Link de texto no fim (0,86 em diante, `CINE_OUTRO`) | 3 palavras |
+| `loader.text` | Tela de carga | até 24 caracteres |
 
-### `systems`: seção estática com números
-| Campo | O que escrever | Limite | Exemplo original |
-|---|---|---|---|
-| `eyebrow` | Selo da seção | 2 blocos `//` | J.A.R.V.I.S. // SYSTEMS NOMINAL |
-| `title.lead` + `title.highlight` | Título H2 | 2–4 palavras + 1–2 palavras | And I… am… / Iron Man. |
-| `body` | História ou proposta, que apresenta os números ao lado | 200–280 caracteres | A snap heard around the universe. The Mark LXXXV was engineered in six hours… |
-| `cta` | Botão | 2–3 palavras | Open Suit Archive |
-| `stats[0..3]` | 4 métricas: `label` curto, `value` com unidade, `note` explicativa | label ≤ 18, value ≤ 9, note ≤ 32 caracteres | Suit Integrity / 99.2% / Nanoparticle lattice |
+O que os frames mostram: luz fria de academia no começo e luz quente no fim; a virada fica perto
+da metade, onde o título troca.
 
-### `footer`
-| Campo | O que escrever | Limite | Exemplo original |
-|---|---|---|---|
-| `legal` | © empresa, endereço, linha de marca | ≤ 140 caracteres | © Stark Industries — 10880 Malibu Point, 90265… |
-| `links[0..5]` | 6 itens (produtos, cases, páginas): `name` + `note` + `href` | ≤ 14 / ≤ 20 caracteres | Mark I / Cave, Afghanistan |
-| `buildLine` | Versão · produto · status | ≤ 60 caracteres | Build 2026.04.21 · Mark LXXXV · J.A.R.V.I.S. Online |
-| `disclaimer` | Aviso legal ou de uso | ≤ 50 caracteres | Proof of concept — fan art, no commercial use |
+## `record`: cartel, `#cartel`
+
+| Campo | Onde aparece | Tamanho |
+|---|---|---|
+| `title` | Título da seção | até 30 caracteres |
+| `score` | Placar gigante embaixo à esquerda | "8–1" |
+| `methods[]` | Uma linha por método: `label`, `count` marcas, e `result`, a frase mostrada ao tocar | `label` 1 palavra; `result` até 45 caracteres |
+| `loss` | Linha da derrota, marca vazada, sem toque | 1 palavra |
+| `legend` | Frase com nenhum método escolhido; diz os números sem depender do toque | até 60 caracteres |
+| `filterLabel` | Nome do grupo de botões para leitor de tela | curto |
+| `photo` | Metade direita na tela larga; na tela em pé entra na pilha da seção | ver "Fotos" |
+
+A soma dos `count` mais `loss.count` tem de bater com `score`, `title`, `legend` e
+`sponsorCall.body`. Nada confere isso no código.
+
+## `team`: equipe, `#equipe`
+
+| Campo | Onde aparece | Tamanho |
+|---|---|---|
+| `photo` | Foto na largura toda; o crédito fica no canto superior direito dela | ver "Fotos" |
+| `title` | Abaixo da foto, à esquerda | até 25 caracteres |
+| `body` | Coluna estreita à direita do título | até 280 caracteres |
+
+## `names`: faixa de nomes
+
+| Campo | Onde aparece | Tamanho |
+|---|---|---|
+| `items[]` | Nomes grandes andando para a esquerda | 6 nomes; menos que 4 deixa a volta visível em tela larga (não medido) |
+| `caption` | Frase abaixo da faixa, dizendo quem são | até 60 caracteres |
+| `label` | Nome da seção para leitor de tela | curto |
+
+Só entram nomes com fonte no perfil. "Jungle Fight" fica fora: o perfil registra só a seletiva.
+
+## `sponsorCall`: chamada, `#patrocinio`
+
+| Campo | Onde aparece | Tamanho |
+|---|---|---|
+| `photo` | Metade esquerda | ver "Fotos" |
+| `title` | Título | 2 palavras |
+| `body` | Uma frase | até 75 caracteres |
+| `cta` | Botão vermelho. PENDENTE: destino final (WhatsApp, e-mail ou Instagram); hoje leva a `#contato` | 2 palavras |
+
+## `footer`, `#contato`
+
+| Campo | Onde aparece | Tamanho |
+|---|---|---|
+| `menu.links[]` | Menu grande das seções | 1 palavra cada |
+| `contact` / `partners` | Dois blocos: `title` e itens com `name`, `note` opcional e `href` opcional | `name` até 20, `note` até 16 caracteres |
+| `photo` | Recorte do retrato, com crédito embaixo | ver "Fotos" |
+| `legal` | Linha de direitos e créditos das fotos | até 110 caracteres |
+| `disclaimer` | Aviso abaixo dos parceiros | até 50 caracteres |
+
+Item sem `href` aparece como texto, não como link. PENDENTE: hoje nenhum item de contato ou
+parceiro tem destino.
+
+## Fotos
+
+Cada foto é `{ src, alt, credit }`. `src` aponta para `public/photos/`; origem, comando de recorte
+e verificação estão em `media/README.md`. `alt` descreve o que se vê. `credit` é `null` enquanto o
+autor não for confirmado, e nesse caso a página não mostra crédito para ela. Regra do cliente:
+nenhum rosto ou pessoa das fotos pode ser alterado, só recorte e redução.
 
 ## Os vídeos
 
-- `public/frames/` e `public/frames2/`: 169 WebP cada, 1920×1080, extraídos com o script da
-  skill `scroll-video-hero`. Origem e retoques em `media/README.md`. A configuração está em `src/lib/hero.ts` e `src/lib/cinematic.ts`.
-- Os vídeos atuais usam a imagem do Iron Man e de um ator real. Servem como **demonstração**, não
-  para uso comercial. Para um cliente, gere um vídeo original com a skill `scroll-video-hero`,
-  depois ajuste `FRAME_COUNT` e o caminho dos frames e reposicione os `show`/`hide` dos cards
-  conforme os beats do novo vídeo.
+`public/frames/` e `public/frames2/`: 169 WebP cada, gerados por `media/seq-a/` e `media/seq-b/`
+(`media/README.md`). A configuração está em `src/lib/hero.ts` e `src/lib/cinematic.ts`. Trocou o
+vídeo: ajuste `FRAME_COUNT` e o caminho, reposicione os `show`/`hide` das frases e os marcos de
+texto, e confira o foco da tela em pé (`AGENTS.md`).
 
 ## Cores
 
-Os tokens ficam em `src/app/globals.css`. Troque só `--accent`: `--accent-soft` e `--accent-glow`
-(o brilho dos pontos e selos) derivam dele por `color-mix`. O fundo `#0a0a0b`
-precisa combinar com o fundo do vídeo, senão a borda do canvas aparece.
+Os tokens ficam em `src/app/globals.css`. `--bg` precisa ser igual ao fundo dos frames, senão a
+borda do canvas aparece. `--accent` é usado só no botão principal e nas marcas acesas do cartel.

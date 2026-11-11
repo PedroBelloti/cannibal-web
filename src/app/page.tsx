@@ -1,7 +1,10 @@
 import { Navbar } from "@/components/ui/Navbar";
 import { Hero } from "@/components/sections/Hero";
 import { CinematicReveal } from "@/components/sections/CinematicReveal";
-import { SystemsNominal } from "@/components/sections/SystemsNominal";
+import { FightRecord } from "@/components/sections/FightRecord";
+import { Team } from "@/components/sections/Team";
+import { NamesBand } from "@/components/sections/NamesBand";
+import { SponsorCall } from "@/components/sections/SponsorCall";
 import { Footer } from "@/components/sections/Footer";
 
 export default function Home() {
@@ -11,7 +14,10 @@ export default function Home() {
       <main>
         <Hero />
         <CinematicReveal />
-        <SystemsNominal />
+        <FightRecord />
+        <Team />
+        <NamesBand />
+        <SponsorCall />
       </main>
       <Footer />
     </>

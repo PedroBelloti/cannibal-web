@@ -11,51 +11,68 @@ export type TimedCard = {
   id: string;
   show: number;
   hide: number;
-  label?: string;
   quote: string;
   speaker: string;
   source: string;
 };
 
-export type Headline = { line1: string; highlight: string };
+/** Título preso em dois cantos da sequência: `top` em cima, `bottom` embaixo. */
+export type Headline = { top: string; bottom: string };
+
+/**
+ * Foto de `public/photos/` (origem e recorte em `media/README.md`). `credit` fica `null` enquanto
+ * o autor não for confirmado; nesse caso a página não mostra crédito para ela.
+ */
+export type Photo = { src: string; alt: string; credit: string | null };
+
+/** Método de vitória do cartel: `count` marcas e a frase mostrada quando ele é escolhido. */
+export type RecordMethod = { id: string; label: string; count: number; result: string };
+
+/** Bloco do rodapé. Item sem `href` aparece como texto, não como link. */
+export type FooterGroup = {
+  title: string;
+  items: { name: string; note?: string; href?: string }[];
+};
 
 export type SiteContent = {
   meta: { lang: string; title: string; description: string; siteUrl: string };
   brand: { name: string };
-  nav: { links: Link[]; cta: Link };
+  nav: { label: string; links: Link[]; cta: Link };
   hero: {
-    statusLabel: string;
-    eyebrow: string;
     title: Headline;
     lead: string;
-    statement: { kicker: string; line1: string; line2Prefix: string; highlight: string; caption: string };
-    bottomBar: { center: string; scrollHint: string };
+    cta: Link;
     photoCredit: string;
     cards: TimedCard[];
-    loader: { eyebrow: string; text: string };
+    loader: { text: string };
   };
   cinematic: {
-    statusLabel: string;
-    eyebrow: string;
     titleBefore: Headline;
     titleAfter: Headline;
     lead: string;
-    bottomBar: { left: string; center: string; scrollHint: string };
     cards: TimedCard[];
-    outro: { kicker: string; cta: Link };
-    loader: { eyebrow: string; text: string };
+    outro: Link;
+    loader: { text: string };
   };
-  systems: {
-    eyebrow: string;
-    title: { lead: string; highlight: string };
-    body: string;
-    cta: Link;
-    stats: { label: string; value: string; note: string }[];
+  record: {
+    title: string;
+    score: string;
+    /** Diz os números sem depender do toque; é o que aparece com nenhum método escolhido. */
+    legend: string;
+    filterLabel: string;
+    methods: RecordMethod[];
+    loss: { label: string; count: number };
+    photo: Photo;
   };
+  team: { title: string; body: string; photo: Photo };
+  names: { label: string; items: string[]; caption: string };
+  sponsorCall: { title: string; body: string; cta: Link; photo: Photo };
   footer: {
+    menu: { label: string; links: Link[] };
+    contact: FooterGroup;
+    partners: FooterGroup;
+    photo: Photo;
     legal: string;
-    links: { name: string; note: string; href: string }[];
-    buildLine: string;
     disclaimer: string;
   };
 };
@@ -74,32 +91,22 @@ export const site: SiteContent = {
   },
 
   nav: {
+    label: "Seções do site",
     links: [
-      { label: "Trajetória", href: "#systems" },
-      { label: "Patrocínio", href: "#footer" },
+      { label: "Trajetória", href: "#trajetoria" },
+      { label: "Cartel", href: "#cartel" },
+      { label: "Equipe", href: "#equipe" },
     ],
-    cta: { label: "Patrocine", href: "#footer" },
+    cta: { label: "Seja patrocinador", href: "#patrocinio" },
   },
 
   hero: {
-    statusLabel: "Fome de vencer",
-    eyebrow: "MMA // MUAY THAI // BRASÍLIA DF",
     title: {
-      line1: "Arthur",
-      highlight: "The Cannibal",
+      top: "Arthur",
+      bottom: "The Cannibal",
     },
     lead: "Lutador de MMA de Brasília, com base no Muay Thai desde os 16 anos. Disciplina de quartel, fé na família e fome de vencer.",
-    statement: {
-      kicker: "Forjado no quartel",
-      line1: "Disciplina",
-      line2Prefix: "e",
-      highlight: "instinto",
-      caption: "Disciplina de quartel com instinto agressivo de luta.",
-    },
-    bottomBar: {
-      center: "VAMOS // VENCER",
-      scrollHint: "Role",
-    },
+    cta: { label: "Seja patrocinador", href: "#patrocinio" },
     photoCredit: "Foto: @luigimoraess",
     cards: [
       {
@@ -108,7 +115,7 @@ export const site: SiteContent = {
         hide: 0.3,
         quote: "CANNIBAL é gíria militar para um cara aloprado e sanguíneo.",
         speaker: "Arthur Henrique",
-        source: "Sobre o apelido",
+        source: "sobre o apelido",
       },
       {
         id: "hero-2",
@@ -116,7 +123,7 @@ export const site: SiteContent = {
         hide: 0.55,
         quote: "Fome de vencer: algo que não se ensina.",
         speaker: "Arthur Henrique",
-        source: "Instagram",
+        source: "no Instagram",
       },
       {
         id: "hero-3",
@@ -124,99 +131,151 @@ export const site: SiteContent = {
         hide: 0.8,
         quote: "Agora somos três.",
         speaker: "Arthur Henrique",
-        source: "Instagram",
+        source: "no Instagram",
       },
     ],
     loader: {
-      eyebrow: "ARTHUR // CANNIBAL",
       text: "Aquecendo o treino",
     },
   },
 
   cinematic: {
-    statusLabel: "A trajetória",
-    eyebrow: "CAPÍTULO 02 // TRAJETÓRIA",
     titleBefore: {
-      line1: "Forjado no",
-      highlight: "ringue",
+      top: "Forjado",
+      bottom: "no ringue",
     },
     titleAfter: {
-      line1: "Movido pela",
-      highlight: "família",
+      top: "Movido",
+      bottom: "pela família",
     },
     lead: "Muay Thai aos 16 anos, o apelido no quartel, a Equipe Kairós: uma trajetória de disciplina e gratidão.",
-    bottomBar: {
-      left: "MUAY THAI // QUARTEL",
-      center: "DISCIPLINA // FAMÍLIA",
-      scrollHint: "Continue",
-    },
     cards: [
       {
         id: "cine-1",
         show: 0.1,
         hide: 0.3,
-        label: "01 — Disciplina",
         quote: "Treine duro, construa sua imagem e faça seu nome ser conhecido.",
         speaker: "Arthur Henrique",
-        source: "Instagram",
+        source: "no Instagram",
       },
       {
         id: "cine-2",
         show: 0.35,
         hide: 0.55,
-        label: "02 — Coragem",
         quote: "Quem prefere a zona de conforto jamais mudará sua realidade.",
         speaker: "Arthur Henrique",
-        source: "Instagram",
+        source: "no Instagram",
       },
       {
         id: "cine-3",
         show: 0.6,
         hide: 0.8,
-        label: "03 — Vencer",
         quote: "VAMOS VENCER.",
         speaker: "Arthur Henrique",
-        source: "Instagram",
+        source: "no Instagram",
       },
     ],
-    outro: {
-      kicker: "Próximo round",
-      cta: { label: "Ver números", href: "#systems" },
-    },
+    outro: { label: "Ver o cartel", href: "#cartel" },
     loader: {
-      eyebrow: "CAPÍTULO // 02",
       text: "Contando a trajetória",
     },
   },
 
-  systems: {
-    eyebrow: "CARTEL // NÚMEROS",
-    title: {
-      lead: "Por trás do",
-      highlight: "lutador",
-    },
-    body: "Arthur Henrique treina Muay Thai há 7 anos. Hoje luta pela Equipe Kairós, com Railson Rodrigues no MMA e striking, e pela Brasília Luta Livre, com Washington Sena no grappling. O apelido nasceu no Exército, na Força Tática do QGEx.",
-    cta: { label: "Seja patrocinador", href: "#footer" },
-    stats: [
-      { label: "Cartel", value: "8-1", note: "3 KO, 3 decisões, 2 finalizações" },
-      { label: "Muay Thai", value: "7 anos", note: "Treinando desde os 16 anos" },
-      { label: "Equipe", value: "Kairós", note: "Com Railson Rodrigues" },
-      { label: "Categoria", value: "61 kg", note: "Peso Galo" },
+  record: {
+    title: "Oito vitórias em nove lutas",
+    score: "8–1",
+    legend: "3 nocautes, 3 decisões e 2 finalizações. 1 derrota.",
+    filterLabel: "Vitórias por método",
+    methods: [
+      { id: "ko", label: "Nocaute", count: 3, result: "3 das 8 vitórias vieram por nocaute." },
+      { id: "decision", label: "Decisão", count: 3, result: "3 das 8 vitórias vieram por decisão." },
+      {
+        id: "submission",
+        label: "Finalização",
+        count: 2,
+        result: "2 das 8 vitórias vieram por finalização.",
+      },
     ],
+    loss: { label: "Derrota", count: 1 },
+    photo: {
+      src: "/photos/guarda-cage.webp",
+      alt: "Arthur em guarda dentro do cage, de luvas pretas e bermuda azul.",
+      // PENDENTE: autor da foto, a confirmar com o Arthur (docs/plan-redesenho-poster-fixo.md, item 5).
+      credit: null,
+    },
+  },
+
+  team: {
+    title: "Sete anos de Muay Thai",
+    body: "Arthur Henrique treina Muay Thai há 7 anos. Hoje luta pela Equipe Kairós, com Railson Rodrigues no MMA e striking, e pela Brasília Luta Livre, com Washington Sena no grappling. O apelido nasceu no Exército, na Força Tática do QGEx. Luta no peso galo, até 61 kg.",
+    photo: {
+      src: "/photos/muay-thai-kairos.webp",
+      alt: "Arthur, de calção branco com KAIRÓS escrito, troca golpes com o adversário num ringue de Muay Thai, com o público ao fundo.",
+      credit: "Foto: Foguinho Clicks",
+    },
+  },
+
+  names: {
+    label: "Equipes, eventos e parceiros",
+    items: [
+      "Equipe Kairós",
+      "Brasília Luta Livre",
+      "Samurai Fight 7",
+      "Move Nutrição",
+      "No Talk",
+      "Tarumã",
+    ],
+    caption: "Onde ele treina, onde venceu e quem já está com ele.",
+  },
+
+  sponsorCall: {
+    title: "Vamos vencer.",
+    body: "Sua marca ao lado de um lutador de Brasília com 8 vitórias em 9 lutas.",
+    // PENDENTE: destino final (WhatsApp, e-mail ou Instagram), a definir pelo Pedro; até lá leva
+    // ao bloco de contato do rodapé.
+    cta: { label: "Seja patrocinador", href: "#contato" },
+    photo: {
+      src: "/photos/vitoria.webp",
+      alt: "Arthur beija a luva, com o outro braço erguido pelo árbitro, depois de uma vitória no cage.",
+      // PENDENTE: autor da foto, a confirmar com o Arthur (docs/plan-redesenho-poster-fixo.md, item 5).
+      credit: null,
+    },
   },
 
   footer: {
+    menu: {
+      label: "Mapa do site",
+      links: [
+        { label: "Trajetória", href: "#trajetoria" },
+        { label: "Cartel", href: "#cartel" },
+        { label: "Equipe", href: "#equipe" },
+        { label: "Patrocínio", href: "#patrocinio" },
+      ],
+    },
+    // PENDENTE: URL do Instagram oficial e destinos de contato e dos parceiros
+    // (docs/roteiro-grade-midias.md). Sem `href` o item sai como texto.
+    contact: {
+      title: "Contato",
+      items: [
+        { name: "Instagram", note: "Perfil oficial" },
+        { name: "Patrocínio", note: "Seja parceiro" },
+        { name: "Imprensa e eventos" },
+      ],
+    },
+    partners: {
+      title: "Parceiros",
+      items: [
+        { name: "Move Nutrição", note: "Cupom CANNIBAL" },
+        { name: "No Talk", note: "Cupom CANNIBAL" },
+        { name: "Tarumã", note: "Gama e Sudoeste" },
+      ],
+    },
+    photo: {
+      src: "/photos/protetor.webp",
+      alt: "Rosto de Arthur de queixo erguido, mostrando o protetor bucal com CANNIBAL escrito.",
+      credit: "Foto: @m2l.cs",
+    },
     legal: "© 2026 Arthur The Cannibal. Fotos: @m2l.cs, @luigimoraess, Foguinho Clicks. Todos os direitos reservados.",
-    links: [
-      // PENDENTE: URL do Instagram oficial e destinos dos demais links (docs/roteiro-grade-midias.md).
-      { name: "Instagram", note: "Perfil oficial", href: "#" },
-      { name: "Patrocínio", note: "Seja parceiro", href: "#" },
-      { name: "Contato", note: "Imprensa e eventos", href: "#" },
-      { name: "Move Nutrição", note: "Cupom CANNIBAL", href: "#" },
-      { name: "No Talk", note: "Cupom CANNIBAL", href: "#" },
-      { name: "Tarumã", note: "Gama e Sudoeste", href: "#" },
-    ],
-    buildLine: "Brasília DF // Vamos vencer",
     disclaimer: "Cupons sujeitos às regras de cada parceiro.",
   },
 };

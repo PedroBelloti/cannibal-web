@@ -1,3 +1,6 @@
+/** Id da section do Hero; a navbar lê o progresso dela para saber o que mostrar. */
+export const HERO_SECTION_ID = "inicio";
+
 export const FRAME_COUNT = 169;
 
 export const framePath = (n: number) =>

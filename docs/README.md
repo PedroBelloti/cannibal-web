@@ -6,6 +6,8 @@ Site oficial do lutador de MMA Arthur Henrique, The Cannibal (Brasília DF).
 |---|---|---|
 | `perfil-comunicacao.md` | Quem ele é, ficha, pilares da narrativa, tom de voz, riscos e pendências | Todos: base de qualquer texto ou peça |
 | `roteiro-grade-midias.md` | Conceito, grade das 2 sequências de vídeo (A e B), JSON de textos do site e autochecagem | Agente do template e geração de mídias |
+| `auditoria-design.md` | Medição do que o site tem de genérico, nota e direção de design proposta | Quem for mexer na aparência |
+| `plan-redesenho-poster-fixo.md` | Plano do redesenho: decisões, textos, fotos, fases e validação | Quem for implementar ou aprovar |
 | `HANDOFF.md` | Divisão de tarefas, status e recados entre quem trabalha no projeto | Todos |
 
 ## Regras do projeto

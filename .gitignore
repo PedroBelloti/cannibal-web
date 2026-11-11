@@ -42,3 +42,6 @@ next-env.d.ts
 
 # python
 __pycache__/
+
+# capturas e medições da skill de design
+.taste-skill/

@@ -8,7 +8,6 @@ import {
   type ReactNode,
   type RefObject,
 } from "react";
-import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 import { useFramePreload } from "@/components/ui/useFramePreload";
 
 // Sem "use client": as funções nas props não são serializáveis, então este componente só pode
@@ -34,7 +33,7 @@ type Props = {
    */
   loading?: "eager" | "lazy";
   cards: readonly SequenceCard[];
-  loader: { eyebrow: string; text: string };
+  loader: { text: string };
   id?: string;
   /** Classes extras da section; a altura vem de `.scroll-animation` em globals.css. */
   className?: string;
@@ -52,7 +51,8 @@ const PORTRAIT_MAX_RATIO = 1;
 const LANDSCAPE_MIN_RATIO = 1.25;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
-function scrollProgress(section: HTMLElement): number {
+/** Fração 0–1 do scroll de uma section de sequência: a conta que posiciona frames e cards. */
+export function scrollProgress(section: HTMLElement): number {
   const scrollable = section.offsetHeight - window.innerHeight;
   if (scrollable <= 0) return 0;
   return Math.min(1, Math.max(0, -section.getBoundingClientRect().top / scrollable));
@@ -239,7 +239,7 @@ export function ScrollSequence({
   return (
     <section ref={sectionRef} id={id} className={sectionClass}>
       <div
-        className="sticky top-0 min-h-[100dvh] w-full overflow-hidden bg-background"
+        className="sticky top-0 min-h-[100dvh] w-full overflow-hidden bg-ground"
         style={{ height: "100dvh", willChange: "transform", transform: "translateZ(0)" }}
       >
         <canvas
@@ -248,34 +248,25 @@ export function ScrollSequence({
           style={{ willChange: "contents", transform: "translateZ(0)" }}
         />
         {children(visibleIds)}
-        {!loaded && <SequenceLoader {...loader} progress={loadProgress} />}
+        {!loaded && <SequenceLoader text={loader.text} progress={loadProgress} />}
       </div>
     </section>
   );
 }
 
-function SequenceLoader({
-  eyebrow,
-  text,
-  progress,
-}: {
-  eyebrow: string;
-  text: string;
-  progress: number;
-}) {
+function SequenceLoader({ text, progress }: { text: string; progress: number }) {
   const percent = Math.round(progress * 100);
   return (
-    <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-5 bg-background px-6">
-      <EyebrowBadge>{eyebrow}</EyebrowBadge>
-      <div className="h-px w-60 bg-white/10 md:w-80">
+    <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-4 bg-ground px-(--margin)">
+      <p className="text-small font-semibold tabular-nums text-ink">
+        {text} &middot; {percent}%
+      </p>
+      <div className="h-1 w-60 bg-surface md:w-80">
         <div
-          className="h-full bg-accent transition-[width] duration-150 ease-out"
+          className="h-full bg-ink transition-[width] duration-150 ease-out"
           style={{ width: `${percent}%` }}
         />
       </div>
-      <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-zinc-500">
-        {text} &nbsp;&middot;&nbsp; {percent}%
-      </p>
     </div>
   );
 }

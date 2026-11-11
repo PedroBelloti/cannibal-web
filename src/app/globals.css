@@ -1,32 +1,77 @@
 @import "tailwindcss";
 
+/* Composição larga: de 1024 px para cima ou qualquer tela deitada. Fora disso, a pilha em pé. */
+@custom-variant wide {
+  @media (min-width: 64rem), (orientation: landscape) {
+    @slot;
+  }
+}
+
 :root {
-  --background: #0a0a0b;
-  --foreground: #e4e4e7;
-  --muted: #71717a;
+  /* O fundo precisa ser o mesmo dos frames, senão a borda do canvas aparece. */
+  --bg: #0a0a0b;
+  --surface: #18181b;
+  --ink: #f4f4f5;
+  --muted: #a1a1aa;
   --accent: #d72631;
-  --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
-  --accent-glow: color-mix(in srgb, var(--accent) 85%, transparent);
-  --card-bg: rgba(24, 24, 27, 0.55);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --hud-line: rgba(255, 255, 255, 0.1);
+  --accent-hover: color-mix(in srgb, var(--accent) 86%, black);
+  --scrim: rgb(10 10 11 / 0.28);
+
+  --margin: clamp(1rem, 2.8vw, 2.5rem);
+  --nav-h: 3.5rem;
+  /* Altura reservada, na pilha em pé, para o texto de apoio e o botão abaixo do título. */
+  --slot-h: 10.5rem;
+
+  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 2.25rem);
+  --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
+  --step-display: 15vw;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --nav-h: 4.5rem;
+  }
+}
+
+@media (min-width: 64rem), (orientation: landscape) {
+  :root {
+    --step-display: clamp(3.5rem, 7.5vw, 11rem);
+  }
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-ground: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
-  --color-accent-soft: var(--accent-soft);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-accent-hover: var(--accent-hover);
+  --color-scrim: var(--scrim);
+
+  --font-sans: var(--font-schibsted), system-ui, sans-serif;
+
+  --text-small: var(--step-small);
+  --text-small--line-height: 1.4;
+  --text-body: var(--step-body);
+  --text-body--line-height: 1.4;
+  --text-lead: var(--step-lead);
+  --text-lead--line-height: 1.15;
+  --text-head: var(--step-head);
+  --text-head--line-height: 1;
+  --text-display: var(--step-display);
+  --text-display--line-height: 0.88;
+  --text-display--letter-spacing: -0.05em;
+  --text-display--font-weight: 800;
 }
 
 html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-schibsted), system-ui, sans-serif;
+  letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -35,17 +80,13 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-.card-surface {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 20px;
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  box-shadow:
-    0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
-    0 20px 40px -20px rgba(0, 0, 0, 0.6);
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
 }
 
+/* A altura entra na fórmula de progresso das sequências (AGENTS.md): não mexer sem reposicionar
+   os cards. */
 .scroll-animation {
   height: 400vh;
 }
@@ -62,22 +103,51 @@ body {
   }
 }
 
-.hud-tick {
-  background-image: linear-gradient(
-    90deg,
-    transparent 0 calc(100% - 1px),
-    var(--hud-line) calc(100% - 1px) 100%
-  );
-  background-size: 16px 100%;
+/* Entradas presas ao scroll. Sem suporte a `animation-timeline`, ou com movimento reduzido, nada
+   disto vale e o conteúdo fica parado e visível. Não usar na última tela: a faixa não se completa
+   sem scroll adiante. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .rise {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+
+    .rise-late {
+      animation-range: entry 14% cover 30%;
+    }
+
+    .drift {
+      animation: drift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
 }
 
-.grain::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  pointer-events: none;
-  opacity: 0.035;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}
+
+@keyframes drift {
+  from {
+    scale: 1.12;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .names-track {
+    animation: names-slide 45s linear infinite;
+  }
+}
+
+/* A faixa tem a lista duas vezes: metade da largura é uma volta inteira. */
+@keyframes names-slide {
+  to {
+    translate: -50% 0;
+  }
 }
