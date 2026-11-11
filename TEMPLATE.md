@@ -25,7 +25,7 @@ vídeos").
 
 | Campo | Onde aparece | Tamanho |
 |---|---|---|
-| `brand.name` | Canto esquerdo da barra (escondido enquanto o Hero está na tela) e nome na largura toda do rodapé | "Arthur The Cannibal"; o rodapé depende do divisor `9.35` em `Footer.tsx` |
+| `brand.name` | Canto esquerdo da barra (escondido enquanto o Hero está na tela) | "Arthur The Cannibal" |
 | `nav.label` | Nome da navegação para leitor de tela | curto |
 | `nav.links[]` | Links da barra na composição larga; `href` é a âncora da seção | 1 palavra cada |
 | `nav.cta` | Botão vermelho da barra | 2 palavras |
@@ -36,7 +36,7 @@ Os números entre parênteses são a fração do scroll da seção (0 = topo, 1 
 
 | Campo | Onde aparece | Tamanho |
 |---|---|---|
-| `title.top` / `title.bottom` | Título fixo: `top` no canto superior esquerdo, `bottom` no inferior direito (tela larga) ou acima do texto de apoio (tela em pé) | 1 palavra / 2 palavras; `bottom` fica numa linha só |
+| `title.top` / `title.bottom` | Também formam o nome na largura toda do rodapé (`bottom` em vermelho; depende do divisor `9.35` em `Footer.tsx`). Título fixo: `top` no canto superior esquerdo, `bottom` no inferior direito (tela larga) ou acima do texto de apoio (tela em pé) | 1 palavra / 2 palavras; `bottom` fica numa linha só |
 | `lead` | Texto de apoio embaixo à esquerda; some no começo do scroll (`HERO_TEXT_FADE_END`) | até 130 caracteres |
 | `cta` | Botão abaixo do texto de apoio, some junto com ele | 2 palavras |
 | `photoCredit` | Canto superior direito, fixo | até 30 caracteres |
@@ -113,7 +113,6 @@ Só entram nomes com fonte no perfil. "Jungle Fight" fica fora: o perfil registr
 
 Item sem `href` aparece como texto, não como link; endereço `http` abre em outra aba. O número
 de seguidores na nota do Instagram e em `sponsorCall.body` é digitado: mudou, revise os dois.
-PENDENTE: contato de imprensa e eventos.
 
 ## Fotos
 
@@ -134,4 +133,4 @@ texto, e confira o foco da tela em pé (`AGENTS.md`).
 Os tokens ficam em `src/app/globals.css`. `--bg` precisa ser igual ao fundo dos frames, senão a
 borda do canvas aparece. `--accent` marca o que leva a algum lugar ou responde ao toque: botão
 principal, marcas acesas ou sorteadas do cartel, a palavra de destino do link final da Mentalidade e o link
-apontado ou sorteado do menu do rodapé.
+apontado ou sorteado do menu do rodapé. A exceção é o apelido no nome do rodapé, que é assinatura.

@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/ui/Navbar";
+import { ScrollCue } from "@/components/ui/ScrollCue";
 import { Hero } from "@/components/sections/Hero";
 import { CinematicReveal } from "@/components/sections/CinematicReveal";
 import { FightRecord } from "@/components/sections/FightRecord";
@@ -20,6 +21,7 @@ export default function Home() {
         <SponsorCall />
       </main>
       <Footer />
+      <ScrollCue />
     </>
   );
 }

@@ -180,6 +180,33 @@ body {
   }
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-cue {
+    animation: cue-swipe 1.5s ease-in-out infinite;
+  }
+}
+
+/* O gesto de arrastar: a mão sobe, some no alto e volta de baixo. */
+@keyframes cue-swipe {
+  from {
+    opacity: 0;
+    translate: 0 0.4rem;
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  65% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    translate: 0 -0.4rem;
+  }
+}
+
 /* Preenchido com a cor do fundo por cima do traço: letra vazada mostraria o cruzamento dos
    contornos internos da fonte. Só a metade de fora do traço aparece. */
 .names-outline {

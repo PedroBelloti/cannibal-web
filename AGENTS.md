@@ -96,8 +96,8 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
     a cor de destaque para avisar que é clicável; o sorteio só roda com o menu na tela e o
     primeiro link acende logo que ele aparece (`HINT_FIRST_MS`); ponteiro ou foco no menu param o
     sorteio, e com movimento reduzido ele não roda. Item de `contact`/`partners` sem `href` sai como texto. O
-    nome na largura toda usa o divisor `9.35` (largura do nome em em); mudou o nome ou a fonte,
-    meça de novo.
+    nome na largura toda sai de `hero.title` (`top` na cor do texto, `bottom` em vermelho) e usa
+    o divisor `9.35` (largura do nome em em); mudou o nome ou a fonte, meça de novo.
   - Botão (`ui/Button.tsx`): placa vermelha com a ponta cortada na inclinação das marcas do
     cartel e uma seta; ponteiro ou foco fazem um tom mais escuro varrer a placa. O corte fica num
     `span` interno, porque `clip-path` no link cortaria o contorno de foco. Endereço `http` abre
@@ -110,13 +110,18 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
   - Vermelho (`--accent`) marca o que leva a algum lugar ou responde ao toque: o botão principal
     (`ui/Button.tsx`), as marcas acesas do cartel, a palavra de destino do link final da
     Mentalidade (`cinematic.outro.highlight`) e o link apontado ou sorteado do menu do rodapé.
-    Fora disso, não.
+    A única exceção é o apelido no nome do rodapé, em vermelho como assinatura. Fora disso, não.
 - **Entradas e movimento**: classes `.rise`, `.rise-late`, `.rise-entry`, `.drift` e `.names-track` em
   `globals.css`, animações CSS presas ao scroll, sem JavaScript. Só valem com suporte a
   `animation-timeline: view()` e sem `prefers-reduced-motion`; fora disso o conteúdo fica parado e
   visível. Não use `.rise` na última tela nem no pé de uma tela fixa (`.pin-screen`): a faixa de
   animação não se completa e o texto fica meio transparente; no pé de tela fixa use `.rise-entry`,
   que termina quando o bloco entra inteiro.
+- **Aviso de scroll**: `ui/ScrollCue.tsx`, só na pilha em pé (`wide:hidden`): a mão do gesto de
+  arrastar (Material Symbols, Apache 2.0) na borda direita, abaixo do meio (o pé da tela do Hero
+  é do botão), que aparece depois de 2,5 s sem scroll (`IDLE_MS`), sobe e some em laço (`.scroll-cue` em
+  `globals.css`) e some no primeiro movimento; não aparece na última meia tela da página. É
+  enfeite, sem toque, e por isso branca, não vermelha.
 - **Barra de navegação**: `ui/Navbar.tsx` fica transparente só enquanto uma sequência passa pela
   base da barra; medir pelo meio deixava uma tira da sequência atrás dela quando um link do menu
   encostava a seção seguinte na barra.

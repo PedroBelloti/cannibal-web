@@ -3,7 +3,7 @@ import { HintMenu } from "@/components/ui/HintMenu";
 import type { FooterGroup } from "@/content/site";
 import { site } from "@/content/site";
 
-const { brand, footer } = site;
+const { hero, footer } = site;
 
 const TEXT_LINK = "underline decoration-2 underline-offset-[0.2em] transition-colors duration-150 hover:text-muted";
 
@@ -38,12 +38,12 @@ function GroupBlock({ id, group, note }: { id?: string; group: FooterGroup; note
 
 /**
  * Rodapé: o menu das seções em letra grande ao lado do recorte do protetor, os blocos de contato
- * e parceiros, e o nome na largura toda fechando a página. Nada aqui tem entrada animada: é a
+ * e parceiros, e o nome na largura toda fechando a página, com o apelido na cor de destaque. Nada aqui tem entrada animada: é a
  * última tela e não há scroll adiante para completá-la.
  */
 export function Footer() {
   return (
-    <footer className="overflow-hidden bg-ground px-(--margin) pb-(--margin) pt-20 wide:pt-28">
+    <footer className="overflow-hidden bg-ground px-(--margin) pb-12 pt-20 wide:pb-20 wide:pt-28">
       <div className="grid gap-12 wide:grid-cols-2">
         <HintMenu label={footer.menu.label} links={footer.menu.links} />
         <figure>
@@ -70,7 +70,7 @@ export function Footer() {
 
       {/* 9.35 é a largura do nome medida em em, com folga; mudou o nome ou a fonte, meça de novo. */}
       <p className="mt-16 whitespace-nowrap text-[calc((100vw-2*var(--margin))/9.35)] font-extrabold leading-[0.8] tracking-[-0.05em] text-ink">
-        {brand.name}
+        {hero.title.top} <span className="text-accent">{hero.title.bottom}</span>
       </p>
     </footer>
   );

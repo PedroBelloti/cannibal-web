@@ -285,7 +285,6 @@ export const site: SiteContent = {
         { label: "Patrocínio", href: "#patrocinio" },
       ],
     },
-    // Sem `href` o item sai como texto. PENDENTE: contato de imprensa e eventos.
     contact: {
       title: "Contato",
       items: [
@@ -295,7 +294,6 @@ export const site: SiteContent = {
           href: INSTAGRAM_URL,
         },
         { name: "WhatsApp", note: "+55 (61) 98639-4253", href: WHATSAPP_URL },
-        { name: "Imprensa e eventos" },
       ],
     },
     partners: {

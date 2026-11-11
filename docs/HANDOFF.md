@@ -24,10 +24,13 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
-- **11/11/2026 (manhã), agente do template — botão do Instagram e símbolos das redes, SEM COMMIT**:
+- **11/11/2026 (manhã, depois), agente do template — rodapé e aviso de scroll, commitado e enviado**:
+  - Saiu o item "Imprensa e eventos" do contato; o nome do rodapé subiu e "The Cannibal" ficou
+    em vermelho (exceção à regra do vermelho, registrada no `AGENTS.md`).
+  - Aviso de scroll na tela em pé (`ui/ScrollCue.tsx`): mão arrastando para cima depois de 2,5 s parado.
+- **11/11/2026 (manhã), agente do template — botão do Instagram e símbolos das redes, commit `30d4aa2`, enviado**:
   - Na chamada (`#patrocinio`): "Chamar no Instagram" ao lado de "Chamar no WhatsApp", em placa
     escura (`tone="quiet"`), e o símbolo de cada rede antes do texto (`ui/BrandGlyph.tsx`).
-  - Commit e push dependem de pedido do Pedro.
 - **11/11/2026 (madrugada, depois), agente do template — links, botão e freio da faixa, commit `9d5fea1`, enviado**:
   - O aviso do cartel e a marca nova foram commitados e enviados (`609fd79`).
   - Neste commit: o link "Trajetória" virou "Mentalidade" (`#mentalidade`); o botão ganhou
