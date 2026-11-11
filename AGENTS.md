@@ -35,6 +35,10 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
   - scroll e resize passam pelo mesmo rAF; o resize recalcula progresso, frame, cards e textos;
   - `loading="lazy"` (Cinematic) só baixa quando a seção chega a duas alturas de tela; o padrão
     `"eager"` baixa ao montar (Hero);
+  - a carga vai por prioridade (`useFramePreload`): primeiro um frame a cada 16 mais o último
+    (11 de 169, ~1,3 MB no Hero), que é o que segura o loader; depois a cada 8, 4, 2 e 1. Até
+    chegar tudo, o desenho usa o frame carregado mais próximo antes do pedido e o troca quando o
+    certo chega (`onLateFrame`). Esperar os 169 dava 14 s de loader em 4G de 9 Mbps;
   - frame com erro conta como carregado, gera um `console.error` único ao fim da carga com os
     caminhos, e o desenho usa o frame válido anterior;
   - com `prefers-reduced-motion: reduce` baixa e mostra só o `posterFrame` (`POSTER_FRAME` e
@@ -43,7 +47,8 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
 
   Pontos sensíveis: a fórmula de progresso e o índice do frame (mudá-los desloca os cards em
   relação aos frames), a altura de `.scroll-animation` em `globals.css` (entra no progresso) e
-  `coverRect`/`focusForRatio` (corte). Nada é desenhado nem notificado antes de a carga terminar.
+  `coverRect`/`focusForRatio` (corte). Nada é desenhado nem notificado antes de a primeira passada
+  da carga chegar.
 - **Texto sobre as sequências**: `ui/PinnedTitle.tsx` (título preso em dois cantos) e
   `ui/SequenceQuote.tsx` (frase solta, uma por vez) servem ao Hero e à Mentalidade (`CinematicReveal`, `#mentalidade`; o link se chamava Trajetória). Card sem
   `speaker` e `source` é frase do site e sai sem aspas nem assinatura; fala atribuída ao Arthur só
@@ -135,6 +140,11 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
   `<Link href="/">` do Next trata o clique antes e não anda. Enquanto anima, o Lenis desfaz scroll que não partiu dele; o ouvinte
   `yieldToNativeJump` entrega a vez a End, PageDown, barra de rolagem e ao voltar do navegador.
   Ao mexer nas opções do Lenis, teste roda seguida de clique num link do menu.
+- **Recarga volta ao topo**: o script `RELOAD_TO_TOP` no `<head>` de `src/app/layout.tsx` desliga
+  a restauração de scroll do navegador e, em recarga, tira o `#` do endereço antes de o corpo
+  existir. Precisa ser `<script>` inline: o `<Script beforeInteractive>` do Next não bloqueia e
+  pode rodar depois do salto para o `#`. Link aberto direto com `#` (sem ser recarga) segue indo
+  à seção. Efeito colateral: voltar de outro site também abre no topo.
 - **Validar**: `npm run lint && npx tsc --noEmit && npm run build`, e depois rolar a página inteira
   no navegador. O build não verifica a animação. A medição de
   design é `node ~/.claude/skills/design-taste-frontend/scripts/inspect.mjs <url>` (0 FAIL; os

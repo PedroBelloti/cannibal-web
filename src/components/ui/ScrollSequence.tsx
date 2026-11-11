@@ -131,7 +131,8 @@ function useNearViewport(ref: RefObject<HTMLElement | null>, active: boolean): b
 /**
  * Seção com vídeo controlado por scroll: pré-carrega os frames, desenha o frame do progresso
  * atual num canvas sticky e informa os cards visíveis. Nada é desenhado nem notificado antes
- * de a carga terminar (frame com erro conta como terminado). Com `prefers-reduced-motion`,
+ * de a primeira passada da carga chegar (`useFramePreload`); depois disso, enquanto o resto
+ * baixa, desenha o frame carregado mais próximo e o troca quando o certo chega. Com `prefers-reduced-motion`,
  * baixa e mostra só o pôster, e cards e textos seguem o progresso.
  */
 export function ScrollSequence({
@@ -150,17 +151,21 @@ export function ScrollSequence({
   const sectionRef = useRef<HTMLElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const lastFrameRef = useRef(-1);
+  const drawnRef = useRef<HTMLImageElement | null>(null);
+  const lateRedrawRef = useRef(() => {});
   const visibleKeyRef = useRef("");
   const [visibleIds, setVisibleIds] = useState<ReadonlySet<string>>(() => new Set());
 
   const reducedMotion = useReducedMotion();
   const near = useNearViewport(sectionRef, loading === "lazy");
   const posterIndex = Math.min(frameCount - 1, Math.max(0, posterFrame - 1));
-  const { frameAt, loaded, loadProgress } = useFramePreload({
+  const onLateFrame = useCallback(() => lateRedrawRef.current(), []);
+  const { frameAt, ready, loadProgress } = useFramePreload({
     frameCount,
     framePath,
     enabled: reducedMotion !== null && (loading === "eager" || near),
     onlyIndex: reducedMotion ? posterIndex : undefined,
+    onLateFrame,
   });
 
   const drawFrame = useCallback(
@@ -175,6 +180,7 @@ export function ScrollSequence({
       const { drawX, drawY, drawW, drawH } = coverRect(canvas.width, canvas.height, img, focusX);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, drawX, drawY, drawW, drawH);
+      drawnRef.current = img;
     },
     [frameAt, portraitFocusX],
   );
@@ -182,7 +188,7 @@ export function ScrollSequence({
   // Effect event: lê sempre props e estado mais recentes sem reinscrever scroll e resize.
   const update = useEffectEvent((redraw: boolean) => {
     const section = sectionRef.current;
-    if (!section || !loaded) return;
+    if (!section || !ready) return;
 
     const progress = scrollProgress(section);
     const frameIndex = reducedMotion
@@ -232,7 +238,24 @@ export function ScrollSequence({
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", onResize);
     };
-  }, [loaded, reducedMotion, drawFrame]);
+  }, [ready, reducedMotion, drawFrame]);
+
+  // Enquanto a carga continua, o frame na tela pode ser um substituto; quando chega um mais
+  // próximo do pedido, redesenha no próximo quadro.
+  useEffect(() => {
+    let frame = 0;
+    lateRedrawRef.current = () => {
+      if (frame || lastFrameRef.current < 0) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        if (frameAt(lastFrameRef.current) !== drawnRef.current) drawFrame(lastFrameRef.current);
+      });
+    };
+    return () => {
+      cancelAnimationFrame(frame);
+      lateRedrawRef.current = () => {};
+    };
+  }, [frameAt, drawFrame]);
 
   const sectionClass = ["scroll-animation relative", className].filter(Boolean).join(" ");
 
@@ -248,7 +271,7 @@ export function ScrollSequence({
           style={{ willChange: "contents", transform: "translateZ(0)" }}
         />
         {children(visibleIds)}
-        {!loaded && <SequenceLoader text={loader.text} progress={loadProgress} />}
+        {!ready && <SequenceLoader text={loader.text} progress={loadProgress} />}
       </div>
     </section>
   );

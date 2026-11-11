@@ -24,6 +24,22 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
+- **11/11/2026 (noite), agente do template — carga progressiva e recarga no topo, SEM COMMIT (ler primeiro)**:
+  - RELATO (Pedro): o loading demorava muito, e recarregar a página levava a uma seção que não
+    era o começo. Os commits `59dc96b` e `4ab9f3c` (scroll suave, nome da barra, aviso de scroll)
+    estão feitos, sem push.
+  - Carga: `useFramePreload` baixa por prioridade e libera a tela com 11 frames; o resto chega
+    com a página já em uso (`AGENTS.md`, "Sequência por scroll"). MEDIDO (Chromium, 390 px 3x):
+    tela visível em 1,8 s no 4G de 9 Mbps (era 14,3 s) e 0,86 s no 4G de 20 Mbps (era 6,5 s);
+    1,3 MB baixados até ali (era 15,3 MB). Com tudo carregado, o frame desenhado é idêntico ao de
+    uma página sem limite de rede; 169 frames, 0 falha, console limpo.
+  - Recarga: script inline no `<head>` (`layout.tsx`). MEDIDO: depois de ir a `#equipe`, quatro
+    recargas seguidas abrem em `scrollY` 0 e sem `#`; link direto com `#patrocinio` segue indo à
+    seção.
+  - Sem medição: celular real e rede real; a Mentalidade (mesmo código, `loading="lazy"`) não foi
+    cronometrada à parte; Safari (a restauração de scroll pode se comportar diferente).
+  - Recomendação em aberto: os frames do Hero somam 15 MB; reduzir para metade dos frames ou
+    uma versão menor para celular corta o resto da carga, mas muda o visual e pede decisão.
 - **11/11/2026 (tarde, depois), agente do template — nome da barra e aviso de scroll, SEM COMMIT (ler primeiro)**:
   - RELATO (Pedro, no celular): clicar no nome "Arthur The Cannibal" não fazia nada, e o fundo do
     aviso de scroll estava forte e pouco moderno.
