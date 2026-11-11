@@ -20,8 +20,16 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **Enquadramento no celular**: até 768 px o canvas mostra só uma faixa vertical do frame,
   centrada em `MOBILE_FOCUS_X` (`src/lib/hero.ts`) no Hero e em `CINE_MOBILE_FOCUS_X`
   (`src/lib/cinematic.ts`) no Cinematic. Trocou o vídeo, reposicione.
-- **Dívida conhecida**: `Hero.tsx` e `CinematicReveal.tsx` duplicam a lógica de canvas, preload e
-  scroll (~370 linhas cada). Uma correção sistêmica deve extrair essa lógica para um componente
-  só (há um modelo em `~/.claude/skills/scroll-video-hero/assets/ScrollSequence.tsx`).
+- **Sequência por scroll**: `src/components/ui/ScrollSequence.tsx` é dono da section
+  (`.scroll-animation`), do contêiner sticky, do canvas e do loader; pré-carrega os frames, desenha
+  o frame do progresso e devolve aos filhos (render prop) os ids dos cards visíveis. `Hero.tsx` e
+  `CinematicReveal.tsx` só passam frames, foco do celular, cards e textos, e aplicam os efeitos de
+  texto em `onProgress(progress, frameIndex)`, chamado dentro do rAF: escreva no DOM por ref,
+  nunca em estado do React. Pontos sensíveis: a fórmula de progresso e o índice do frame
+  (mudá-los desloca os cards em relação aos frames), a altura de `.scroll-animation` em
+  `globals.css` (entra no progresso) e `coverRect` (corte com foco do celular). Nada roda antes de
+  todos os frames carregarem; frame com erro conta como carregado. Pendente (issue #4, parte B):
+  progresso no resize, corte por proporção da tela, carga adiada, aviso de frame com erro e
+  `prefers-reduced-motion`, todos dentro do componente, sem mudar os consumidores.
 - **Validar**: `npm run lint && npx tsc --noEmit && npm run build`, e depois rolar a página inteira
   no navegador. O build não verifica a animação.
