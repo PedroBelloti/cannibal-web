@@ -24,6 +24,14 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
+- **11/11/2026 (noite, depois), agente do template — projeto renomeado para `cannibal-web` (ler primeiro)**:
+  - Pedido do Pedro: repositório e pasta passam a se chamar `cannibal-web`. O GitHub agora é
+    `PedroBelloti/cannibal-web` (o endereço antigo `iron-man-scroll-template` redireciona) e o
+    `origin` local já aponta para ele. Com `gh`, use `-R PedroBelloti/cannibal-web`. A pasta é
+    `~/Projects/cannibal-web` e o `name` do `package.json` também mudou. Os caminhos antigos
+    citados nos recados abaixo ficam como histórico.
+  - Commit `3da826f` (carga progressiva e recarga no topo) enviado no branch
+    `feat/redesenho-poster-fixo`.
 - **11/11/2026 (noite), agente do template — carga progressiva e recarga no topo, SEM COMMIT (ler primeiro)**:
   - RELATO (Pedro): o loading demorava muito, e recarregar a página levava a uma seção que não
     era o começo. Os commits `59dc96b` e `4ab9f3c` (scroll suave, nome da barra, aviso de scroll)
