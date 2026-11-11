@@ -22,8 +22,79 @@ Pasta `media/seq-a/`: `render.py` e `make_mask.py` (geram os quadros a partir da
 toda acesa). Os frames do site ficam só em `public/frames/` (169 WebP, 1600 px, q60, 14,9 MB; eram q70 e 17,3 MB até a issue #5).
 Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
+## Como atualizar o site no ar
+
+Vale a partir de 11/11/2026. Seção fixa: atualize-a quando o fluxo mudar, em vez de só deixar
+recado.
+
+**Onde está**
+
+| Item | Valor |
+|---|---|
+| Endereço público | `https://thecannibal.vercel.app` (aberto, sem login) |
+| Endereço antigo | `https://cannibal-web.vercel.app`, redireciona com 308 |
+| Projeto Vercel | `the.cannibal`, equipe `pedro-bellotis-projects` (Hobby), conta `pedrobelloti` |
+| Repositório | `PedroBelloti/cannibal-web` (privado), pasta `~/Projects/cannibal-web` |
+| Branch publicado | `feat/redesenho-poster-fixo`; o `main` ainda tem o visual antigo |
+
+O repositório **não está ligado** à Vercel: push no GitHub não publica nada. Cada atualização é
+um deploy manual, feito pela CLI a partir da pasta local (`.vercel/project.json` liga a pasta ao
+projeto; o arquivo não vai para o git).
+
+**Passo a passo**
+
+1. Validar: `npm run lint && npx tsc --noEmit && npm run build` e rolar a página no laboratório
+   (`npx next start -p 3102 -H 0.0.0.0`; pare o servidor antes de rodar `next build`).
+2. Commitar e dar push no branch (só com autorização do Pedro).
+3. Publicar. Produção: `npx vercel deploy --prod`. Prévia: `npx vercel deploy`, que gera um
+   endereço próprio protegido por login da Vercel. O deploy envia a **pasta local**, não o
+   GitHub: o que estiver sem commit também sobe, então publique com a árvore limpa.
+4. Conferir no endereço público que a página responde 200 e traz a mudança.
+
+**Cuidados**
+
+- Sem login, a CLI responde "Logged out": o Pedro roda `! npx vercel login` (abre o navegador).
+  O agente não lê o arquivo de credenciais da CLI; chamadas à API vão por `npx vercel api`.
+- Deploy em produção pedido pelo agente pode ser bloqueado pelo modo automático do Claude Code;
+  nesse caso o Pedro roda `! npx vercel deploy --prod`.
+- MEDIDO em 11/11: o primeiro deploy de um projeto novo sai em produção mesmo sem `--prod`.
+- O `.vercelignore` deixa `media/`, `docs/` e `.taste-skill/` fora do envio; o build não usa.
+- `meta.siteUrl` (`src/content/site.ts`) precisa acompanhar o endereço público. Mudou o
+  endereço, troque lá e publique de novo.
+- Trocar ou acrescentar endereço `*.vercel.app`:
+  `npx vercel api /v10/projects/<id>/domains -X POST -f name=<nome>.vercel.app`. Nome com ponto
+  não é aceito no subdomínio gratuito; só com domínio próprio.
+- Voltar atrás: `npx vercel rollback` devolve o deploy anterior ao endereço público;
+  `npx vercel ls` lista os deploys.
+- Publicar o site com as fotos e os nomes depende das autorizações pendentes (recados abaixo);
+  o Pedro decidiu publicar com elas em aberto.
+
+**Próximo passo recomendado**: PR de `feat/redesenho-poster-fixo` para `main` (`Closes #6`) e
+ligar o repositório à Vercel com `main` como produção. Aí push no `main` publica sozinho e
+cada PR ganha uma prévia; este passo a passo passa a valer só para emergências.
+
 ## Recados
 
+- **11/11/2026 (noite, auditoria de segurança), skill `security-compendium-vpio` (fluxos A, B e D)**:
+  - Achado único: sem cabeçalho de segurança e com `X-Powered-By: Next.js` (medido no
+    `next start`). Corrigido em `c2c6ca2` (`next.config.ts`) e publicado pelo Pedro
+    (`dpl_7CQQkgSRSDC9wZxWTCj9N9Tx3CYo`). MEDIDO em produção depois do deploy: CSP,
+    `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy` e `Permissions-Policy` em `/`, na 404 e
+    nas fotos; HSTS vem da Vercel; página rolada inteira no Chromium (1440 e 390 px) sem violação
+    de CSP nem requisição bloqueada.
+  - Sem achado, medido no build local: arquivos de origem e `.env` em 404, path traversal 404,
+    sem source maps, `/_next/image` recusa URL externa (400), POST de Server Action 404.
+  - Riscos aceitos: `script-src 'unsafe-inline'` (nonce tiraria a página do cache; o site não
+    recebe entrada do visitante) e `minimatch` (7 alertas moderados, só ferramenta de
+    desenvolvimento, `npm audit --omit=dev` = 0; esperar o `eslint-config-next` adotar a 11).
+  - **Cuidado daqui em diante**: fonte, script, imagem ou embed de outro domínio é bloqueado
+    pela CSP até entrar na diretiva certa em `next.config.ts` (ver `AGENTS.md`).
+  - Não medido: Firefox e Safari. Registro no Security-Compendium: `945e556`.
+- **11/11/2026 (noite, encerramento), agente do template — instruções de atualização (ler primeiro)**:
+  o deploy em produção com o `siteUrl` novo foi feito pelo Pedro
+  (`dpl_71CnC8TVRJDo2anek2mow9xA2CiU`). MEDIDO: `thecannibal.vercel.app` responde 200 com a
+  versão do commit `5e6ec6c` (tem o script de recarga), sem `localhost` no HTML; o endereço antigo
+  redireciona. Como publicar daqui em diante: seção "Como atualizar o site no ar", acima.
 - **11/11/2026 (noite, fim, depois), agente do template — projeto Vercel renomeado (ler primeiro)**:
   - Pedido do Pedro: o nome passa a ser `the.cannibal`. Na Vercel, o projeto virou
     `the.cannibal` e o endereço público é `https://thecannibal.vercel.app` (o subdomínio gratuito
