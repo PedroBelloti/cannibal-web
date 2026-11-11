@@ -24,6 +24,14 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
+- **11/11/2026 (tarde, depois), agente do template — nome da barra e aviso de scroll, SEM COMMIT (ler primeiro)**:
+  - RELATO (Pedro, no celular): clicar no nome "Arthur The Cannibal" não fazia nada, e o fundo do
+    aviso de scroll estava forte e pouco moderno.
+  - O nome era `<Link href="/">` e o Next consumia o clique; virou `<a href="#inicio">` e usa o
+    scroll suave. O aviso passou de quadrado `bg-ground/70` a disco `bg-ground/35`, menor.
+  - MEDIDO: lint e tipos com saída 0; build; no laboratório (3102), o nome leva ao topo em 1440 e
+    390 px (79 e 88 quadros, `#inicio` no endereço). Sem medição: o disco sobre a parte clara do
+    rosto num celular real.
 - **11/11/2026 (tarde), agente do template — links de âncora com scroll suave, commitado, sem push (ler primeiro)**:
   - Pedido do Pedro: os links que levam a uma seção saltavam direto; agora fazem o trajeto
     suave. `providers/anchorScroll.ts` (novo) intercepta o clique e chama o Lenis; detalhes no

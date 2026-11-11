@@ -121,7 +121,8 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
   arrastar (Material Symbols, Apache 2.0) na borda direita, abaixo do meio (o pé da tela do Hero
   é do botão), que aparece depois de 2,5 s sem scroll (`IDLE_MS`), sobe e some em laço (`.scroll-cue` em
   `globals.css`) e some no primeiro movimento; não aparece na última meia tela da página. É
-  enfeite, sem toque, e por isso branca, não vermelha.
+  enfeite, sem toque, e por isso branca, não vermelha, sobre um disco escuro a 35% (o quadrado a
+  70% pesava demais sobre a foto).
 - **Barra de navegação**: `ui/Navbar.tsx` fica transparente só enquanto uma sequência passa pela
   base da barra; medir pelo meio deixava uma tira da sequência atrás dela quando um link do menu
   encostava a seção seguinte na barra.
@@ -130,7 +131,8 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
   0,9 s a 1,8 s conforme a distância, com curva que sai e chega devagar; grava o `#` no endereço,
   passa o foco à seção (`tabindex="-1"`) e, com movimento reduzido, salta na hora. O destino
   respeita o `scroll-mt-*` da seção (a altura da barra). Clique com Ctrl/Cmd/Shift ou link com
-  `target` seguem nativos. Enquanto anima, o Lenis desfaz scroll que não partiu dele; o ouvinte
+  `target` seguem nativos. O nome na barra aponta para `#inicio` (o Hero) pelo mesmo caminho: um
+  `<Link href="/">` do Next trata o clique antes e não anda. Enquanto anima, o Lenis desfaz scroll que não partiu dele; o ouvinte
   `yieldToNativeJump` entrega a vez a End, PageDown, barra de rolagem e ao voltar do navegador.
   Ao mexer nas opções do Lenis, teste roda seguida de clique num link do menu.
 - **Validar**: `npm run lint && npx tsc --noEmit && npm run build`, e depois rolar a página inteira

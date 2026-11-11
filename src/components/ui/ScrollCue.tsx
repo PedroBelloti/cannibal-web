@@ -44,14 +44,14 @@ export function ScrollCue() {
   return (
     <div
       aria-hidden
-      className={`pointer-events-none fixed right-(--margin) top-[58svh] z-30 grid size-12 place-items-center bg-ground/70 text-ink transition-opacity duration-300 wide:hidden ${
+      className={`pointer-events-none fixed right-(--margin) top-[58svh] z-30 grid size-11 place-items-center rounded-full bg-ground/35 text-ink transition-opacity duration-300 wide:hidden ${
         visible ? "opacity-100" : "opacity-0"
       }`}
     >
       <svg
         viewBox="0 0 24 24"
         fill="currentColor"
-        className={`h-7 w-auto ${visible ? "scroll-cue" : ""}`}
+        className={`h-6 w-auto ${visible ? "scroll-cue" : ""}`}
       >
         <path d={SWIPE_UP} />
       </svg>

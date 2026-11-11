@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { scrollProgress } from "@/components/ui/ScrollSequence";
@@ -82,14 +81,14 @@ export function Navbar() {
       }`}
     >
       <div className="flex h-(--nav-h) items-center gap-6 px-(--margin)">
-        <Link
-          href="/"
+        <a
+          href={`#${HERO_SECTION_ID}`}
           className={`mr-auto text-small font-bold text-ink ${FADE} ${
             state.heroOnScreen ? HIDDEN : SHOWN
           }`}
         >
           {site.brand.name}
-        </Link>
+        </a>
 
         <nav aria-label={site.nav.label} className="hidden items-center gap-6 md:flex">
           {site.nav.links.map((link) => (
