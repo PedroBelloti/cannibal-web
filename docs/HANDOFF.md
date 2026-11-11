@@ -24,10 +24,21 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
-- **11/11/2026 (manhã, depois), agente do template — rodapé e aviso de scroll, commitado e enviado**:
+- **11/11/2026 (manhã, depois), agente do template — rodapé e aviso de scroll, commit `940072d`, enviado (ler primeiro)**:
+  - Estado: branch `feat/redesenho-poster-fixo` igual ao remoto em `940072d`, working tree limpo.
+    Issue #6 aberta, sem PR deste branch.
   - Saiu o item "Imprensa e eventos" do contato; o nome do rodapé subiu e "The Cannibal" ficou
-    em vermelho (exceção à regra do vermelho, registrada no `AGENTS.md`).
-  - Aviso de scroll na tela em pé (`ui/ScrollCue.tsx`): mão arrastando para cima depois de 2,5 s parado.
+    em vermelho (exceção à regra do vermelho, registrada no `AGENTS.md`). O nome do rodapé sai
+    de `hero.title`, não mais de `brand.name`.
+  - Aviso de scroll na tela em pé (`ui/ScrollCue.tsx`): mão arrastando para cima (Material
+    Symbols `swipe-up`, Apache 2.0, colado como SVG) depois de 2,5 s parado; some ao rolar e não
+    aparece na última meia tela. Fica na borda direita a 58% da altura: no canto de baixo cobria
+    o botão do Hero. Uma seta dupla piscando foi tentada antes e recusada pelo Pedro.
+  - Sem medição: celular real e toque, a animação da mão em movimento, movimento reduzido,
+    Safari e Firefox, foco por teclado nos botões novos.
+  - Aberto com o Pedro: a 1366 px os dois botões da chamada empilham (lado a lado pede tirar a
+    seta dos botões com símbolo); nome do link "Mentalidade"; manter ou não o "Seja
+    patrocinador" do Hero.
 - **11/11/2026 (manhã), agente do template — botão do Instagram e símbolos das redes, commit `30d4aa2`, enviado**:
   - Na chamada (`#patrocinio`): "Chamar no Instagram" ao lado de "Chamar no WhatsApp", em placa
     escura (`tone="quiet"`), e o símbolo de cada rede antes do texto (`ui/BrandGlyph.tsx`).
@@ -37,14 +48,13 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
     ponta cortada, seta e varredura; a faixa de nomes freia com o mouse (`ui/HoverBrake.tsx`); o
     botão da chamada abre o WhatsApp ("Chamar no WhatsApp"); rodapé com Instagram, WhatsApp e
     endereços dos parceiros; "+11 mil seguidores" no rodapé e na chamada.
-- **11/11/2026 (madrugada), agente do template — aviso sorteado no cartel e marca nova, SEM COMMIT**:
+- **11/11/2026 (madrugada), agente do template — aviso sorteado no cartel e marca nova, commit `609fd79`, enviado**:
   - Os commits `6944c4b` e `fdc1883` já estão no remoto (o recado abaixo, que diz "sem push",
     ficou velho nesse ponto).
-  - No working tree: `ui/useHintCycle.ts` (novo, extraído do `HintMenu`), `HintMenu.tsx` e
+  - Neste commit: `ui/useHintCycle.ts` (novo, extraído do `HintMenu`), `HintMenu.tsx` e
     `RecordMarks.tsx`. O cartel ganhou o mesmo aviso do menu do rodapé (as marcas de um método
     sorteado acendem) e a marca deixou de ser quadrado: é um risco inclinado, a barra do "%".
     Uma presa foi tentada antes e recusada pelo Pedro; não voltar a ela.
-  - Commit e push dependem de pedido do Pedro.
 - **11/11/2026 (fim da noite), agente do template — rodada do cartel, commitada, SEM PUSH (ler primeiro)**:
   - **Onde está**: branch `feat/redesenho-poster-fixo`. O redesenho está commitado em `fe93432`
     (no remoto) e `6944c4b` (só local). A rodada do cartel, a faixa de nomes e o aviso do menu do
