@@ -53,8 +53,11 @@ export function CinematicReveal() {
 
     const outro = outroRef.current;
     if (!outro) return;
-    // Transparente, o link não pode continuar recebendo foco nem clique.
-    outro.inert = setOpacity(outro, (progress - CINE_OUTRO.start) / CINE_OUTRO.span) === 0;
+    // Transparente, o link não pode continuar recebendo foco nem clique, nem contar como texto
+    // grande na tela.
+    const hidden = setOpacity(outro, (progress - CINE_OUTRO.start) / CINE_OUTRO.span) === 0;
+    outro.inert = hidden;
+    outro.style.visibility = hidden ? "hidden" : "visible";
   };
 
   return (
@@ -110,16 +113,17 @@ export function CinematicReveal() {
               />
             ))}
 
-            {/* `inert` e a opacidade inicial valem até a primeira notificação de progresso. O
-                z-index põe o link acima dos vizinhos transparentes da célula, que cobririam o clique. */}
+            {/* `inert`, a opacidade e a visibilidade iniciais valem até a primeira notificação de
+                progresso. O z-index põe o link acima dos vizinhos transparentes da célula, que
+                cobririam o clique. */}
             <a
               ref={outroRef}
               href={cinematic.outro.href}
               inert
-              className={`${SLOT_ITEM} relative z-10 justify-self-start text-lead font-semibold text-ink underline decoration-2 underline-offset-[0.2em] opacity-0`}
+              className={`${SLOT_ITEM} relative z-10 justify-self-start whitespace-nowrap text-head font-extrabold tracking-[-0.03em] text-ink underline decoration-[0.06em] underline-offset-[0.18em] invisible opacity-0`}
               style={{ transition: "opacity 80ms linear" }}
             >
-              {cinematic.outro.label}
+              {cinematic.outro.lead} <span className="text-accent">{cinematic.outro.highlight}</span>
             </a>
           </div>
         </>

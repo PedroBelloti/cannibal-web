@@ -23,11 +23,12 @@ const SHOWN = "visible opacity-100";
 const HIDDEN = "invisible opacity-0";
 
 function readNavState(header: HTMLElement): NavState {
-  // Pelo meio da barra: na emenda de duas sequências sempre há uma delas atrás dele.
-  const barMiddle = header.getBoundingClientRect().height / 2;
+  // Pela base da barra: na emenda de duas sequências sempre há uma delas ali, e quando a seção
+  // seguinte encosta na barra (destino de um link do menu) não sobra uma tira da sequência atrás.
+  const barBottom = header.getBoundingClientRect().height;
   const overSequence = [...document.querySelectorAll("section.scroll-animation")].some((section) => {
     const rect = section.getBoundingClientRect();
-    return rect.top <= barMiddle && rect.bottom > barMiddle;
+    return rect.top < barBottom && rect.bottom > barBottom + 1;
   });
   const hero = document.getElementById(HERO_SECTION_ID);
   return {

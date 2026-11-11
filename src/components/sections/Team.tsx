@@ -7,18 +7,19 @@ const { team } = site;
 export function Team() {
   return (
     <section id="equipe" className="scroll-mt-(--nav-h) bg-ground">
-      <div className="relative aspect-[3/2] max-h-[92svh] w-full overflow-hidden">
-        {/* Ancorada embaixo: quando a altura é cortada, o calção com o nome da equipe fica. */}
+      <div className="relative aspect-[3/2] w-full overflow-hidden wide:aspect-auto wide:h-[calc(100svh-var(--nav-h))]">
+        {/* O corte da tela larga tira o teto do ginásio e mantém as cabeças e o calção da equipe. */}
         <Image
           src={team.photo.src}
           alt={team.photo.alt}
           fill
           sizes="100vw"
-          className="drift object-cover object-[50%_85%]"
+          className="object-cover object-[50%_56%]"
         />
+        {/* O mesmo véu do Hero: o alto desta foto é claro e o crédito some sem ele. */}
+        <div className="pointer-events-none absolute inset-0 bg-scrim" />
         {team.photo.credit && (
-          // Fundo cheio: o alto desta foto é claro e o texto solto some nele.
-          <p className="absolute right-0 top-0 bg-ground px-(--margin) py-2 text-small text-ink">
+          <p className="absolute right-(--margin) top-1 z-10 text-small text-ink">
             {team.photo.credit}
           </p>
         )}

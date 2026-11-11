@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { HintMenu } from "@/components/ui/HintMenu";
 import type { FooterGroup } from "@/content/site";
 import { site } from "@/content/site";
 
@@ -38,20 +39,7 @@ export function Footer() {
   return (
     <footer className="overflow-hidden bg-ground px-(--margin) pb-(--margin) pt-20 wide:pt-28">
       <div className="grid gap-12 wide:grid-cols-2">
-        <nav aria-label={footer.menu.label}>
-          <ul>
-            {footer.menu.links.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className="inline-block py-1 text-head font-extrabold tracking-[-0.03em] text-ink transition-[translate] duration-200 ease-out hover:translate-x-2 motion-reduce:transition-none"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <HintMenu label={footer.menu.label} links={footer.menu.links} />
         <figure>
           <div className="relative aspect-[16/10] overflow-hidden">
             <Image

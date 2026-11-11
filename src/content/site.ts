@@ -51,7 +51,8 @@ export type SiteContent = {
     titleAfter: Headline;
     lead: string;
     cards: TimedCard[];
-    outro: Link;
+    /** Link final: `lead` na cor do texto e `highlight`, a palavra do destino, na cor de destaque. */
+    outro: { lead: string; highlight: string; href: string };
     loader: { text: string };
   };
   record: {
@@ -175,7 +176,7 @@ export const site: SiteContent = {
         source: "no Instagram",
       },
     ],
-    outro: { label: "Ver o cartel", href: "#cartel" },
+    outro: { lead: "Ver o", highlight: "cartel", href: "#cartel" },
     loader: {
       text: "Contando a trajetória",
     },

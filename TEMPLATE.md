@@ -51,7 +51,7 @@ Os números entre parênteses são a fração do scroll da seção (0 = topo, 1 
 | `titleAfter` | Entra no lugar do anterior em 0,50 (`CINE_TITLE_SWAP`) | 1 + 2 palavras |
 | `lead` | Texto de apoio no meio da coluna; some até 0,08 (`CINE_INTRO_FADE_END`) | até 120 caracteres |
 | `cards[0..2]` | Frases no lugar do texto de apoio, mesmos intervalos do Hero | frase até 65 caracteres |
-| `outro` | Link de texto no fim (0,86 em diante, `CINE_OUTRO`) | 3 palavras |
+| `outro` | Link em letra grande no fim (0,86 em diante, `CINE_OUTRO`): `lead` em branco e `highlight`, a palavra do destino, em vermelho | 2 palavras + 1; cabe numa linha só |
 | `loader.text` | Tela de carga | até 24 caracteres |
 
 O que os frames mostram: luz fria de academia no começo e luz quente no fim; a virada fica perto
@@ -76,7 +76,7 @@ A soma dos `count` mais `loss.count` tem de bater com `score`, `title`, `legend`
 
 | Campo | Onde aparece | Tamanho |
 |---|---|---|
-| `photo` | Foto na largura toda; o crédito fica no canto superior direito dela | ver "Fotos" |
+| `photo` | Foto na largura toda (na tela larga, da altura da tela); o crédito fica no canto superior direito dela, em texto solto | ver "Fotos" |
 | `title` | Abaixo da foto, à esquerda | até 25 caracteres |
 | `body` | Coluna estreita à direita do título | até 280 caracteres |
 
@@ -103,7 +103,7 @@ Só entram nomes com fonte no perfil. "Jungle Fight" fica fora: o perfil registr
 
 | Campo | Onde aparece | Tamanho |
 |---|---|---|
-| `menu.links[]` | Menu grande das seções | 1 palavra cada |
+| `menu.links[]` | Menu grande das seções; um link sorteado fica vermelho de tempos em tempos | 1 palavra cada |
 | `contact` / `partners` | Dois blocos: `title` e itens com `name`, `note` opcional e `href` opcional | `name` até 20, `note` até 16 caracteres |
 | `photo` | Recorte do retrato, com crédito embaixo | ver "Fotos" |
 | `legal` | Linha de direitos e créditos das fotos | até 110 caracteres |
@@ -129,4 +129,6 @@ texto, e confira o foco da tela em pé (`AGENTS.md`).
 ## Cores
 
 Os tokens ficam em `src/app/globals.css`. `--bg` precisa ser igual ao fundo dos frames, senão a
-borda do canvas aparece. `--accent` é usado só no botão principal e nas marcas acesas do cartel.
+borda do canvas aparece. `--accent` marca o que leva a algum lugar ou responde ao toque: botão
+principal, marcas acesas do cartel, a palavra de destino do link final da Trajetória e o link
+apontado ou sorteado do menu do rodapé.

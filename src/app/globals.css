@@ -21,6 +21,8 @@
   --nav-h: 3.5rem;
   /* Altura reservada, na pilha em pé, para o texto de apoio e o botão abaixo do título. */
   --slot-h: 10.5rem;
+  /* Scroll que uma seção de tela cheia segura parada antes de a seguinte aparecer embaixo. */
+  --pin-hold: 40svh;
 
   --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
   --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
@@ -100,6 +102,21 @@ body {
 @media (max-width: 768px) {
   .scroll-animation {
     height: 300vh;
+  }
+}
+
+/* Seção de tela cheia da composição larga: o conteúdo (`.pin-screen-body`) fica preso abaixo da
+   barra enquanto a seção rola `--pin-hold`, para a seção seguinte não aparecer no primeiro toque
+   da roda. */
+@media (min-width: 64rem), (orientation: landscape) {
+  .pin-screen {
+    min-height: calc(100svh - var(--nav-h) + var(--pin-hold));
+  }
+
+  .pin-screen-body {
+    position: sticky;
+    top: var(--nav-h);
+    min-height: calc(100svh - var(--nav-h));
   }
 }
 

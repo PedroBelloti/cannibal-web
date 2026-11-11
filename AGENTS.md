@@ -49,7 +49,8 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
   de entrada e saída ficam em `src/lib/hero.ts` (`HERO_TEXT_FADE_END`) e `src/lib/cinematic.ts`
   (`CINE_INTRO_FADE_END`, `CINE_TITLE_SWAP`, `CINE_OUTRO`) e convivem com os `show`/`hide` das
   frases: mexeu num, confira o outro. Elemento que some por opacidade e tem link ou botão recebe
-  `inert` junto. Na Trajetória os dois títulos dividem o lugar: o transparente recebe também
+  `inert` junto; o link final da Trajetória, em letra grande, recebe também `visibility: hidden`.
+  Na Trajetória os dois títulos dividem o lugar: o transparente recebe também
   `visibility: hidden` (`setTitleOpacity`), senão cobre o outro no teste de clique e é lido duas
   vezes pelo leitor de tela. O link final leva `relative z-10` e o texto de apoio
   `pointer-events-none`: elemento com opacidade abaixo de 1 é pintado acima dos vizinhos estáticos
@@ -64,14 +65,30 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
   - Fotos: `public/photos/*.webp`, origem e comando de recorte em `media/README.md`. Cada uma é um
     `Photo` em `site.ts`; `credit: null` significa autor não confirmado e a página não mostra
     crédito. Nenhum rosto ou pessoa pode ser alterado: só recorte e redução.
-  - Rodapé: item de `contact`/`partners` sem `href` sai como texto. O nome na largura toda usa o
-    divisor `9.35` (largura do nome em em); mudou o nome ou a fonte, meça de novo.
-  - Vermelho (`--accent`) só no botão principal (`ui/Button.tsx`) e nas marcas acesas do cartel.
+  - Altura na composição larga: Cartel e Chamada são telas cheias presas (`.pin-screen` e
+    `.pin-screen-body` em `globals.css`): o conteúdo ocupa a tela menos a barra e fica parado
+    enquanto a seção rola `--pin-hold`, senão o primeiro toque da roda já mostra a seção seguinte
+    embaixo. O placar do cartel encolhe em tela baixa para caber (terceiro limite do tamanho em
+    `FightRecord.tsx`). A foto da Equipe tem a tela menos a barra (`100svh - --nav-h`), com
+    `object-position` escolhido para manter as cabeças e o calção; trocou a foto, reposicione. O crédito sobre foto segue o do Hero: texto
+    solto no alto à direita, com o véu `bg-scrim` por baixo, sem caixa nem sombra de texto.
+  - Rodapé: o menu grande é `ui/HintMenu.tsx`, que de tempos em tempos pinta um link sorteado com
+    a cor de destaque para avisar que é clicável; ponteiro ou foco no menu param o sorteio, e com
+    movimento reduzido ele não roda. Item de `contact`/`partners` sem `href` sai como texto. O
+    nome na largura toda usa o divisor `9.35` (largura do nome em em); mudou o nome ou a fonte,
+    meça de novo.
+  - Vermelho (`--accent`) marca o que leva a algum lugar ou responde ao toque: o botão principal
+    (`ui/Button.tsx`), as marcas acesas do cartel, a palavra de destino do link final da
+    Trajetória (`cinematic.outro.highlight`) e o link apontado ou sorteado do menu do rodapé.
+    Fora disso, não.
 - **Entradas e movimento**: classes `.rise`, `.rise-late`, `.drift` e `.names-track` em
   `globals.css`, animações CSS presas ao scroll, sem JavaScript. Só valem com suporte a
   `animation-timeline: view()` e sem `prefers-reduced-motion`; fora disso o conteúdo fica parado e
   visível. Não use `.rise` na última tela: a faixa de animação não se completa sem scroll adiante
   e o texto fica meio transparente.
+- **Barra de navegação**: `ui/Navbar.tsx` fica transparente só enquanto uma sequência passa pela
+  base da barra; medir pelo meio deixava uma tira da sequência atrás dela quando um link do menu
+  encostava a seção seguinte na barra.
 - **Scroll suave**: `providers/SmoothScrollProvider.tsx` (Lenis). Enquanto anima, o Lenis desfaz
   scroll que não partiu dele; o ouvinte `yieldToNativeJump` entrega a vez a link de âncora, End,
   PageDown e barra de rolagem. Sem ele, um clique no menu logo depois da roda do mouse não leva a
