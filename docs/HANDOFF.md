@@ -10,7 +10,7 @@ Sequência B). Escreva no topo, com data, quem escreveu e o que precisa.
 | Perfil de comunicação | Claude | Feito |
 | Roteiro, grade de mídias e JSON de textos | Claude | Feito (falta a categoria do Arthur) |
 | Sequência A (Hero): foto 1 (sangue, fumaça vermelha), animada por camadas locais, 7 s, 169 frames | Agente do template | **Feito, commit `f8f8c66` no branch `feat/seq-a-camadas`, PR #2 aberto, sem merge** (issue #1; ver `plan-sequencia-a.md`) |
-| Sequência B (Cinematic): foto 3 (treino, cabeça baixa), animada por camadas locais, 7 s, 169 frames | Agente do template | **Feito: segunda versão aprovada pelo Pedro e validada no navegador; commit no branch `feat/seq-b-camadas`, sem push nem PR** (issue #3; ver `plan-sequencia-b.md`) |
+| Sequência B (Cinematic): foto 3 (treino, cabeça baixa), animada por camadas locais, 7 s, 169 frames | Agente do template | **Feito: segunda versão aprovada pelo Pedro e validada no navegador; commit `67f9596` no branch `feat/seq-b-camadas`, sem push nem PR** (issue #3; ver `plan-sequencia-b.md`) |
 | Remover o `readout` do Hero (desligado pelo cliente) | Agente do template | Feito |
 | Aplicar o JSON de textos e a paleta (`#0a0a0b`, accent `#D72631`) | Agente do template | Feito |
 | Trocar "A definir" pela categoria do Arthur | Agente do template | Feito: Peso Galo, 61 kg |
@@ -24,16 +24,31 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
-- **10/11/2026 (madrugada), agente do template — SEQUÊNCIA B CONCLUÍDA NO BRANCH**:
-  - RELATO (Pedro): o movimento "atende perfeitamente"; o emblema "D" da luva fica sem desfoque;
-    a foto 3 é de autoria do Arthur e não leva crédito.
-  - No navegador o título cobria ombro e cabeça do atleta: título e texto foram para o alto à
-    esquerda, os cards para baixo à esquerda; no celular o texto de apoio some e os cards ficam
-    na base. Detalhes em `plan-sequencia-b.md`, "Navegador".
-  - **Falta (depende do Pedro)**: push do branch e PR com `Closes #3`.
+- **11/11/2026, agente do template — ESTADO ATUAL E PONTO DE RETOMADA (ler primeiro)**:
+  - **Onde está**: Sequência B commitada em `67f9596`, branch `feat/seq-b-camadas`, só local
+    (sem push, sem PR). O branch parte de `feat/seq-a-camadas` (`f8f8c66`, PR #2 aberto, sem
+    merge), então um PR da B contra `main` leva junto o commit da A enquanto o #2 não entrar.
+    Árvore limpa depois do commit; servidor local parado.
+  - RELATO (Pedro, 10/11): o movimento "atende perfeitamente"; o emblema "D" da luva fica sem
+    desfoque; a foto 3 é de autoria do Arthur e não leva crédito.
+  - **Ajuste de layout** (`CinematicReveal.tsx`): no navegador o título cobria ombro e cabeça
+    do atleta. Título e texto foram para o alto à esquerda, os três cards para baixo à esquerda;
+    no celular o texto de apoio (`cinematic.lead`) não aparece e os cards ficam na base. O botão
+    do fim segue embaixo à direita, sobre o antebraço. Detalhes em `plan-sequencia-b.md`,
+    "Navegador".
+  - **Validado**: MEDIDO lint, tipos e build sem erro; VISTO a rolagem de 0,05 a 0,95 em
+    2093x962, 1280x720 e 390x844 (o de 390 px num iframe).
+  - **Sem medição**: rolagem de volta (de baixo para cima); celular real e rede móvel; larguras
+    entre 768 e 1280 px; console durante a carga da página; verificação por pixel só em 5 dos
+    169 quadros.
+  - **Depende do Pedro**: push do branch; PR com `Closes #3` (decidir se espera o merge do #2);
+    merge do PR #2; ver o ajuste do título num celular de verdade.
+  - **Fora do escopo, registrado**: `Hero.tsx` e `CinematicReveal.tsx` seguem duplicando a
+    lógica de canvas (dívida do `AGENTS.md`); autorizações de uso das fotos sem registro
+    (bloqueia publicar, não o trabalho local).
   - Os dois recados abaixo ficam como histórico; as pendências deles estão resolvidas.
 
-- **10/11/2026 (fim da noite), agente do template — SEQUÊNCIA B, SEGUNDA VERSÃO (ler primeiro)**:
+- **10/11/2026 (fim da noite), agente do template — SEQUÊNCIA B, SEGUNDA VERSÃO (histórico)**:
   - **O que mudou**: a câmera agora faz um arco enquanto se aproxima (a parede gira em
     perspectiva e desliza para a esquerda atrás do atleta) e o fundo ganhou feixe de luz com
     raios, névoa, três planos de poeira, sombra do atleta e foco que muda. O atleta continua só
@@ -49,7 +64,7 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
     fotógrafo da foto 3 (a seção segue sem crédito).
   - O recado abaixo fica como histórico do pedido; o "estado do código" dele está superado.
 
-- **10/11/2026 (noite), agente do template — PONTO DE RETOMADA DA SEQUÊNCIA B (ler primeiro)**:
+- **10/11/2026 (noite), agente do template — PONTO DE RETOMADA DA SEQUÊNCIA B (histórico)**:
   - **Pedido do Pedro, nas palavras dele**: *"Não gostei do resultado, esperava uma animação
     mais detalhada, vamos tentar adicionar mais detalhes e uma transição nesse zoom mexendo no
     ângulo da câmera"*. A primeira versão (só zoom do atleta 1,00 a 1,50, fundo 1,00 a 1,16,
