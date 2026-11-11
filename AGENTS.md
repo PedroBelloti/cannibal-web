@@ -125,10 +125,14 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
 - **Barra de navegação**: `ui/Navbar.tsx` fica transparente só enquanto uma sequência passa pela
   base da barra; medir pelo meio deixava uma tira da sequência atrás dela quando um link do menu
   encostava a seção seguinte na barra.
-- **Scroll suave**: `providers/SmoothScrollProvider.tsx` (Lenis). Enquanto anima, o Lenis desfaz
-  scroll que não partiu dele; o ouvinte `yieldToNativeJump` entrega a vez a link de âncora, End,
-  PageDown e barra de rolagem. Sem ele, um clique no menu logo depois da roda do mouse não leva a
-  lugar nenhum. Ao mexer nas opções do Lenis, teste roda seguida de clique num link do menu.
+- **Scroll suave**: `providers/SmoothScrollProvider.tsx` (Lenis). Link de âncora da mesma página
+  não salta: `providers/anchorScroll.ts` cancela o salto nativo e leva ao destino pelo Lenis, de
+  0,9 s a 1,8 s conforme a distância, com curva que sai e chega devagar; grava o `#` no endereço,
+  passa o foco à seção (`tabindex="-1"`) e, com movimento reduzido, salta na hora. O destino
+  respeita o `scroll-mt-*` da seção (a altura da barra). Clique com Ctrl/Cmd/Shift ou link com
+  `target` seguem nativos. Enquanto anima, o Lenis desfaz scroll que não partiu dele; o ouvinte
+  `yieldToNativeJump` entrega a vez a End, PageDown, barra de rolagem e ao voltar do navegador.
+  Ao mexer nas opções do Lenis, teste roda seguida de clique num link do menu.
 - **Validar**: `npm run lint && npx tsc --noEmit && npm run build`, e depois rolar a página inteira
   no navegador. O build não verifica a animação. A medição de
   design é `node ~/.claude/skills/design-taste-frontend/scripts/inspect.mjs <url>` (0 FAIL; os

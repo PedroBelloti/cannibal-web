@@ -2,13 +2,14 @@
 
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
+import { bindAnchorScroll } from "./anchorScroll";
 
 type Props = { children: React.ReactNode };
 
 /** Distância entre o scroll real e o animado a partir da qual o scroll veio de fora do Lenis. */
 const NATIVE_JUMP_MIN_PX = 8;
 
-/** Liga o scroll suave (Lenis) na página inteira, sem tirar a vez dos saltos nativos. */
+/** Liga o scroll suave (Lenis) na página inteira, inclusive nos links de âncora, sem tirar a vez dos saltos nativos. */
 export function SmoothScrollProvider({ children }: Props) {
   const lenisRef = useRef<Lenis | null>(null);
 
@@ -22,8 +23,10 @@ export function SmoothScrollProvider({ children }: Props) {
     });
     lenisRef.current = lenis;
 
-    // Enquanto anima, o Lenis ignora o scroll nativo e desfaz saltos que não partiram dele (link de
-    // âncora, End, PageDown, barra de rolagem). Um scroll longe do ponto animado é um salto desses:
+    const unbindAnchorScroll = bindAnchorScroll(lenis);
+
+    // Enquanto anima, o Lenis ignora o scroll nativo e desfaz saltos que não partiram dele (End,
+    // PageDown, barra de rolagem, voltar do navegador para uma âncora). Um scroll longe do ponto animado é um salto desses:
     // a animação para ali e o salto vale.
     const yieldToNativeJump = () => {
       if (lenis.isScrolling !== "smooth") return;
@@ -42,6 +45,7 @@ export function SmoothScrollProvider({ children }: Props) {
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener("scroll", yieldToNativeJump);
+      unbindAnchorScroll();
       lenis.destroy();
       lenisRef.current = null;
     };

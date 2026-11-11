@@ -24,6 +24,18 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
+- **11/11/2026 (tarde), agente do template — links de âncora com scroll suave, commitado, sem push (ler primeiro)**:
+  - Pedido do Pedro: os links que levam a uma seção saltavam direto; agora fazem o trajeto
+    suave. `providers/anchorScroll.ts` (novo) intercepta o clique e chama o Lenis; detalhes no
+    `AGENTS.md`, "Scroll suave". Antes, o `yieldToNativeJump` entregava esses cliques ao salto nativo.
+  - MEDIDO (Chromium headless, build numa cópia em outra porta): lint e tipos com saída 0; menu,
+    botão, link do rodapé e roda seguida de clique chegam ao destino com a seção a 72 px do topo
+    (altura da barra), em 1,2 s a 1,5 s, com 67 a 86 quadros intermediários; endereço e foco
+    atualizados; com movimento reduzido, salto imediato; em 390 px o botão do Hero leva à chamada.
+  - Sem medição: celular real e toque de verdade, Safari e Firefox, voltar/avançar do navegador
+    (fica no salto nativo), leitor de tela anunciando a seção focada.
+  - Laboratório: depois do commit, o `next start` da porta 3102 foi parado, o build refeito e o
+    servidor subiu de novo com esta mudança.
 - **11/11/2026 (manhã, depois), agente do template — rodapé e aviso de scroll, commit `940072d`, enviado (ler primeiro)**:
   - Estado: branch `feat/redesenho-poster-fixo` igual ao remoto em `940072d`, working tree limpo.
     Issue #6 aberta, sem PR deste branch.
