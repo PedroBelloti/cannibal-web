@@ -1,10 +1,13 @@
 import Image from "next/image";
+import { BrandGlyph } from "@/components/ui/BrandGlyph";
 import { Button } from "@/components/ui/Button";
 import { site } from "@/content/site";
 
 const { sponsorCall } = site;
 
-/** Chamada para patrocínio: a foto da vitória numa metade, a frase e o botão na outra. */
+const GLYPH = "h-[1.15em] w-auto shrink-0";
+
+/** Chamada para patrocínio: a foto da vitória numa metade, a frase e os dois botões de contato na outra. */
 export function SponsorCall() {
   return (
     <section
@@ -27,8 +30,22 @@ export function SponsorCall() {
             {sponsorCall.body}
           </p>
           {/* A entrada fica no invólucro: no botão ela disputaria o `translate` do toque. */}
-          <div className="rise rise-late">
-            <Button href={sponsorCall.cta.href}>{sponsorCall.cta.label}</Button>
+          <div className="rise rise-late flex flex-wrap gap-3">
+            <Button
+              href={sponsorCall.cta.href}
+              icon={<BrandGlyph name="whatsapp" className={GLYPH} />}
+              className="w-full sm:w-auto"
+            >
+              {sponsorCall.cta.label}
+            </Button>
+            <Button
+              href={sponsorCall.instagram.href}
+              tone="quiet"
+              icon={<BrandGlyph name="instagram" className={GLYPH} />}
+              className="w-full sm:w-auto"
+            >
+              {sponsorCall.instagram.label}
+            </Button>
           </div>
         </div>
       </div>

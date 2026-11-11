@@ -24,13 +24,16 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
-- **11/11/2026 (madrugada, depois), agente do template — links, botão e freio da faixa, SEM COMMIT**:
+- **11/11/2026 (manhã), agente do template — botão do Instagram e símbolos das redes, SEM COMMIT**:
+  - Na chamada (`#patrocinio`): "Chamar no Instagram" ao lado de "Chamar no WhatsApp", em placa
+    escura (`tone="quiet"`), e o símbolo de cada rede antes do texto (`ui/BrandGlyph.tsx`).
+  - Commit e push dependem de pedido do Pedro.
+- **11/11/2026 (madrugada, depois), agente do template — links, botão e freio da faixa, commit `9d5fea1`, enviado**:
   - O aviso do cartel e a marca nova foram commitados e enviados (`609fd79`).
-  - No working tree: o link "Trajetória" virou "Mentalidade" (`#mentalidade`); o botão ganhou
+  - Neste commit: o link "Trajetória" virou "Mentalidade" (`#mentalidade`); o botão ganhou
     ponta cortada, seta e varredura; a faixa de nomes freia com o mouse (`ui/HoverBrake.tsx`); o
     botão da chamada abre o WhatsApp ("Chamar no WhatsApp"); rodapé com Instagram, WhatsApp e
     endereços dos parceiros; "+11 mil seguidores" no rodapé e na chamada.
-  - Commit e push dependem de pedido do Pedro.
 - **11/11/2026 (madrugada), agente do template — aviso sorteado no cartel e marca nova, SEM COMMIT**:
   - Os commits `6944c4b` e `fdc1883` já estão no remoto (o recado abaixo, que diz "sem push",
     ficou velho nesse ponto).

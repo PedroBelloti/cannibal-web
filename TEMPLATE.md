@@ -99,6 +99,7 @@ Só entram nomes com fonte no perfil. "Jungle Fight" fica fora: o perfil registr
 | `title` | Título | 2 palavras |
 | `body` | Uma frase | até 100 caracteres |
 | `cta` | Botão vermelho que abre o WhatsApp. O rótulo diz o que acontece; "Seja patrocinador" fica só nos botões que trazem até esta seção | até 3 palavras |
+| `instagram` | Botão escuro ao lado, que abre o perfil no Instagram | até 3 palavras |
 
 ## `footer`, `#contato`
 

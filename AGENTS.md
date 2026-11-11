@@ -103,7 +103,10 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
     `span` interno, porque `clip-path` no link cortaria o contorno de foco. Endereço `http` abre
     em outra aba. Caminho do patrocínio: os botões da barra e do Hero levam a `#patrocinio`, e o
     botão de lá abre o WhatsApp (`WHATSAPP_URL` em `site.ts`); não repita "Seja patrocinador"
-    na chamada.
+    na chamada. Ao lado dele, o do Instagram usa `tone="quiet"` (placa `--surface`): só uma ação
+    vermelha por bloco. Os dois levam o símbolo da rede em `icon`, de `ui/BrandGlyph.tsx`
+    (desenhos do Simple Icons, CC0, na cor do texto; a cor da marca não entra). A 1366 px os dois
+    não cabem lado a lado e empilham.
   - Vermelho (`--accent`) marca o que leva a algum lugar ou responde ao toque: o botão principal
     (`ui/Button.tsx`), as marcas acesas do cartel, a palavra de destino do link final da
     Mentalidade (`cinematic.outro.highlight`) e o link apontado ou sorteado do menu do rodapé.

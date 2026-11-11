@@ -4,6 +4,10 @@ type Props = {
   href: string;
   /** `"sm"` é o tamanho da barra de navegação. */
   size?: "md" | "sm";
+  /** `"quiet"` é a segunda ação ao lado de uma principal: mesma forma, placa escura. */
+  tone?: "accent" | "quiet";
+  /** Símbolo antes do texto. */
+  icon?: ReactNode;
   className?: string;
   children: ReactNode;
 };
@@ -15,18 +19,23 @@ const SIZE_CLASS = {
 
 // O corte da ponta tem a inclinação das marcas do cartel (8 de largura para 26 de altura).
 const PLATE =
-  "absolute inset-0 -z-10 overflow-hidden bg-accent [clip-path:polygon(0_0,100%_0,calc(100%-0.875rem)_100%,0_100%)]";
+  "absolute inset-0 -z-10 overflow-hidden [clip-path:polygon(0_0,100%_0,calc(100%-0.875rem)_100%,0_100%)]";
 const SWEEP =
-  "absolute inset-y-0 -left-4 right-0 origin-left -translate-x-full -skew-x-[17deg] bg-accent-hover transition-transform duration-300 ease-out group-hover:translate-x-0 group-focus-visible:translate-x-0 motion-reduce:transition-none";
+  "absolute inset-y-0 -left-4 right-0 origin-left -translate-x-full -skew-x-[17deg] transition-transform duration-300 ease-out group-hover:translate-x-0 group-focus-visible:translate-x-0 motion-reduce:transition-none";
 const ARROW =
   "h-[0.8em] w-auto shrink-0 transition-transform duration-300 ease-out group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none";
 
+const TONE_CLASS = {
+  accent: { plate: "bg-accent", sweep: "bg-accent-hover" },
+  quiet: { plate: "bg-surface", sweep: "bg-ink/15" },
+} as const;
+
 /**
- * A única forma de botão da página, para a ação principal: placa na cor de destaque com a ponta
+ * A única forma de botão da página, placa na cor de destaque (ou escura, em `quiet`) com a ponta
  * cortada em diagonal e uma seta. Com o ponteiro ou o foco, um tom mais escuro varre a placa e a
  * seta avança. Endereço `http` abre em outra aba.
  */
-export function Button({ href, size = "md", className, children }: Props) {
+export function Button({ href, size = "md", tone = "accent", icon, className, children }: Props) {
   const external = href.startsWith("http");
   const classes = [
     "group relative isolate inline-flex items-center justify-center whitespace-nowrap font-semibold text-white",
@@ -44,9 +53,10 @@ export function Button({ href, size = "md", className, children }: Props) {
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
     >
       {/* O corte fica na placa, não no link: `clip-path` no link cortaria o contorno de foco. */}
-      <span aria-hidden className={PLATE}>
-        <span className={SWEEP} />
+      <span aria-hidden className={`${PLATE} ${TONE_CLASS[tone].plate}`}>
+        <span className={`${SWEEP} ${TONE_CLASS[tone].sweep}`} />
       </span>
+      {icon}
       {children}
       <svg aria-hidden viewBox="0 0 20 14" fill="none" className={ARROW}>
         <path d="M1 7h17M12 1l6 6-6 6" stroke="currentColor" strokeWidth="2.2" />

@@ -82,7 +82,8 @@ export type SiteContent = {
   };
   team: { title: string; body: string; photo: Photo };
   names: { label: string; items: string[]; caption: string };
-  sponsorCall: { title: string; body: string; cta: Link; photo: Photo };
+  /** `cta` abre o WhatsApp e `instagram`, o perfil; cada botão leva o símbolo da rede. */
+  sponsorCall: { title: string; body: string; cta: Link; instagram: Link; photo: Photo };
   footer: {
     menu: { label: string; links: Link[] };
     contact: FooterGroup;
@@ -95,6 +96,8 @@ export type SiteContent = {
 
 // Número informado para contato de patrocínio; o mesmo no botão da chamada e no rodapé.
 const WHATSAPP_URL = "https://wa.me/5561986394253";
+
+const INSTAGRAM_URL = "https://www.instagram.com/arthurcannibal";
 
 export const site: SiteContent = {
   meta: {
@@ -263,6 +266,7 @@ export const site: SiteContent = {
     body: "Sua marca ao lado de um lutador de Brasília com 8 vitórias em 9 lutas e mais de 11 mil seguidores.",
     // Os botões da barra e do Hero trazem até aqui; este é o que abre a conversa.
     cta: { label: "Chamar no WhatsApp", href: WHATSAPP_URL },
+    instagram: { label: "Chamar no Instagram", href: INSTAGRAM_URL },
     photo: {
       src: "/photos/vitoria.webp",
       alt: "Arthur beija a luva, com o outro braço erguido pelo árbitro, depois de uma vitória no cage.",
@@ -288,7 +292,7 @@ export const site: SiteContent = {
         {
           name: "Instagram",
           note: "+11 mil seguidores",
-          href: "https://www.instagram.com/arthurcannibal",
+          href: INSTAGRAM_URL,
         },
         { name: "WhatsApp", note: "+55 (61) 98639-4253", href: WHATSAPP_URL },
         { name: "Imprensa e eventos" },
