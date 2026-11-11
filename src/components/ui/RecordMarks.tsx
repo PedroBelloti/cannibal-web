@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { RecordMethod } from "@/content/site";
+import { useHintCycle } from "./useHintCycle";
 
 type Props = {
   label: string;
@@ -11,29 +12,48 @@ type Props = {
   loss: { label: string; count: number };
 };
 
-type Tone = "idle" | "lit" | "dim";
+/** `hint` é o aviso sorteado: a marca acende como em `lit`, mas devagar e sem apagar as outras. */
+type Tone = "idle" | "lit" | "dim" | "hint";
 type Scale = "featured" | "compact";
 
 const MARK_SIZE: Record<Scale, string> = {
-  featured: "size-9 wide:size-[min(2.75rem,5.6svh)]",
-  compact: "size-4 wide:size-6",
+  featured: "h-11 wide:h-[min(3.25rem,6.4svh)]",
+  compact: "h-5 wide:h-7",
 };
-const MARK_MOTION =
-  "transition-[background-color,opacity] duration-200 ease-out motion-reduce:transition-none";
+const MARK_MOTION = "w-auto transition-[color,opacity] ease-out motion-reduce:transition-none";
 const TEXT_MOTION =
   "transition-[color,translate] duration-200 ease-out motion-reduce:transition-none";
 
 const TONE_CLASS: Record<Tone, string> = {
-  idle: "bg-ink",
-  lit: "bg-accent",
-  dim: "bg-ink opacity-25",
+  idle: "text-ink duration-200",
+  lit: "text-accent duration-200",
+  dim: "text-ink opacity-25 duration-200",
+  hint: "text-accent duration-700",
 };
+
+/**
+ * A marca de cada luta: um risco inclinado, a mesma barra do "%" do título, contado como em
+ * placar riscado à mão. Vazado (`hollow`) é a derrota.
+ */
+function Stroke({ hollow = false, ...rest }: { hollow?: boolean } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 17 28" fill={hollow ? "none" : "currentColor"} {...rest}>
+      <path
+        d="M9 1h7L8 27H1Z"
+        stroke={hollow ? "currentColor" : undefined}
+        strokeWidth={hollow ? 1.5 : undefined}
+        strokeLinejoin="round"
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
+  );
+}
 
 function Marks({ count, tone, scale }: { count: number; tone: Tone; scale: Scale }) {
   return (
-    <span aria-hidden className={`flex ${scale === "featured" ? "gap-2" : "gap-1.5"}`}>
+    <span aria-hidden className={`flex ${scale === "featured" ? "gap-1" : "gap-0.5"}`}>
       {Array.from({ length: count }, (_, index) => (
-        <span
+        <Stroke
           key={index}
           data-lit={tone === "lit"}
           className={`${MARK_SIZE[scale]} ${MARK_MOTION} ${TONE_CLASS[tone]}`}
@@ -47,14 +67,21 @@ function Marks({ count, tone, scale }: { count: number; tone: Tone; scale: Scale
 /**
  * As nove lutas do cartel, uma marca por luta. Os métodos em destaque vêm em cima, com o número
  * grande; os outros e a derrota, embaixo, menores. Tocar num método acende as marcas dele e troca
- * a legenda pela frase do método; tocar de novo volta ao estado inicial.
+ * a legenda pela frase do método; tocar de novo volta ao estado inicial. Sem nada escolhido nem
+ * apontado, as marcas de um método sorteado acendem de tempos em tempos (`useHintCycle`).
  */
 export function RecordMarks({ label, legend, methods, loss }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [engaged, setEngaged] = useState(false);
   const selected = methods.find((method) => method.id === selectedId) ?? null;
+  const { ref, hinted } = useHintCycle<HTMLDivElement>(
+    methods.length,
+    engaged || selectedId !== null,
+  );
+  const hintedId = hinted === null ? null : methods[hinted].id;
 
   const toneOf = (id: string): Tone => {
-    if (selectedId === null) return "idle";
+    if (selectedId === null) return id === hintedId ? "hint" : "idle";
     return id === selectedId ? "lit" : "dim";
   };
   const textOf = (id: string) => (toneOf(id) === "dim" ? "text-muted" : "text-ink");
@@ -64,7 +91,15 @@ export function RecordMarks({ label, legend, methods, loss }: Props) {
   const others = methods.filter((method) => !method.featured);
 
   return (
-    <div role="group" aria-label={label}>
+    <div
+      ref={ref}
+      role="group"
+      aria-label={label}
+      onPointerEnter={() => setEngaged(true)}
+      onPointerLeave={() => setEngaged(false)}
+      onFocus={() => setEngaged(true)}
+      onBlur={() => setEngaged(false)}
+    >
       <ul className="grid grid-cols-2 gap-x-4">
         {featured.map((method) => (
           <li key={method.id}>
@@ -111,9 +146,9 @@ export function RecordMarks({ label, legend, methods, loss }: Props) {
           >
             {loss.count} {loss.label}
           </span>
-          <span aria-hidden className="flex gap-1.5">
+          <span aria-hidden className="flex gap-0.5">
             {Array.from({ length: loss.count }, (_, index) => (
-              <span key={index} className={`${MARK_SIZE.compact} border-2 border-muted`} />
+              <Stroke key={index} hollow className={`${MARK_SIZE.compact} w-auto text-muted`} />
             ))}
           </span>
         </li>

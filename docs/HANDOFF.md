@@ -24,6 +24,14 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
+- **11/11/2026 (madrugada), agente do template — aviso sorteado no cartel e marca nova, SEM COMMIT**:
+  - Os commits `6944c4b` e `fdc1883` já estão no remoto (o recado abaixo, que diz "sem push",
+    ficou velho nesse ponto).
+  - No working tree: `ui/useHintCycle.ts` (novo, extraído do `HintMenu`), `HintMenu.tsx` e
+    `RecordMarks.tsx`. O cartel ganhou o mesmo aviso do menu do rodapé (as marcas de um método
+    sorteado acendem) e a marca deixou de ser quadrado: é um risco inclinado, a barra do "%".
+    Uma presa foi tentada antes e recusada pelo Pedro; não voltar a ela.
+  - Commit e push dependem de pedido do Pedro.
 - **11/11/2026 (fim da noite), agente do template — rodada do cartel, commitada, SEM PUSH (ler primeiro)**:
   - **Onde está**: branch `feat/redesenho-poster-fixo`. O redesenho está commitado em `fe93432`
     (no remoto) e `6944c4b` (só local). A rodada do cartel, a faixa de nomes e o aviso do menu do

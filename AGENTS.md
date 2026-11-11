@@ -62,10 +62,14 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
   `FightRecord` (`#cartel`), `Team` (`#equipe`), `NamesBand`, `SponsorCall` (`#patrocinio`) e
   `Footer` (`#contato`). São componentes de servidor; o único com estado é `ui/RecordMarks.tsx`.
   - Cartel: o título é o percentual de vitórias gigante, calculado em `FightRecord.tsx` a partir
-    dos `count` (não é texto digitado), com `record.rate` ao lado. Embaixo, uma marca por luta: os
+    dos `count` (não é texto digitado), com `record.rate` ao lado. Embaixo, uma marca por luta (um
+    risco inclinado, a barra do "%"; vazado na derrota; SVG em `RecordMarks.tsx`): os
     métodos com `featured` na linha de destaque, com o número grande, e os outros mais a derrota
     na linha menor. O botão do método (`aria-pressed`) acende as marcas dele e troca a legenda
-    (`aria-live`) por `result`; a legenda inicial já vem no HTML e vale sem script. `rate.note`,
+    (`aria-live`) por `result`; a legenda inicial já vem no HTML e vale sem script. Sem método
+    escolhido, as marcas de um método sorteado acendem de tempos em tempos (`ui/useHintCycle.ts`,
+    o mesmo aviso do menu do rodapé); só as marcas, porque texto vermelho pequeno não tem
+    contraste. Ponteiro, foco ou método escolhido param o sorteio. `rate.note`,
     `legend`, os `result` e `sponsorCall.body` repetem os números à mão: nada confere isso no
     código. Na composição larga o bloco dos métodos fica preso ao pé da tela fixa e por isso usa
     `.rise-entry` em vez de `.rise`. Mensagens e provas: `docs/brand-guidelines.md`.
@@ -86,7 +90,8 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
     `FightRecord.tsx`). A foto da Equipe tem a tela menos a barra (`100svh - --nav-h`), com
     `object-position` escolhido para manter as cabeças e o calção; trocou a foto, reposicione. O crédito sobre foto segue o do Hero: texto
     solto no alto à direita, com o véu `bg-scrim` por baixo, sem caixa nem sombra de texto.
-  - Rodapé: o menu grande é `ui/HintMenu.tsx`, que de tempos em tempos pinta um link sorteado com
+  - Rodapé: o menu grande é `ui/HintMenu.tsx`, que de tempos em tempos (`ui/useHintCycle.ts`, só
+    com o menu na tela) pinta um link sorteado com
     a cor de destaque para avisar que é clicável; o sorteio só roda com o menu na tela e o
     primeiro link acende logo que ele aparece (`HINT_FIRST_MS`); ponteiro ou foco no menu param o
     sorteio, e com movimento reduzido ele não roda. Item de `contact`/`partners` sem `href` sai como texto. O

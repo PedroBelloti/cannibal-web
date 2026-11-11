@@ -131,5 +131,5 @@ texto, e confira o foco da tela em pé (`AGENTS.md`).
 
 Os tokens ficam em `src/app/globals.css`. `--bg` precisa ser igual ao fundo dos frames, senão a
 borda do canvas aparece. `--accent` marca o que leva a algum lugar ou responde ao toque: botão
-principal, marcas acesas do cartel, a palavra de destino do link final da Trajetória e o link
+principal, marcas acesas ou sorteadas do cartel, a palavra de destino do link final da Trajetória e o link
 apontado ou sorteado do menu do rodapé.
