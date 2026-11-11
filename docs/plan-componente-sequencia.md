@@ -124,9 +124,11 @@ SSIM contra o MP4 decodificado em PNG, nos 169 frames. Candidatos e comparaçõe
 `/tmp/hero-frames-PWiP/` (some num reboot; regerar com
 `extract-frames.sh media/seq-a/seq-a.mp4 <saida> 169 1600 <qualidade>`).
 
-PENDENTE (Pedro): escolher o candidato. Sem medição: página rolando com os candidatos, tela de
+Decisão (2026-11-11): q60 adotado. `public/frames` regerado com `169 1600 60`; os 169 arquivos
+são idênticos byte a byte ao candidato medido (14,86 MB). Sem medição: página rolando com os candidatos, tela de
 alta densidade, celular (onde o corte amplia o rosto), AVIF e frames menores para celular.
 
 ### Fase 3, parte B
 
-PENDENTE: aguarda o commit da parte A.
+Parte A no commit `e432d67`. Parte B em execução. F1 (cards do Hero sobre o rosto) fica para um
+próximo trabalho, por decisão de 2026-11-11.

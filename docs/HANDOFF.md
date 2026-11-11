@@ -19,7 +19,7 @@ Sequência B). Escreva no topo, com data, quem escreveu e o que precisa.
 
 Pasta `media/seq-a/`: `render.py` e `make_mask.py` (geram os quadros a partir da foto 1),
 `mask-atleta.png`, `seq-a.mp4` (7 s, 24 fps) e `poster.jpg` (quadro 56, o primeiro com a cena
-toda acesa). Os frames do site ficam só em `public/frames/` (169 WebP, 1600 px, q70, 17 MB).
+toda acesa). Os frames do site ficam só em `public/frames/` (169 WebP, 1600 px, q60, 14,9 MB; eram q70 e 17,3 MB até a issue #5).
 Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados

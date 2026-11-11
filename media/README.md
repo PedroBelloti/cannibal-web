@@ -18,9 +18,10 @@ comparação de pixels contra a foto original.
 | `layered.py` | | motor comum das duas sequências (zoom, matrizes de câmera, preenchimento, ruído, partículas) |
 
 Os frames do site saem do MP4 pelo script da skill `scroll-video-hero`
-(`scripts/extract-frames.sh <video> <pasta> [frames] [largura] [qualidade]`), nas duas
-sequências com `169 1600 70`. MEDIDO: a foto 1 dá 35 MB em 1920 q80 e 17 MB em 1600 q70; a
-Sequência B dá 6,8 MB em 1600 q70.
+(`scripts/extract-frames.sh <video> <pasta> [frames] [largura] [qualidade]`): a Sequência A com
+`169 1600 60` e a B com `169 1600 70`. MEDIDO: a foto 1 dá 35 MB em 1920 q80, 17,3 MB em 1600
+q70 e 14,9 MB em 1600 q60; a Sequência B dá 6,8 MB em 1600 q70. A comparação de q70, q60, q50 e
+q40 da Sequência A está em `docs/plan-componente-sequencia.md` (issue #5).
 
 ## Por que o outpaint é colado por baixo da foto
 
