@@ -1,7 +1,8 @@
 type Props = {
   quote: string;
-  speaker: string;
-  source: string;
+  /** Sem autor e origem a frase é do site: sai sem aspas e sem assinatura. */
+  speaker?: string;
+  source?: string;
   /** Vem dos ids que `ScrollSequence` entrega; fora da janela a frase fica no DOM, transparente. */
   visible: boolean;
   className?: string;
@@ -22,11 +23,19 @@ export function SequenceQuote({ quote, speaker, source, visible, className }: Pr
   // quem mede sobreposição (inspect.mjs da skill de design) lê a opacidade do próprio elemento.
   const fade = `transition-opacity ${EASE} ${visible ? "opacity-100" : "opacity-0"}`;
 
+  const line = `max-w-[26ch] text-lead font-semibold tracking-[-0.02em] text-ink ${fade}`;
+
+  if (!speaker || !source) {
+    return (
+      <div className={classes}>
+        <p className={line}>{quote}</p>
+      </div>
+    );
+  }
+
   return (
     <figure className={classes}>
-      <blockquote className={`max-w-[26ch] text-lead font-semibold tracking-[-0.02em] text-ink ${fade}`}>
-        &ldquo;{quote}&rdquo;
-      </blockquote>
+      <blockquote className={line}>&ldquo;{quote}&rdquo;</blockquote>
       <figcaption className={`mt-3 text-small text-ink wide:text-muted ${fade}`}>
         {speaker}, {source}
       </figcaption>

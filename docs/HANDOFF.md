@@ -24,6 +24,23 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
+- **11/11/2026 (fim da noite), agente do template — rodada do cartel, commitada, SEM PUSH (ler primeiro)**:
+  - **Onde está**: branch `feat/redesenho-poster-fixo`. O redesenho está commitado em `fe93432`
+    (no remoto) e `6944c4b` (só local). A rodada do cartel, a faixa de nomes e o aviso do menu do
+    rodapé estão no commit seguinte, também só local. Push depende de pedido do Pedro.
+  - **O que mudou**: o Cartel abre com o percentual de vitórias gigante (calculado dos `count`),
+    Nocautes e Finalizações em destaque, Decisões e a derrota numa linha menor. Saíram
+    `record.title` e `record.score`; entrou `record.rate` e `featured` em cada método. Guia de
+    marca novo em `docs/brand-guidelines.md`. Detalhes na seção "Rodada do cartel" do PLAN.
+  - **Frase do Hero**: o terceiro card virou "Sede de sangue. Fome de vitória.", frase do site,
+    sem assinatura (`speaker`/`source` agora opcionais). PENDENTE: o Arthur aprovar ou trocar.
+    Com isso "Agora somos três." saiu e o Hero ficou sem o contraponto da família; a Trajetória
+    mantém "Movido pela família".
+  - MEDIDO: lint, tsc, build, inspetor de design (0 FAIL) e o cartel em cinco tamanhos de tela.
+  - **Faixa de nomes**: refeita em duas fileiras opostas, menor e mais lenta (seção "Rodada da
+    faixa de nomes" do PLAN).
+  - **Menu do rodapé**: o sorteio começa quando o menu entra na tela (primeiro link em ~0,3 s);
+    o intervalo entre um e outro não mudou.
 - **11/11/2026 (noite), agente do template — redesenho, fases 3 a 6 feitas, SEM COMMIT (ler primeiro)**:
   - **Onde está**: branch `feat/redesenho-poster-fixo`, a partir de `ebf1fa8`; todo o redesenho
     (issue #6) está na árvore de trabalho, nada em stage. Commit, push e PR dependem de pedido do

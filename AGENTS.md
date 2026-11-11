@@ -10,7 +10,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Site do Arthur The Cannibal: duas sequências por scroll e seções de pôster fixo
 
-Direção de design, decisões e desvios em `docs/plan-redesenho-poster-fixo.md`. O redesenho vale
+Direção de design, decisões e desvios em `docs/plan-redesenho-poster-fixo.md`; cores, tipo, voz e
+mensagens da marca em `docs/brand-guidelines.md`. O redesenho vale
 só para este site; o repositório nasceu de um template, mas não é mais tratado como um.
 
 - **Texto**: tudo fica em `src/content/site.ts`, tipado por `SiteContent`. Os componentes não têm
@@ -44,7 +45,9 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
   relação aos frames), a altura de `.scroll-animation` em `globals.css` (entra no progresso) e
   `coverRect`/`focusForRatio` (corte). Nada é desenhado nem notificado antes de a carga terminar.
 - **Texto sobre as sequências**: `ui/PinnedTitle.tsx` (título preso em dois cantos) e
-  `ui/SequenceQuote.tsx` (frase solta, uma por vez) servem ao Hero e à Trajetória. Texto de apoio,
+  `ui/SequenceQuote.tsx` (frase solta, uma por vez) servem ao Hero e à Trajetória. Card sem
+  `speaker` e `source` é frase do site e sai sem aspas nem assinatura; fala atribuída ao Arthur só
+  com fonte em `docs/perfil-comunicacao.md`. Texto de apoio,
   frases e link final ocupam o mesmo lugar (`--slot-h` em `globals.css`), um de cada vez. Os marcos
   de entrada e saída ficam em `src/lib/hero.ts` (`HERO_TEXT_FADE_END`) e `src/lib/cinematic.ts`
   (`CINE_INTRO_FADE_END`, `CINE_TITLE_SWAP`, `CINE_OUTRO`) e convivem com os `show`/`hide` das
@@ -58,10 +61,21 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
 - **Seções abaixo das sequências** (`src/components/sections/`, ordem em `src/app/page.tsx`):
   `FightRecord` (`#cartel`), `Team` (`#equipe`), `NamesBand`, `SponsorCall` (`#patrocinio`) e
   `Footer` (`#contato`). São componentes de servidor; o único com estado é `ui/RecordMarks.tsx`.
-  - Cartel: uma marca por luta, em linhas por método (`record.methods[].count`). O botão do método
-    (`aria-pressed`) acende as marcas dele e troca a legenda (`aria-live`) por `result`; a legenda
-    inicial já vem no HTML e diz os números sem script. A soma dos `count` mais `loss.count` tem de
-    bater com `record.score` e com os textos: nada confere isso no código.
+  - Cartel: o título é o percentual de vitórias gigante, calculado em `FightRecord.tsx` a partir
+    dos `count` (não é texto digitado), com `record.rate` ao lado. Embaixo, uma marca por luta: os
+    métodos com `featured` na linha de destaque, com o número grande, e os outros mais a derrota
+    na linha menor. O botão do método (`aria-pressed`) acende as marcas dele e troca a legenda
+    (`aria-live`) por `result`; a legenda inicial já vem no HTML e vale sem script. `rate.note`,
+    `legend`, os `result` e `sponsorCall.body` repetem os números à mão: nada confere isso no
+    código. Na composição larga o bloco dos métodos fica preso ao pé da tela fixa e por isso usa
+    `.rise-entry` em vez de `.rise`. Mensagens e provas: `docs/brand-guidelines.md`.
+  - Faixa de nomes (`NamesBand`): duas fileiras em sentidos opostos, a de cima cheia e a de baixo
+    em contorno (`.names-outline`), com as bordas esmaecidas por máscara (`.names-fade`) e pausa
+    com o ponteiro em cima. A fileira de baixo é cópia para o olho (`aria-hidden`) e começa na
+    metade da lista. O tamanho é só em `vw`, sem teto: a volta mede ~39,5em e precisa ser mais
+    larga que a tela, senão aparece o vazio; menos nomes ou nomes mais curtos pedem medir de novo.
+    A duração em `.names-track` vale para essa largura. O contorno é traço com preenchimento da
+    cor do fundo por cima (`paint-order`): letra vazada mostra os cruzamentos internos da fonte.
   - Fotos: `public/photos/*.webp`, origem e comando de recorte em `media/README.md`. Cada uma é um
     `Photo` em `site.ts`; `credit: null` significa autor não confirmado e a página não mostra
     crédito. Nenhum rosto ou pessoa pode ser alterado: só recorte e redução.
@@ -73,19 +87,21 @@ só para este site; o repositório nasceu de um template, mas não é mais trata
     `object-position` escolhido para manter as cabeças e o calção; trocou a foto, reposicione. O crédito sobre foto segue o do Hero: texto
     solto no alto à direita, com o véu `bg-scrim` por baixo, sem caixa nem sombra de texto.
   - Rodapé: o menu grande é `ui/HintMenu.tsx`, que de tempos em tempos pinta um link sorteado com
-    a cor de destaque para avisar que é clicável; ponteiro ou foco no menu param o sorteio, e com
-    movimento reduzido ele não roda. Item de `contact`/`partners` sem `href` sai como texto. O
+    a cor de destaque para avisar que é clicável; o sorteio só roda com o menu na tela e o
+    primeiro link acende logo que ele aparece (`HINT_FIRST_MS`); ponteiro ou foco no menu param o
+    sorteio, e com movimento reduzido ele não roda. Item de `contact`/`partners` sem `href` sai como texto. O
     nome na largura toda usa o divisor `9.35` (largura do nome em em); mudou o nome ou a fonte,
     meça de novo.
   - Vermelho (`--accent`) marca o que leva a algum lugar ou responde ao toque: o botão principal
     (`ui/Button.tsx`), as marcas acesas do cartel, a palavra de destino do link final da
     Trajetória (`cinematic.outro.highlight`) e o link apontado ou sorteado do menu do rodapé.
     Fora disso, não.
-- **Entradas e movimento**: classes `.rise`, `.rise-late`, `.drift` e `.names-track` em
+- **Entradas e movimento**: classes `.rise`, `.rise-late`, `.rise-entry`, `.drift` e `.names-track` em
   `globals.css`, animações CSS presas ao scroll, sem JavaScript. Só valem com suporte a
   `animation-timeline: view()` e sem `prefers-reduced-motion`; fora disso o conteúdo fica parado e
-  visível. Não use `.rise` na última tela: a faixa de animação não se completa sem scroll adiante
-  e o texto fica meio transparente.
+  visível. Não use `.rise` na última tela nem no pé de uma tela fixa (`.pin-screen`): a faixa de
+  animação não se completa e o texto fica meio transparente; no pé de tela fixa use `.rise-entry`,
+  que termina quando o bloco entra inteiro.
 - **Barra de navegação**: `ui/Navbar.tsx` fica transparente só enquanto uma sequência passa pela
   base da barra; medir pelo meio deixava uma tira da sequência atrás dela quando um link do menu
   encostava a seção seguinte na barra.

@@ -252,6 +252,24 @@ três larguras, sem nota escrita no formato de `critique.md`.
 Sem suíte E2E no projeto; a verificação segue por script Playwright temporário, como no PLAN
 anterior.
 
+## Rodada do cartel (2026-11-11): percentual na frente
+
+Substitui a linha 3 da tabela "Página, seção por seção" e as linhas de Cartel em "Textos".
+
+| Antes | Agora | Motivo |
+|---|---|---|
+| título "Oito vitórias em nove lutas" e placar "8–1" gigante no pé | o título é "89% de vitórias", com o número gigante no alto e "em 9 lutas" em cinza | o percentual é o argumento mais forte para patrocinador; o título antigo dizia o mesmo número duas vezes |
+| três linhas de método iguais | Nocautes e Finalizações em destaque, com número grande; Decisões e a derrota numa linha menor | vitória antes do fim é o segundo argumento |
+| legenda "3 nocautes, 3 decisões e 2 finalizações. 1 derrota." | "5 das 8 vitórias vieram antes do fim da luta." | os totais já estão escritos nos botões; a legenda passa a dizer o que eles somam |
+| `record.title`, `record.score` | `record.rate`, `methods[].featured`; o percentual é calculado | número digitado em dois lugares diverge |
+
+Descartado: percentual de vitórias antes do fim (62,5%: enfraquece ao lado do 89%); contagem
+animada do número (pede estado num título que hoje é HTML de servidor); 89% em vermelho (o
+vermelho é só do que responde ao toque); "Cartel 8–1" como nota pequena sob o rótulo (o medidor
+de design a lê como etiqueta sobre título nas telas em pé). No Hero, a terceira frase passou de
+"Agora somos três." para "Sede de sangue. Fome de vitória.", frase do site, sem aspas nem
+assinatura, porque não é fala dele com fonte no perfil. Identidade registrada em `docs/brand-guidelines.md`.
+
 ## Critérios de aceite
 
 - [ ] Nenhum canto de HUD, contador `SEQ`, etiqueta em maiúsculas pequenas, cartão de vidro, fonte
@@ -293,6 +311,20 @@ anterior.
 
 Regerar frames ou mudar o frame inicial; vídeo vertical para celular; trocar Lenis; suíte E2E
 permanente; autorizações de uso das fotos; push, PR e deploy.
+
+## Rodada da faixa de nomes (2026-11-11)
+
+Pedido: faixa mais lenta, menor e com acabamento. MEDIDO em 1882×926, antes e depois: letra de
+141 px para 83 px; velocidade de 125 px/s para 66 px/s; nomes inteiros à vista de 1 para 5 ou 6.
+No celular (390 px): 58 px para 43 px, 52 px/s para 34 px/s.
+
+- Duas fileiras em sentidos opostos, a de baixo em contorno; bordas esmaecidas por máscara; o
+  ponteiro pausa as duas. Com movimento reduzido fica uma fileira parada, como antes.
+- A máscara usa `linear-gradient` e leva `taste-skill-ignore`: a regra do medidor é contra
+  degradê pintado, e aqui nada é pintado.
+- Descartado: nomes em vermelho (não são links); contorno com letra vazada (mostra os cruzamentos
+  internos da fonte); velocidade ligada ao scroll (pede JavaScript); logotipos dos parceiros (não
+  há arquivos nem autorização).
 
 ## Depende do Pedro ou do Arthur
 

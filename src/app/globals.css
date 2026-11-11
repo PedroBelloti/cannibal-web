@@ -135,6 +135,13 @@ body {
       animation-range: entry 14% cover 30%;
     }
 
+    /* Para o bloco preso ao pé de uma tela fixa: termina assim que ele entra inteiro. */
+    .rise-entry {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+
     .drift {
       animation: drift linear both;
       animation-timeline: view();
@@ -157,9 +164,34 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  /* A duração vale para uma volta de ~39,5em: trocou os nomes, a velocidade muda junto. */
   .names-track {
-    animation: names-slide 45s linear infinite;
+    animation: names-slide 52s linear infinite;
   }
+
+  .names-track-back {
+    animation-direction: reverse;
+  }
+
+  /* Os nomes nascem e somem nas bordas em vez de serem cortados por elas. É máscara, não
+     preenchimento: nenhum degradê é pintado. */
+  .names-fade {
+    mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent); /* taste-skill-ignore */
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+  .names-fade:hover .names-track {
+    animation-play-state: paused;
+  }
+}
+
+/* Preenchido com a cor do fundo por cima do traço: letra vazada mostraria o cruzamento dos
+   contornos internos da fonte. Só a metade de fora do traço aparece. */
+.names-outline {
+  color: var(--bg);
+  -webkit-text-stroke: 0.034em var(--muted);
+  paint-order: stroke fill;
 }
 
 /* A faixa tem a lista duas vezes: metade da largura é uma volta inteira. */

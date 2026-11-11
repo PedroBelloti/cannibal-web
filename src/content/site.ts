@@ -6,14 +6,17 @@
 
 export type Link = { label: string; href: string };
 
-/** Card que aparece entre `show` e `hide` (fração 0–1 do scroll da seção). */
+/**
+ * Card que aparece entre `show` e `hide` (fração 0–1 do scroll da seção). `speaker` e `source` só
+ * entram em fala dele com fonte no perfil; sem os dois a frase é do site e sai sem aspas.
+ */
 export type TimedCard = {
   id: string;
   show: number;
   hide: number;
   quote: string;
-  speaker: string;
-  source: string;
+  speaker?: string;
+  source?: string;
 };
 
 /** Título preso em dois cantos da sequência: `top` em cima, `bottom` embaixo. */
@@ -25,8 +28,17 @@ export type Headline = { top: string; bottom: string };
  */
 export type Photo = { src: string; alt: string; credit: string | null };
 
-/** Método de vitória do cartel: `count` marcas e a frase mostrada quando ele é escolhido. */
-export type RecordMethod = { id: string; label: string; count: number; result: string };
+/**
+ * Método de vitória do cartel: `count` marcas e a frase mostrada quando ele é escolhido.
+ * `featured` põe o método na linha de destaque, com o número grande.
+ */
+export type RecordMethod = {
+  id: string;
+  label: string;
+  count: number;
+  result: string;
+  featured: boolean;
+};
 
 /** Bloco do rodapé. Item sem `href` aparece como texto, não como link. */
 export type FooterGroup = {
@@ -56,8 +68,11 @@ export type SiteContent = {
     loader: { text: string };
   };
   record: {
-    title: string;
-    score: string;
+    /**
+     * Texto ao lado do percentual de vitórias; os dois formam o título da seção. O percentual não
+     * é digitado: sai da soma dos `count` dos métodos e de `loss.count`.
+     */
+    rate: { label: string; note: string };
     /** Diz os números sem depender do toque; é o que aparece com nenhum método escolhido. */
     legend: string;
     filterLabel: string;
@@ -130,9 +145,8 @@ export const site: SiteContent = {
         id: "hero-3",
         show: 0.6,
         hide: 0.8,
-        quote: "Agora somos três.",
-        speaker: "Arthur Henrique",
-        source: "no Instagram",
+        // Frase do site, não fala dele: fica sem autor até o Arthur dizer ou aprovar.
+        quote: "Sede de sangue. Fome de vitória.",
       },
     ],
     loader: {
@@ -183,18 +197,30 @@ export const site: SiteContent = {
   },
 
   record: {
-    title: "Oito vitórias em nove lutas",
-    score: "8–1",
-    legend: "3 nocautes, 3 decisões e 2 finalizações. 1 derrota.",
+    rate: { label: "de vitórias", note: "em 9 lutas" },
+    legend: "5 das 8 vitórias vieram antes do fim da luta.",
     filterLabel: "Vitórias por método",
     methods: [
-      { id: "ko", label: "Nocaute", count: 3, result: "3 das 8 vitórias vieram por nocaute." },
-      { id: "decision", label: "Decisão", count: 3, result: "3 das 8 vitórias vieram por decisão." },
+      {
+        id: "ko",
+        label: "Nocautes",
+        count: 3,
+        result: "3 das 8 vitórias vieram por nocaute.",
+        featured: true,
+      },
       {
         id: "submission",
-        label: "Finalização",
+        label: "Finalizações",
         count: 2,
         result: "2 das 8 vitórias vieram por finalização.",
+        featured: true,
+      },
+      {
+        id: "decision",
+        label: "Decisões",
+        count: 3,
+        result: "3 das 8 vitórias vieram por decisão.",
+        featured: false,
       },
     ],
     loss: { label: "Derrota", count: 1 },
@@ -276,7 +302,8 @@ export const site: SiteContent = {
       alt: "Rosto de Arthur de queixo erguido, mostrando o protetor bucal com CANNIBAL escrito.",
       credit: "Foto: @m2l.cs",
     },
-    legal: "© 2026 Arthur The Cannibal. Fotos: @m2l.cs, @luigimoraess, Foguinho Clicks. Todos os direitos reservados.",
+    legal:
+      "© 2026 Arthur The Cannibal. Fotos: @m2l.cs, @luigimoraess, Foguinho Clicks. Todos os direitos reservados.",
     disclaimer: "Cupons sujeitos às regras de cada parceiro.",
   },
 };

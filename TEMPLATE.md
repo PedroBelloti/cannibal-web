@@ -40,7 +40,7 @@ Os números entre parênteses são a fração do scroll da seção (0 = topo, 1 
 | `lead` | Texto de apoio embaixo à esquerda; some no começo do scroll (`HERO_TEXT_FADE_END`) | até 130 caracteres |
 | `cta` | Botão abaixo do texto de apoio, some junto com ele | 2 palavras |
 | `photoCredit` | Canto superior direito, fixo | até 30 caracteres |
-| `cards[0..2]` | Frases soltas, uma por vez, no lugar do texto de apoio (0,10–0,30 · 0,35–0,55 · 0,60–0,80): `quote`, `speaker`, `source` | frase até 60 caracteres |
+| `cards[0..2]` | Frases soltas, uma por vez, no lugar do texto de apoio (0,10–0,30 · 0,35–0,55 · 0,60–0,80): `quote`, `speaker`, `source`. Sem `speaker` e `source` a frase é do site e sai sem aspas e sem assinatura; só assine fala dele com fonte no perfil | frase até 60 caracteres |
 | `loader.text` | Tela de carga dos frames | até 24 caracteres |
 
 ## `cinematic`: segunda sequência (`public/frames2/`), `#trajetoria`
@@ -61,16 +61,17 @@ da metade, onde o título troca.
 
 | Campo | Onde aparece | Tamanho |
 |---|---|---|
-| `title` | Título da seção | até 30 caracteres |
-| `score` | Placar gigante embaixo à esquerda | "8–1" |
-| `methods[]` | Uma linha por método: `label`, `count` marcas, e `result`, a frase mostrada ao tocar | `label` 1 palavra; `result` até 45 caracteres |
-| `loss` | Linha da derrota, marca vazada, sem toque | 1 palavra |
-| `legend` | Frase com nenhum método escolhido; diz os números sem depender do toque | até 60 caracteres |
+| `rate.label` | Ao lado do percentual gigante; os dois formam o título da seção | 2 palavras |
+| `rate.note` | Segunda linha do rótulo, em cinza | até 12 caracteres |
+| `methods[]` | Um botão por método: `label`, `count` marcas, e `result`, a frase mostrada ao tocar. Com `featured: true` o método vai para a linha de destaque, com o número grande | `label` 1 palavra, no plural; `result` até 45 caracteres; 2 em destaque |
+| `loss` | Derrota, marca vazada, sem toque, ao lado dos métodos sem destaque | 1 palavra |
+| `legend` | Frase com nenhum método escolhido; diz o número forte sem depender do toque | até 50 caracteres |
 | `filterLabel` | Nome do grupo de botões para leitor de tela | curto |
 | `photo` | Metade direita na tela larga; na tela em pé entra na pilha da seção | ver "Fotos" |
 
-A soma dos `count` mais `loss.count` tem de bater com `score`, `title`, `legend` e
-`sponsorCall.body`. Nada confere isso no código.
+O percentual não é digitado: `FightRecord.tsx` calcula a partir da soma dos `count` e de
+`loss.count`. `rate.note`, `legend`, os `result` e `sponsorCall.body` repetem esses números à mão
+e nada confere isso no código: mudou um `count`, revise os quatro.
 
 ## `team`: equipe, `#equipe`
 
@@ -84,7 +85,7 @@ A soma dos `count` mais `loss.count` tem de bater com `score`, `title`, `legend`
 
 | Campo | Onde aparece | Tamanho |
 |---|---|---|
-| `items[]` | Nomes grandes andando para a esquerda | 6 nomes; menos que 4 deixa a volta visível em tela larga (não medido) |
+| `items[]` | Duas fileiras de nomes em sentidos opostos: a de cima cheia, a de baixo em contorno e começando na metade da lista | 6 nomes; a volta inteira precisa ser mais larga que a tela, com menos nomes meça de novo |
 | `caption` | Frase abaixo da faixa, dizendo quem são | até 60 caracteres |
 | `label` | Nome da seção para leitor de tela | curto |
 

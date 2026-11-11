@@ -5,23 +5,38 @@ import type { Link } from "@/content/site";
 
 type Props = { label: string; links: Link[] };
 
+const HINT_FIRST_MS = 250;
 const HINT_EVERY_MS = 2600;
 const HINT_HOLD_MS = 1300;
 
 /**
  * Menu em letra grande que avisa que é clicável: de tempos em tempos um link sorteado passa pela
- * cor de destaque. Com o ponteiro ou o foco no menu o sorteio para e só o link apontado fica
- * colorido. Com movimento reduzido não há sorteio.
+ * cor de destaque. O sorteio só roda com o menu na tela e o primeiro link acende logo que ele
+ * aparece. Com o ponteiro ou o foco no menu o sorteio para e só o link apontado fica colorido.
+ * Com movimento reduzido não há sorteio.
  */
 export function HintMenu({ label, links }: Props) {
   const [hinted, setHinted] = useState<number | null>(null);
   const [engaged, setEngaged] = useState(false);
+  const [onScreen, setOnScreen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
   const lastRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (engaged || links.length < 2) return;
+    const nav = navRef.current;
+    if (!nav) return;
+    const observer = new IntersectionObserver(([entry]) => setOnScreen(entry.isIntersecting), {
+      threshold: 0.5,
+    });
+    observer.observe(nav);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!onScreen || engaged || links.length < 2) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     let release = 0;
+    let timer = 0;
 
     const hint = () => {
       if (reduced.matches) return;
@@ -33,16 +48,21 @@ export function HintMenu({ label, links }: Props) {
       release = window.setTimeout(() => setHinted(null), HINT_HOLD_MS);
     };
 
-    const timer = window.setInterval(hint, HINT_EVERY_MS);
+    const first = window.setTimeout(() => {
+      hint();
+      timer = window.setInterval(hint, HINT_EVERY_MS);
+    }, HINT_FIRST_MS);
     return () => {
+      window.clearTimeout(first);
       window.clearInterval(timer);
       window.clearTimeout(release);
       setHinted(null);
     };
-  }, [engaged, links]);
+  }, [onScreen, engaged, links]);
 
   return (
     <nav
+      ref={navRef}
       aria-label={label}
       onPointerEnter={() => setEngaged(true)}
       onPointerLeave={() => setEngaged(false)}
