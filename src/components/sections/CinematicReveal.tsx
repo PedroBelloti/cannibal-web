@@ -4,7 +4,12 @@ import { useRef } from "react";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 import { HudFrame } from "@/components/ui/HudFrame";
 import { ScrollSequence } from "@/components/ui/ScrollSequence";
-import { CINE_FRAME_COUNT, CINE_MOBILE_FOCUS_X, cineFramePath } from "@/lib/cinematic";
+import {
+  CINE_FRAME_COUNT,
+  CINE_MOBILE_FOCUS_X,
+  CINE_POSTER_FRAME,
+  cineFramePath,
+} from "@/lib/cinematic";
 import { site } from "@/content/site";
 
 const { cinematic } = site;
@@ -51,7 +56,9 @@ export function CinematicReveal() {
       className="border-t border-white/5 bg-background"
       frameCount={CINE_FRAME_COUNT}
       framePath={cineFramePath}
-      mobileFocusX={CINE_MOBILE_FOCUS_X}
+      portraitFocusX={CINE_MOBILE_FOCUS_X}
+      posterFrame={CINE_POSTER_FRAME}
+      loading="lazy"
       cards={cinematic.cards}
       loader={cinematic.loader}
       onProgress={handleProgress}

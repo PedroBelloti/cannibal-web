@@ -1,6 +1,6 @@
 # PLAN: verificação da Sequência B, componente único de sequência e peso do Hero
 
-**Status:** aprovado em 2026-11-11; fase 1 concluída; fase 3 parte A implementada e validada, sem commit · **Criado em:** 2026-11-11 ·
+**Status:** aprovado em 2026-11-11; fases 1, 3 (parte A) e 4 concluídas e commitadas; fase 3 parte B commitada, validada no navegador · **Criado em:** 2026-11-11 ·
 **Issues:** #3 (fases 1 e 2), #4 (fase 3), #5 (fase 4)
 
 Origem: lista "Sem medição" e dívida registrada no recado de topo do `HANDOFF.md`, mais a
@@ -130,5 +130,36 @@ alta densidade, celular (onde o corte amplia o rosto), AVIF e frames menores par
 
 ### Fase 3, parte B
 
-Parte A no commit `e432d67`. Parte B em execução. F1 (cards do Hero sobre o rosto) fica para um
-próximo trabalho, por decisão de 2026-11-11.
+Parte A no commit `e432d67`. Parte B no commit seguinte ao `2667d48`, no branch
+`feat/componente-sequencia`. F1 (cards do Hero sobre o rosto) fica para um próximo trabalho, por decisão de 2026-11-11.
+
+O que mudou: o resize passa pelo mesmo rAF do scroll e recalcula progresso, frame, cards e textos
+(F2); o corte segue a proporção do canvas em vez da largura de 768 px (F3, F3b); o Cinematic só
+baixa os frames a duas alturas de tela; frame com erro gera um `console.error` único e o desenho
+usa o frame válido anterior; com `prefers-reduced-motion` a seção baixa e mostra só o pôster. A
+pré-carga saiu para `src/components/ui/useFramePreload.ts`.
+
+MEDIDO em 2026-11-11 sobre `next start`, Chromium headless, rolagem posicionada por script; lint,
+tipos e build com código 0:
+
+| Verificação | Resultado |
+| --- | --- |
+| Antes (commit `2667d48`) e depois, 390×844, 1024×768 e 1920×1080, 8 progressos por seção | 48 pontos iguais em progresso, hash do canvas, cards e readout |
+| Frame e corte contra a regra, em 9 telas (390×844 com densidade 1 e 3, 768×1024, 800×1100, 1000×1323, 1100×1000, 1024×768, 1280×850, 1920×1080), ida e volta | 144 pontos com o canvas idêntico pixel a pixel ao frame `floor(progresso × 169)` desenhado com o foco esperado; cards dentro de `show`/`hide`; volta igual à ida |
+| F2: redimensionar sem rolar (900→700, 700→1300 e 1280×850→800×1100), nas duas seções | frame, cards e readout no progresso novo nos 6 casos |
+| F3 e F3b: Cinematic em 800×1100, 1000×1323 e 768×1024 | faixa visível de 0,47 a 0,89 do frame, centrada no atleta (era 0,295 a 0,705) |
+| Carga adiada | 0 requisição a `/frames2/` no topo e com a seção a 3,3 alturas; 169 a 2,8 alturas |
+| Movimento reduzido | cada seção baixa só o pôster (`frame_0056`, `frame_0101`) e fica nele em 8 progressos; cards seguem o scroll; desligar e religar a preferência vale sem recarregar |
+| Frame com erro (404 nos frames 1, 50 e 51 do Hero) | um `console.error` com "3 de 169" e os caminhos; o canvas mostra o frame 2, o 49 e o 49 |
+| Console | sem erro nem aviso do site na carga fria (`next start`) nem com `next dev` rolando, redimensionando e trocando a preferência |
+
+Achado novo, visto na captura de 800×1100: no Cinematic em tela em pé, o texto de apoio
+(`cinematic.lead`) passa sobre o cabelo do atleta. É decisão de layout, como o F1; fica em aberto.
+
+Sem medição: celular real, rede móvel e toque; roda do mouse; a barra de endereço do celular, que
+muda a altura da janela e dispara resize; Safari e Firefox; os 169 frames um a um (foram 8
+progressos por seção); leitor de tela.
+
+O roteiro de verificação é um script Playwright temporário, fora do repositório. Recomendação,
+não executada: transformá-lo em suíte E2E do projeto (exige `playwright` como dependência de
+desenvolvimento, a aprovar).

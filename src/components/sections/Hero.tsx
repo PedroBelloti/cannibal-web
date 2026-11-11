@@ -4,7 +4,13 @@ import { useRef } from "react";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 import { HudFrame } from "@/components/ui/HudFrame";
 import { ScrollSequence } from "@/components/ui/ScrollSequence";
-import { FRAME_COUNT, HERO_TEXT_FADE_END, MOBILE_FOCUS_X, framePath } from "@/lib/hero";
+import {
+  FRAME_COUNT,
+  HERO_TEXT_FADE_END,
+  MOBILE_FOCUS_X,
+  POSTER_FRAME,
+  framePath,
+} from "@/lib/hero";
 import { site } from "@/content/site";
 
 const { hero } = site;
@@ -37,7 +43,8 @@ export function Hero() {
     <ScrollSequence
       frameCount={FRAME_COUNT}
       framePath={framePath}
-      mobileFocusX={MOBILE_FOCUS_X}
+      portraitFocusX={MOBILE_FOCUS_X}
+      posterFrame={POSTER_FRAME}
       cards={hero.cards}
       loader={hero.loader}
       onProgress={handleProgress}

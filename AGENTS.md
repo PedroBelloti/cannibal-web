@@ -17,19 +17,29 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **Vídeos**: `public/frames*/` + `src/lib/hero.ts` / `src/lib/cinematic.ts`. Os `show`/`hide`
   dos cards estão sincronizados com esses frames; trocou o vídeo, reposicione-os. Para gerar um
   vídeo novo, use a skill `scroll-video-hero`.
-- **Enquadramento no celular**: até 768 px o canvas mostra só uma faixa vertical do frame,
-  centrada em `MOBILE_FOCUS_X` (`src/lib/hero.ts`) no Hero e em `CINE_MOBILE_FOCUS_X`
-  (`src/lib/cinematic.ts`) no Cinematic. Trocou o vídeo, reposicione.
+- **Enquadramento em tela em pé**: o corte segue a proporção do canvas, não a largura. Com
+  largura/altura até 1 o canvas mostra só uma faixa vertical do frame, centrada em
+  `MOBILE_FOCUS_X` (`src/lib/hero.ts`) no Hero e em `CINE_MOBILE_FOCUS_X`
+  (`src/lib/cinematic.ts`) no Cinematic (prop `portraitFocusX`); de 1 a 1,25 o foco caminha até o
+  centro; a partir de 1,25 o corte é centralizado. Trocou o vídeo, reposicione.
 - **Sequência por scroll**: `src/components/ui/ScrollSequence.tsx` é dono da section
-  (`.scroll-animation`), do contêiner sticky, do canvas e do loader; pré-carrega os frames, desenha
-  o frame do progresso e devolve aos filhos (render prop) os ids dos cards visíveis. `Hero.tsx` e
-  `CinematicReveal.tsx` só passam frames, foco do celular, cards e textos, e aplicam os efeitos de
-  texto em `onProgress(progress, frameIndex)`, chamado dentro do rAF: escreva no DOM por ref,
-  nunca em estado do React. Pontos sensíveis: a fórmula de progresso e o índice do frame
-  (mudá-los desloca os cards em relação aos frames), a altura de `.scroll-animation` em
-  `globals.css` (entra no progresso) e `coverRect` (corte com foco do celular). Nada roda antes de
-  todos os frames carregarem; frame com erro conta como carregado. Pendente (issue #4, parte B):
-  progresso no resize, corte por proporção da tela, carga adiada, aviso de frame com erro e
-  `prefers-reduced-motion`, todos dentro do componente, sem mudar os consumidores.
+  (`.scroll-animation`), do contêiner sticky, do canvas e do loader; desenha o frame do progresso e
+  devolve aos filhos (render prop) os ids dos cards visíveis. A pré-carga fica em
+  `useFramePreload.ts`, no mesmo diretório. `Hero.tsx` e `CinematicReveal.tsx` só passam frames,
+  foco, pôster, modo de carga, cards e textos, e aplicam os efeitos de texto em
+  `onProgress(progress, frameIndex)`, chamado dentro do rAF: escreva no DOM por ref, nunca em
+  estado do React. Comportamento:
+  - scroll e resize passam pelo mesmo rAF; o resize recalcula progresso, frame, cards e textos;
+  - `loading="lazy"` (Cinematic) só baixa quando a seção chega a duas alturas de tela; o padrão
+    `"eager"` baixa ao montar (Hero);
+  - frame com erro conta como carregado, gera um `console.error` único ao fim da carga com os
+    caminhos, e o desenho usa o frame válido anterior;
+  - com `prefers-reduced-motion: reduce` baixa e mostra só o `posterFrame` (`POSTER_FRAME` e
+    `CINE_POSTER_FRAME` em `src/lib`), cards e textos seguem o progresso e `frameIndex` é o do
+    pôster; a troca da preferência vale sem recarregar.
+
+  Pontos sensíveis: a fórmula de progresso e o índice do frame (mudá-los desloca os cards em
+  relação aos frames), a altura de `.scroll-animation` em `globals.css` (entra no progresso) e
+  `coverRect`/`focusForRatio` (corte). Nada é desenhado nem notificado antes de a carga terminar.
 - **Validar**: `npm run lint && npx tsc --noEmit && npm run build`, e depois rolar a página inteira
   no navegador. O build não verifica a animação.

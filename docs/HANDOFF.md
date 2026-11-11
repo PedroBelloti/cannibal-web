@@ -24,7 +24,29 @@ Não regerar no Higgsfield: é a foto real do atleta, sem IA no rosto.
 
 ## Recados
 
-- **11/11/2026, agente do template — ESTADO ATUAL E PONTO DE RETOMADA (ler primeiro)**:
+- **11/11/2026 (manhã), agente do template — ESTADO ATUAL E PONTO DE RETOMADA (ler primeiro)**:
+  - **Onde está**: branch `feat/componente-sequencia`, só local, a partir de `feat/seq-b-camadas`.
+    Commits: `e432d67` (componente único, parte A, #4) e `2667d48` (frames do Hero em q60, #5).
+    A parte B da fase 3 (#4) está no commit seguinte ao `2667d48`: `ScrollSequence.tsx`,
+    `useFramePreload.ts`, `Hero.tsx`, `CinematicReveal.tsx`, `src/lib/hero.ts`,
+    `src/lib/cinematic.ts` e `AGENTS.md`. Detalhe e medições em `plan-componente-sequencia.md`,
+    "Fase 3, parte B".
+  - **Validado**: MEDIDO lint, tipos e build sem erro; no Chromium headless, antes e depois
+    iguais nas três larguras de referência, frame e corte conferidos pixel a pixel em 9 telas,
+    resize sem rolar, carga adiada do Cinematic, movimento reduzido e frame com erro.
+  - **Sem medição**: celular real, rede móvel e toque; roda do mouse; barra de endereço do
+    celular; Safari e Firefox.
+  - **Depende do Pedro**: conferir no celular; push, PR
+    (`Closes #4`, `Closes #5`, e `Closes #3` se a B for junto) e merge do PR #2; decisão de
+    layout do F1 (cards do Hero sobre o rosto) e do texto de apoio do Cinematic sobre o cabelo
+    em tela em pé acima de 768 px.
+  - **Ferramenta**: a verificação no navegador foi um script Playwright temporário
+    (`playwright-core` do cache do `npx` com `/usr/bin/chromium`; o comando `playwright` da
+    máquina falha no `mise`). Não está no repositório; a suíte E2E permanente é recomendação em
+    aberto no PLAN.
+  - O recado abaixo fica como histórico da Sequência B.
+
+- **11/11/2026 (início do dia), agente do template — SEQUÊNCIA B COMMITADA (histórico)**:
   - **Onde está**: Sequência B commitada em `67f9596`, branch `feat/seq-b-camadas`, só local
     (sem push, sem PR). O branch parte de `feat/seq-a-camadas` (`f8f8c66`, PR #2 aberto, sem
     merge), então um PR da B contra `main` leva junto o commit da A enquanto o #2 não entrar.
