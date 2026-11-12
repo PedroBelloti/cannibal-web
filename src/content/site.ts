@@ -294,6 +294,11 @@ export const site: SiteContent = {
           href: INSTAGRAM_URL,
         },
         { name: "WhatsApp", note: "+55 (61) 98639-4253", href: WHATSAPP_URL },
+        {
+          name: "Tapology",
+          note: "Cartel completo",
+          href: "https://www.tapology.com/fightcenter/fighters/519750-arthur-ferreira",
+        },
       ],
     },
     partners: {
@@ -310,6 +315,8 @@ export const site: SiteContent = {
           note: "Gama e Sudoeste",
           href: "https://www.instagram.com/tarumacozinhaebar",
         },
+        { name: "Greenfisio", href: "https://greenfisio.com.br/" },
+        { name: "Creio", href: "https://www.usecreio.com.br/" },
       ],
     },
     photo: {
