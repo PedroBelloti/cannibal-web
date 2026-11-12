@@ -35,7 +35,7 @@ recado.
 | Endereço antigo | `https://cannibal-web.vercel.app`, redireciona com 308 |
 | Projeto Vercel | `the.cannibal`, equipe `pedro-bellotis-projects` (Hobby), conta `pedrobelloti` |
 | Repositório | `PedroBelloti/cannibal-web` (privado), pasta `~/Projects/cannibal-web` |
-| Branch publicado | `main` e `feat/redesenho-poster-fixo`, iguais desde 11/11 |
+| Branch publicado | `main` e `feat/redesenho-poster-fixo`, iguais desde 12/11 |
 
 O repositório **não está ligado** à Vercel: push no GitHub não publica nada. Cada atualização é
 um deploy manual, feito pela CLI a partir da pasta local (`.vercel/project.json` liga a pasta ao
@@ -74,6 +74,12 @@ cada PR ganha uma prévia; este passo a passo passa a valer só para emergência
 
 ## Recados
 
+- **12/11/2026, pedido do Pedro — novos parceiros e Tapology no rodapé**: Greenfisio e Creio
+  entraram em `footer.partners` e o perfil no Tapology em `footer.contact` (`src/content/site.ts`,
+  commit `4cda149`). Os endereços dos parceiros vieram com `utm_*`/`fbclid` do Instagram e
+  entraram sem eles. Deploy em produção feito pelo Pedro (`dpl_D97p3aBd48aJkRpQm97Cfxt4TcJQ`).
+  MEDIDO: `thecannibal.vercel.app` responde 200 e traz os três links. Não medido: o rodapé
+  rolado no navegador. `main` atualizado para o mesmo commit do branch.
 - **11/11/2026 (noite, história reescrita), pedido do Pedro**: os dois commits do template
   (21/04, autor de fora) viraram um commit inicial do Pedro ("chore: base do projeto"); os 27
   seguintes foram reaplicados por cima com autor, data e mensagem originais, então **todos os
